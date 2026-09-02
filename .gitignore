@@ -1,0 +1,21 @@
+# local tooling / editor config — not part of the app
+.claude/
+.vscode/
+.idea/
+
+# OS cruft
+Thumbs.db
+ehthumbs.db
+desktop.ini
+.DS_Store
+._*
+
+# local + temporary
+*.local
+*.log
+*.tmp
+*.bak
+*~
+.env
+.env.*
+node_modules/

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 320" role="img" aria-label="HASTI PLAN">
+  <defs>
+    <radialGradient id="glow" cx="80%" cy="12%" r="90%">
+      <stop offset="0%" stop-color="#4FE3C1" stop-opacity=".13"/>
+      <stop offset="62%" stop-color="#4FE3C1" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- tile: same chamfered silhouette the app uses for every card -->
+  <path d="M28 0 H880 V292 L852 320 H0 V28 Z" fill="#0B0D10"/>
+  <path d="M28 0 H880 V292 L852 320 H0 V28 Z" fill="url(#glow)"/>
+  <path d="M52 24 H856 V284 L836 304 H24 V44 Z" fill="none" stroke="#4FE3C1" stroke-opacity=".22" stroke-width="3"/>
+
+  <!-- barbell mark -->
+  <g transform="translate(72 118) scale(.52)">
+    <g fill="#4FE3C1">
+      <path d="M10 28 H26 V140 H8 L0 132 V36 Z"/>
+      <path d="M42 0 H68 V168 H42 L32 158 V10 Z"/>
+      <path d="M278 0 H304 V158 L294 168 H268 V10 Z"/>
+      <path d="M320 28 H336 V132 L328 140 H310 V38 Z"/>
+    </g>
+    <g fill="#EEF4FA">
+      <rect x="68" y="68" width="12" height="32"/>
+      <rect x="256" y="68" width="12" height="32"/>
+      <rect x="80" y="74" width="176" height="20"/>
+    </g>
+  </g>
+
+  <!-- wordmark -->
+  <text x="272" y="176" font-family="'JetBrains Mono','Consolas',ui-monospace,monospace"
+        font-size="76" font-weight="800" letter-spacing="2" fill="#F4F7FA">HASTI<tspan fill="#4FE3C1"> PLAN</tspan></text>
+  <text x="276" y="216" font-family="'Segoe UI',system-ui,sans-serif"
+        font-size="21" font-weight="600" letter-spacing="6.5" fill="#5A6470">TRAIN · TRACK · PROGRESS</text>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 336 168" role="img" aria-label="Gym Plan">
+  <g fill="#4FE3C1">
+    <path d="M10 28 H26 V140 H8 L0 132 V36 Z"/>
+    <path d="M42 0 H68 V168 H42 L32 158 V10 Z"/>
+    <path d="M278 0 H304 V158 L294 168 H268 V10 Z"/>
+    <path d="M320 28 H336 V132 L328 140 H310 V38 Z"/>
+  </g>
+  <g fill="#EEF4FA">
+    <rect x="68" y="68" width="12" height="32"/>
+    <rect x="256" y="68" width="12" height="32"/>
+    <rect x="80" y="74" width="176" height="20"/>
+  </g>
+</svg>
