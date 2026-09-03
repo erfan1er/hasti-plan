@@ -19,3 +19,6 @@ desktop.ini
 .env
 .env.*
 node_modules/
+
+# personal file living in this folder, not part of the app
+هستی.pdf
