@@ -457,7 +457,7 @@ const UI = {
   langBtn:"EN", brandKick:"هستی",
   h1html:'پا و پشت + مسیر <b>پول‌آپ</b>', sub:"۵ روز تمرین · ۳ روز هوازی · دورهٔ کات ملایم",
   footer:"هر ست را که زدی مربعش را بزن — تایمر خودکار شروع می‌شود و صفحه روشن می‌ماند.",
-  nutMaint:(n)=>`نگه‌دارندهٔ تخمینی ~${faD(n)} · بازهٔ کاری ${faD(n-100)}–${faD(n+100)}`,
+  nutMaint:(n,lo,hi)=>`نگه‌دارندهٔ تخمینی ~${faD(n)} · بازهٔ کاری ${faD(lo)}–${faD(hi)}`,
   restSub:"استراحت", puTab:"پول‌آپ", puSub:"نردبان · رکورد", hsTab:"هندستند", hsSub:"نردبان · رکورد",
   wtTab:"وزن", wtSub:"ثبت هفتگی", nutTab:"تغذیه", nutSub:"کالری · پروتئین", infoTab:"راهنما", infoSub:"اصول · لگن · شانه",
   setsdone:"ست انجام‌شده", warmL:"گرم‌کردن:", cardioL:"هوازی:", skillL:"مهارت:",
@@ -517,7 +517,7 @@ const UI = {
   langBtn:"FA", brandKick:"هستی",
   h1html:'Legs & Back + <b>Pull-Up</b> Path', sub:"5 training days · 3 cardio days · mild cut phase",
   footer:"Tap each set's square as you finish it — the timer starts automatically and the screen stays awake.",
-  nutMaint:(n)=>`Estimated maintenance ~${faD(n)} · working range ${faD(n-100)}–${faD(n+100)}`,
+  nutMaint:(n,lo,hi)=>`Estimated maintenance ~${faD(n)} · working range ${faD(lo)}–${faD(hi)}`,
   restSub:"Rest", puTab:"Pull-Up", puSub:"Ladder · records", hsTab:"Handstand", hsSub:"Ladder · records",
   wtTab:"Weight", wtSub:"Weekly log", nutTab:"Nutrition", nutSub:"Calories · protein", infoTab:"Guide", infoSub:"Principles · hip · shoulder",
   setsdone:"sets done", warmL:"Warm-up:", cardioL:"Cardio:", skillL:"Skill:",
@@ -1821,7 +1821,7 @@ function renderNut(){
   view.innerHTML=`<div class="nut">
     <div class="ncard ncal">
       <div class="big">${faD(cal)}</div><div class="u">${t('nutCal')}</div>
-      <div class="rg">${UI[LANG].nutMaint(2500)}</div>
+      <div class="rg">${UI[LANG].nutMaint(2500,2100,2300)}</div>
     </div>
     <div class="ncard">
       <div class="ntitle">${t('nutMacros')}</div>
