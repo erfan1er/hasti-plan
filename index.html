@@ -153,6 +153,8 @@
   .st.tap{cursor:pointer} .st.tap:active{background:var(--line)}
   .st.tempo .v{color:var(--ice);font-size:13px}
   .st.rest .v{color:var(--ember)}
+  .wthist{background:none;border:none;color:var(--ice);font-size:11px;cursor:pointer;padding:0;
+    vertical-align:middle;line-height:1;margin-inline-start:2px}
   .st.wt{flex:1;min-width:98px;padding:5px 10px}
   .st.wt input{width:100%;background:transparent;border:none;color:var(--volt);font-family:var(--mono);
     font-size:16px;font-weight:800;padding:0;text-align:start}
@@ -430,6 +432,14 @@
   </div>
 </div>
 
+<div class="modal" id="wtmodal">
+  <div class="box">
+    <h3 id="wtmTitle">—</h3>
+    <div id="wtmBody"></div>
+    <button class="close" onclick="closeWtHist()" id="wtmClose">OK</button>
+  </div>
+</div>
+
 <script>
 const faD = s => LANG==='fa' ? String(s).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]) : String(s);
 /* Reps strings in the exercise tuples are pre-formatted Persian literals that
@@ -526,7 +536,8 @@ const UI = {
   backupExport:"⇪ خروجی گرفتن", backupImport:"⇩ بازیابی از فایل",
   backupManual:"اشتراک‌گذاری کار نکرد؛ این متن را کپی و در جایی ذخیره کن:",
   backupConfirm:"این کار دادهٔ فعلی گوشی را با فایل پشتیبان جایگزین می‌کند. ادامه بدهم؟",
-  backupDone:"بازیابی شد. صفحه رفرش می‌شود.", backupBadFile:"این فایل، فایل پشتیبان معتبری نیست."
+  backupDone:"بازیابی شد. صفحه رفرش می‌شود.", backupBadFile:"این فایل، فایل پشتیبان معتبری نیست.",
+  wtHistBtn:"روند وزنه", wtHistEmpty:"هنوز چیزی ثبت نشده."
  },
  en:{
   langBtn:"FA", brandKick:"هستی",
@@ -591,7 +602,8 @@ const UI = {
   backupExport:"⇪ Export", backupImport:"⇩ Restore from file",
   backupManual:"Sharing didn't work; copy this text and save it somewhere:",
   backupConfirm:"This will replace the data on this phone with the backup file. Continue?",
-  backupDone:"Restored. The page will reload.", backupBadFile:"This isn't a valid backup file."
+  backupDone:"Restored. The page will reload.", backupBadFile:"This isn't a valid backup file.",
+  wtHistBtn:"Weight trend", wtHistEmpty:"Nothing logged yet."
  }
 };
 const t = k => UI[LANG][k];
@@ -2246,7 +2258,8 @@ function renderView(){
     const enSub = (!en && X.en) ? X.en.name : null;
     const exNote = en ? ((d.en&&d.en.exNotes&&d.en.exNotes[i])||"") : note;
     const cs=Math.min(getSets(d.key,i),sets);
-    const wt=store.get(V+"wt:"+d.key+":"+i)||"";
+    const wt=curWt(d.key,i);
+    const wtHasHist=getWtHist(d.key,i).length>0;
     const li=(a,c="")=>(a||[]).map(x=>`<li class="${c}">${x}</li>`).join("");
     let dots="";
     for(let s=1;s<=sets;s++)
@@ -2263,8 +2276,8 @@ function renderView(){
         <span class="st"><span class="l">${t('setsxreps')}</span><span class="v">${faD(sets)} × ${dispNum(reps)}</span></span>
         <span class="st tap tempo" onclick="openTempo('${tempo}')"><span class="l">${t('tempoQ')}</span><span class="v">${dispTempo(tempo)}</span></span>
         <span class="st tap rest" onclick="restFor('${d.key}',${i})"><span class="l">${t('restStat')}</span><span class="v">${faD(rest)}${t('secUnit')}</span></span>
-        <span class="st wt"><span class="l">${t('weightKg')}</span>
-          <input type="text" inputmode="decimal" value="${esc(wt)}" placeholder="—" onchange="logWt('${d.key}',${i},this)"></span>
+        <span class="st wt"><span class="l">${t('weightKg')}${wtHasHist?` <button class="wthist" onclick="openWtHist('${d.key}',${i})" aria-label="${t('wtHistBtn')}">📈</button>`:""}</span>
+          <input type="text" inputmode="decimal" value="${esc(wt===""?"":String(wt))}" placeholder="—" onchange="logWt('${d.key}',${i},this)"></span>
       </div>
       <div class="setsrow"><span class="setslab">${en?'Sets':'ست‌ها'}</span><div class="dots">${dots}</div></div>
       <div class="learn" id="l-${d.key}-${i}">
@@ -2329,10 +2342,78 @@ function restFor(k,i){
   const e=d.ex[i];
   startTimer(e[3],exName(e[0]));
 }
+/* ---------- per-exercise weight history ---------- */
+function getWtHist(k,i){ try{ return JSON.parse(store.get(V+"wh:"+k+":"+i)||"[]"); }catch(e){ return []; } }
+function setWtHist(k,i,a){ store.set(V+"wh:"+k+":"+i,JSON.stringify(a)); }
+function curWt(k,i){
+  /* one-time migration: earlier versions stored just the latest number under
+     "wt:", overwritten every time. Fold that lone value into the new history
+     the first time this exercise is touched, dated today since the original
+     date was never recorded. */
+  const hist=getWtHist(k,i);
+  if(hist.length) return hist[hist.length-1].w;
+  const old=store.get(V+"wt:"+k+":"+i);
+  if(old){
+    const v=parseFloat(old);
+    if(v){
+      setWtHist(k,i,[{d:new Date().toISOString().slice(0,10),w:Math.round(v*10)/10}]);
+      store.del(V+"wt:"+k+":"+i);
+      return v;
+    }
+  }
+  return "";
+}
 function logWt(k,i,el){
-  const v=el.value.trim();
-  if(v) store.set(V+"wt:"+k+":"+i,v); else store.del(V+"wt:"+k+":"+i);
+  const raw=el.value.trim().replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d));
   el.blur();
+  if(!raw) return;
+  const v=parseFloat(raw);
+  if(!v || v<=0) return;
+  const val=Math.round(v*10)/10;
+  const h=getWtHist(k,i);
+  const wasEmpty=h.length===0;
+  const today=new Date().toISOString().slice(0,10);
+  const idx=h.findIndex(x=>x.d===today);
+  if(idx>=0) h[idx].w=val; else h.push({d:today,w:val});
+  h.sort((a,b)=>a.d<b.d?-1:1);
+  setWtHist(k,i,h);
+  if(wasEmpty){
+    const lab=el.closest(".st.wt")?.querySelector(".l");
+    if(lab && !lab.querySelector(".wthist")){
+      lab.insertAdjacentHTML("beforeend",` <button class="wthist" onclick="openWtHist('${k}',${i})" aria-label="${t('wtHistBtn')}">📈</button>`);
+    }
+  }
+}
+const wtmodal=document.getElementById("wtmodal");
+function openWtHist(k,i){
+  const d=days.find(x=>x.key===k); if(!d) return;
+  const e=d.ex[i]; const X=EX[e[0]]||{};
+  const name = LANG==='en' ? ((X.en&&X.en.name)||e[0]) : (X["ن"]||e[0]);
+  document.getElementById("wtmTitle").textContent=name;
+  const h=getWtHist(k,i);
+  const rows=h.slice().reverse().map((r,ri)=>{
+    const idx=h.length-1-ri;
+    const p=idx>0?h[idx-1].w:null;
+    const df=p!=null?Math.round((r.w-p)*10)/10:null;
+    const c=df==null?"eq":(df>0.05?"up":(df<-0.05?"dn":"eq"));
+    return `<div class="wrow">
+      <span class="kg">${faD(r.w.toFixed(1))}</span>
+      <span class="dl ${c}">${df==null?"—":(df>0?"+":"")+faD(df.toFixed(1))}</span>
+      <span class="dt">${faDate(r.d)}</span>
+      <button class="x" onclick="delWtHist('${k}',${i},${idx})" aria-label="${t('removeLabel')}">✕</button></div>`;
+  }).join("");
+  document.getElementById("wtmBody").innerHTML = h.length
+    ? sparkline(h) + `<div class="wrows">${rows}</div>`
+    : `<div class="empty">${t('wtHistEmpty')}</div>`;
+  wtmodal.classList.add("show");
+}
+function closeWtHist(){ wtmodal.classList.remove("show"); }
+wtmodal.onclick=e=>{ if(e.target===wtmodal) closeWtHist(); };
+function delWtHist(k,i,idx){
+  const h=getWtHist(k,i); h.splice(idx,1); setWtHist(k,i,h);
+  openWtHist(k,i);
+  const card=document.getElementById("c-"+k+"-"+i);
+  if(card){ const el=card.querySelector(".st.wt input"); if(el) el.value=curWt(k,i); }
 }
 function resetDay(k){
   const d=days.find(x=>x.key===k);
