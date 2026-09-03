@@ -233,6 +233,16 @@
   .nut{margin-top:16px;display:flex;flex-direction:column;gap:11px}
   .ncard{background:var(--surf);border:1px solid var(--line);padding:16px;
     clip-path:polygon(11px 0,100% 0,100% calc(100% - 11px),calc(100% - 11px) 100%,0 100%,0 11px)}
+  .backupBtns{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .bkBtn{flex:1;min-width:130px;min-height:44px;background:var(--volt);color:#03211B;border:none;
+    font-family:inherit;font-weight:800;font-size:13px;cursor:pointer;text-align:center;
+    display:flex;align-items:center;justify-content:center;padding:0 12px;
+    clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)}
+  .bkBtn.ghost{background:var(--raise);color:var(--text);border:1px solid var(--line2)}
+  .bkBtn:active{opacity:.8}
+  .backupText textarea{width:100%;margin-top:8px;min-height:110px;background:var(--raise);
+    border:1px solid var(--line2);color:var(--text);font-family:var(--mono);font-size:10.5px;
+    padding:8px;resize:vertical}
   .ncal{text-align:center}
   .ncal .big{font-family:var(--mono);font-size:40px;font-weight:800;line-height:1;color:var(--volt)}
   .ncal .u{color:var(--muted);font-size:13px;margin-top:5px}
@@ -511,7 +521,12 @@ const UI = {
   nutT2:'<b>اگر بعد از ۳ هفته</b> میانگین وزنت تغییری نکرد: حدود ۱۵۰ کالری کم کن یا یک جلسهٔ هوازی اضافه کن. هر دو را با هم نه.',
   nutT3:"<b>اگر بیشتر از ۰.۷ کیلو در هفته کم کردی:</b> کالری را ۱۵۰ تا ۲۰۰ بالا ببر. کاهش سریع در سن تو، اول از همه عضله و تراکم استخوان را می‌برد.",
   nutT4:"<b>نوسان روزانهٔ ۱ تا ۲ کیلو کاملاً طبیعی است</b> و به آب، نمک و دورهٔ ماهانه ربط دارد نه به چربی. فقط به روند سه‌هفته‌ای نگاه کن، نه به عدد امروز.",
-  nutDisc:'<b>توجه:</b> این اعداد تخمین‌اند و بر پایهٔ فرمول‌های استاندارد و تست ترکیب بدنی محاسبه شده‌اند — تجویز پزشکی نیستند. چون ۱۷ سالت است و هنوز در سن رشدی، قبل از شروع دورهٔ کات این عددها را با پزشک یا متخصص تغذیه چک کن. اگر پریودت نامنظم شد، کات را متوقف کن و به پزشک مراجعه کن.'
+  nutDisc:'<b>توجه:</b> این اعداد تخمین‌اند و بر پایهٔ فرمول‌های استاندارد و تست ترکیب بدنی محاسبه شده‌اند — تجویز پزشکی نیستند. چون ۱۷ سالت است و هنوز در سن رشدی، قبل از شروع دورهٔ کات این عددها را با پزشک یا متخصص تغذیه چک کن. اگر پریودت نامنظم شد، کات را متوقف کن و به پزشک مراجعه کن.',
+  backupTitle:"پشتیبان‌گیری", backupDesc:"همهٔ ست‌ها، وزنه‌ها، رکورد پول‌آپ/هندستند و تاریخچهٔ وزن فقط روی همین گوشی ذخیره‌ان. یک بار خروجی بگیر و فایل را جایی امن (آیکلاد، ایمیل خودت) نگه دار.",
+  backupExport:"⇪ خروجی گرفتن", backupImport:"⇩ بازیابی از فایل",
+  backupManual:"اشتراک‌گذاری کار نکرد؛ این متن را کپی و در جایی ذخیره کن:",
+  backupConfirm:"این کار دادهٔ فعلی گوشی را با فایل پشتیبان جایگزین می‌کند. ادامه بدهم؟",
+  backupDone:"بازیابی شد. صفحه رفرش می‌شود.", backupBadFile:"این فایل، فایل پشتیبان معتبری نیست."
  },
  en:{
   langBtn:"FA", brandKick:"هستی",
@@ -571,7 +586,12 @@ const UI = {
   nutT2:'<b>If after 3 weeks</b> your average weight hasn&#39;t moved: cut about 150 calories or add one cardio session. Not both at once.',
   nutT3:"<b>If you're losing more than 0.7 kg a week:</b> raise calories by 150 to 200. Fast loss at your age costs muscle and bone density first.",
   nutT4:"<b>A daily swing of 1 to 2 kg is completely normal</b> and comes from water, salt, and your cycle, not fat. Only look at the three-week trend, not today's number.",
-  nutDisc:'<b>Note:</b> these numbers are estimates based on standard formulas and a body-composition test — not a medical prescription. Because you&#39;re 17 and still growing, check these numbers with a doctor or a registered dietitian before starting the cut. If your period becomes irregular, stop the cut and see a doctor.'
+  nutDisc:'<b>Note:</b> these numbers are estimates based on standard formulas and a body-composition test — not a medical prescription. Because you&#39;re 17 and still growing, check these numbers with a doctor or a registered dietitian before starting the cut. If your period becomes irregular, stop the cut and see a doctor.',
+  backupTitle:"Backup", backupDesc:"All your sets, logged weights, pull-up/handstand records, and weight history live only on this phone. Export once and keep the file somewhere safe (iCloud, your own email).",
+  backupExport:"⇪ Export", backupImport:"⇩ Restore from file",
+  backupManual:"Sharing didn't work; copy this text and save it somewhere:",
+  backupConfirm:"This will replace the data on this phone with the backup file. Continue?",
+  backupDone:"Restored. The page will reload.", backupBadFile:"This isn't a valid backup file."
  }
 };
 const t = k => UI[LANG][k];
@@ -1860,9 +1880,67 @@ function renderNut(){
 }
 
 /* ---------- راهنما ---------- */
+/* ---------- پشتیبان‌گیری ---------- */
+function backupData(){
+  const data={};
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(k && k.indexOf(V)===0) data[k]=localStorage.getItem(k);
+  }
+  return {app:"hasti-plan",v:1,exportedAt:new Date().toISOString(),data};
+}
+async function exportBackup(){
+  const payload=JSON.stringify(backupData(),null,2);
+  const fname="hasti-plan-backup-"+new Date().toISOString().slice(0,10)+".json";
+  const file=new File([payload],fname,{type:"application/json"});
+  try{
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({files:[file],title:fname});
+      return;
+    }
+  }catch(e){ if(e && e.name==="AbortError") return; }
+  try{
+    const a=document.createElement("a");
+    const url=URL.createObjectURL(file);
+    a.href=url; a.download=fname; document.body.appendChild(a); a.click();
+    a.remove(); setTimeout(()=>URL.revokeObjectURL(url),4000);
+  }catch(e){
+    const box=document.getElementById("backupText");
+    if(box){ box.hidden=false; box.querySelector("textarea").value=payload; box.querySelector("textarea").select(); }
+  }
+}
+function importBackup(el){
+  const file=el.files && el.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    let parsed;
+    try{ parsed=JSON.parse(reader.result); }
+    catch(e){ alert(t('backupBadFile')); el.value=""; return; }
+    if(!parsed || typeof parsed.data!=="object"){ alert(t('backupBadFile')); el.value=""; return; }
+    if(!confirm(t('backupConfirm'))){ el.value=""; return; }
+    Object.keys(parsed.data).forEach(k=>{ if(k.indexOf(V)===0) localStorage.setItem(k,parsed.data[k]); });
+    el.value="";
+    alert(t('backupDone'));
+    location.reload();
+  };
+  reader.readAsText(file);
+}
+
 function renderInfo(){
   const en = LANG==='en';
-  let html = `<div class="acc">`;
+  let html = `<div class="ncard">
+    <div class="ntitle">${t('backupTitle')}</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.85">${t('backupDesc')}</div>
+    <div class="backupBtns">
+      <button class="bkBtn" onclick="exportBackup()">${t('backupExport')}</button>
+      <label class="bkBtn ghost">${t('backupImport')}<input type="file" accept="application/json,.json" style="display:none" onchange="importBackup(this)"></label>
+    </div>
+    <div class="backupText" id="backupText" hidden>
+      <div style="font-size:11px;color:var(--faint);margin-top:8px">${t('backupManual')}</div>
+      <textarea readonly onclick="this.select()"></textarea>
+    </div>
+  </div>
+  <div class="acc">`;
   info.forEach((s,i)=>{
     const title = en ? (s.enT||s.t) : s.t;
     const body = en ? (s.enBody||s.body) : s.body;
