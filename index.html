@@ -71,6 +71,10 @@
   .chip{background:var(--surf);border:1px solid var(--line);padding:5px 10px;font-size:10.5px;color:var(--faint);
     clip-path:polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px)}
   .chip b{color:var(--text);font-weight:700;font-family:var(--mono);font-size:11.5px}
+  .langtoggle{margin-inline-start:8px;background:var(--raise);border:1px solid var(--line2);color:var(--ice);
+    font-family:var(--mono);font-size:10px;font-weight:800;letter-spacing:.5px;padding:6px 10px;min-height:28px;
+    cursor:pointer;clip-path:polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px)}
+  .langtoggle:active{background:var(--line)}
 
   /* ── day strip ── */
   .strip{position:sticky;top:0;z-index:40;margin:14px calc(var(--hpad)*-1) 0;padding:9px var(--hpad);
@@ -89,7 +93,7 @@
   .tab.alt.on{background:var(--ice);border-color:var(--ice);color:#061530}
   .tab.alt.on .d{color:#12386F}
   .tab.rest{opacity:.55}
-  .tab.today::after{content:"";position:absolute;top:5px;left:6px;width:5px;height:5px;
+  .tab.today::after{content:"";position:absolute;top:5px;inset-inline-start:6px;width:5px;height:5px;
     background:var(--ember);box-shadow:0 0 0 3px rgba(255,90,122,.18)}
   .tab.full:not(.on){border-color:rgba(79,227,193,.5)}
   .tab.full:not(.on) .d{color:var(--volt)}
@@ -371,14 +375,15 @@
         </svg>
         <span class="bname">HASTI<i>PLAN</i></span>
       </span>
-      <span class="kick">هستی</span>
+      <span class="kick" id="kickBadge">هستی</span>
+      <button class="langtoggle" id="langBtn" onclick="toggleLang()">EN</button>
     </div>
-    <h1>پا و پشت + مسیر <b>پول‌آپ</b></h1>
-    <div class="sub">۵ روز تمرین · ۳ روز هوازی · دورهٔ کات ملایم</div>
+    <h1 id="h1title">پا و پشت + مسیر <b>پول‌آپ</b></h1>
+    <div class="sub" id="subtext">۵ روز تمرین · ۳ روز هوازی · دورهٔ کات ملایم</div>
   </header>
   <nav class="strip"><div class="inner" id="tabs"></div></nav>
   <main id="view"></main>
-  <footer>هر ست را که زدی مربعش را بزن — تایمر خودکار شروع می‌شود و صفحه روشن می‌ماند.</footer>
+  <footer id="footerText">هر ست را که زدی مربعش را بزن — تایمر خودکار شروع می‌شود و صفحه روشن می‌ماند.</footer>
 </div>
 
 <div class="timer" id="timer">
@@ -402,21 +407,38 @@
 
 <div class="modal" id="tmodal">
   <div class="box">
-    <h3>تمپو چیست؟</h3>
-    <div class="lead">سرعت اجرای حرکت. چهار عدد، به ترتیب زمان (ثانیه) برای هر فاز:</div>
+    <h3 id="tmTitle">تمپو چیست؟</h3>
+    <div class="lead" id="tmLead">سرعت اجرای حرکت. چهار عدد، به ترتیب زمان (ثانیه) برای هر فاز:</div>
     <div class="tg">
-      <div class="sg"><div class="nn" id="tg0">۳</div><div class="ll">پایین‌رفتن<br>(منفی)</div></div>
-      <div class="sg"><div class="nn" id="tg1">۱</div><div class="ll">مکث<br>پایین</div></div>
-      <div class="sg"><div class="nn" id="tg2">۱</div><div class="ll">بالا‌آوردن<br>(مثبت)</div></div>
-      <div class="sg"><div class="nn" id="tg3">۰</div><div class="ll">مکث<br>بالا</div></div>
+      <div class="sg"><div class="nn" id="tg0">۳</div><div class="ll" id="tgl0">پایین‌رفتن<br>(منفی)</div></div>
+      <div class="sg"><div class="nn" id="tg1">۱</div><div class="ll" id="tgl1">مکث<br>پایین</div></div>
+      <div class="sg"><div class="nn" id="tg2">۱</div><div class="ll" id="tgl2">بالا‌آوردن<br>(مثبت)</div></div>
+      <div class="sg"><div class="nn" id="tg3">۰</div><div class="ll" id="tgl3">مکث<br>بالا</div></div>
     </div>
-    <div class="exr"><b>چرا مهم است؟</b> آهسته‌کردن فاز منفی، مدت زمان تحت فشار عضله را بیشتر می‌کند بدون نیاز به وزنهٔ سنگین‌تر — با همان وزنه، تحریک بیشتر و فشار کمتر روی مفصل. در دورهٔ کات که وزنه‌ها نمی‌توانند مدام بالا بروند، تمپو مهم‌ترین اهرم پیشرفت توست.</div>
-    <button class="close" onclick="closeTempo()">فهمیدم</button>
+    <div class="exr" id="tmExr"><b id="tmExrB">چرا مهم است؟</b> <span id="tmExrTxt">آهسته‌کردن فاز منفی، مدت زمان تحت فشار عضله را بیشتر می‌کند بدون نیاز به وزنهٔ سنگین‌تر — با همان وزنه، تحریک بیشتر و فشار کمتر روی مفصل. در دورهٔ کات که وزنه‌ها نمی‌توانند مدام بالا بروند، تمپو مهم‌ترین اهرم پیشرفت توست.</span></div>
+    <button class="close" onclick="closeTempo()" id="tmClose">فهمیدم</button>
   </div>
 </div>
 
 <script>
-const faD = s => String(s).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
+const faD = s => LANG==='fa' ? String(s).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]) : String(s);
+/* Reps strings in the exercise tuples are pre-formatted Persian literals that
+   sometimes mix digits with a few Persian unit words (seconds, "each side"...).
+   dispNum swaps the digits to Latin and translates that small closed vocabulary. */
+const REPS_WORDS = [
+  [/ثانیه/g,"sec"], [/هر طرف/g,"each side"], [/هر پا/g,"each leg"],
+  [/هر دست/g,"each hand"], [/پایین/g,"down"]
+];
+const dispNum = s => {
+  if(LANG==='fa') return s;
+  let out = String(s).replace(/[۰-۹]/g, d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d));
+  REPS_WORDS.forEach(([re,rep])=>{ out = out.replace(re,rep); });
+  return out;
+};
+/* A few exercise "tempo" fields are non-numeric Persian words (e.g. holds) instead
+   of the 4-number X-X-X-X tempo code. */
+const TEMPO_WORDS = { "نگه‌داشتن":"Hold", "آهسته":"Slow" };
+const dispTempo = s => LANG==='fa' ? s : (TEMPO_WORDS[s]||s);
 const mem = {};
 const store = {
   get(k){ try{ return localStorage.getItem(k);}catch(e){return mem[k]??null;} },
@@ -424,12 +446,140 @@ const store = {
   del(k){ try{ localStorage.removeItem(k);}catch(e){delete mem[k];} }
 };
 const V="hasti1:";
+let LANG = (store.get(V+"lang")==="en") ? "en" : "fa";
+document.documentElement.lang = LANG;
+document.documentElement.dir = LANG==='fa' ? 'rtl' : 'ltr';
 const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+
+/* ---------- رشته‌های رابط کاربری / UI strings ---------- */
+const UI = {
+ fa:{
+  langBtn:"EN", brandKick:"هستی",
+  h1html:'پا و پشت + مسیر <b>پول‌آپ</b>', sub:"۵ روز تمرین · ۳ روز هوازی · دورهٔ کات ملایم",
+  footer:"هر ست را که زدی مربعش را بزن — تایمر خودکار شروع می‌شود و صفحه روشن می‌ماند.",
+  nutMaint:(n)=>`نگه‌دارندهٔ تخمینی ~${faD(n)} · بازهٔ کاری ${faD(n-100)}–${faD(n+100)}`,
+  restSub:"استراحت", puTab:"پول‌آپ", puSub:"نردبان · رکورد", hsTab:"هندستند", hsSub:"نردبان · رکورد",
+  wtTab:"وزن", wtSub:"ثبت هفتگی", nutTab:"تغذیه", nutSub:"کالری · پروتئین", infoTab:"راهنما", infoSub:"اصول · لگن · شانه",
+  setsdone:"ست انجام‌شده", warmL:"گرم‌کردن:", cardioL:"هوازی:", skillL:"مهارت:",
+  setsxreps:"ست × تکرار", tempoQ:"تمپو ؟", restStat:"استراحت", weightKg:"وزنه (kg)",
+  learnOpen:"آموزش حرکت ▾", learnClose:"بستن آموزش ▴", clearToday:"پاک‌کردن ست‌های امروز",
+  setup:"آماده‌سازی", exec:"اجرا", keyCues:"نکات کلیدی", commonErr:"اشتباهات رایج", breathing:"تنفس",
+  targetMuscle:"عضلهٔ هدف:", ifNotAvail:"اگر نبود:", setLabel:"ست", removeLabel:"حذف",
+  nextMove:"حرکت بعدی", restLab:"استراحت", restDoneLab:"استراحت تمام — ست بعدی", secUnit:"ث",
+  plus15Aria:"۱۵ ثانیه بیشتر", pauseAria:"مکث", closeAria:"بستن",
+  tmTitle:"تمپو چیست؟", tmLead:"سرعت اجرای حرکت. چهار عدد، به ترتیب زمان (ثانیه) برای هر فاز:",
+  tmNeg:"پایین‌رفتن<br>(منفی)", tmPauseLow:"مکث<br>پایین", tmPos:"بالا‌آوردن<br>(مثبت)", tmPauseHigh:"مکث<br>بالا",
+  tmWhyB:"چرا مهم است؟",
+  tmWhy:"آهسته‌کردن فاز منفی، مدت زمان تحت فشار عضله را بیشتر می‌کند بدون نیاز به وزنهٔ سنگین‌تر — با همان وزنه، تحریک بیشتر و فشار کمتر روی مفصل. در دورهٔ کات که وزنه‌ها نمی‌توانند مدام بالا بروند، تمپو مهم‌ترین اهرم پیشرفت توست.",
+  tmClose:"فهمیدم",
+  restdayMoonH:(d)=>`${d.title} — ${d.day}`,
+  weekTitle:"وزن این هفته", weekHint:"صبح ناشتا، بعد از دستشویی، قبل از صبحانه — همیشه همان روز هفته. هفته‌ای یک بار کافی است.",
+  kgPlaceholder:"کیلوگرم", logBtn:"ثبت",
+  lastWeight:"آخرین وزن", vsLast:"نسبت به دفعهٔ قبل", sinceStart:"از شروع ثبت",
+  history:"تاریخچه", emptyLog:"هنوز چیزی ثبت نشده.<br>اولین وزنت را همین الان وارد کن تا نقطهٔ شروع مشخص شود.",
+  howToRead:"چطور بخوانمش",
+  wRead1:'به عدد یک هفته نگاه نکن؛ به <b>روند سه هفته</b> نگاه کن. نوسان ۱ تا ۲ کیلو بین دو اندازه‌گیری طبیعی است.',
+  wRead2:'سرعت هدف: <span class="hi">۰.۳ تا ۰.۵ کیلو در هفته.</span> کندتر از این هم اشکالی ندارد؛ سریع‌تر از این اشکال دارد.',
+  wRead3:"هفتهٔ قبل از پریود معمولاً وزن بالا می‌رود و ربطی به چربی ندارد. آن هفته را در قضاوت روند حساب نکن.",
+  wRead4:"اگر سه هفتهٔ پیاپی وزن ثابت بود و کالری‌ات هم واقعاً ثابت بوده، آن‌وقت تنظیم کن — نه زودتر.",
+  puFull:"بارفیکس کامل، بدون کمک", puReached:"رسیدی. حالا هدف بعدی، سه تکرار پشت‌سرهم است.",
+  puZero:"هنوز صفر — و این کاملاً طبیعی است. مسیرش پایین‌تر نوشته شده.",
+  curRecords:"رکوردهای فعلی",
+  puFullL:"بارفیکس کامل", puHangL:"آویزان (ثانیه)", puNegL:"نگاتیو (ثانیه)", puBandL:"کمک فعلی", puBandPh:"کش کلفت",
+  puNote:"بعد از هر جلسهٔ پول‌آپ (دوشنبه و پنج‌شنبه) این چهار عدد را به‌روز کن. سه عدد اول قبل از اینکه عدد بزرگ بالا تکان بخورد، ماه‌ها پیشرفت نشان می‌دهند — و همان‌ها معیار واقعی تواند.",
+  ladderTitle:"نردبان — روی هر پله بزن تا تیک بخورد",
+  puLadderNote:'پله را وقتی تیک بزن که <b style="color:var(--ice)">دو جلسهٔ پیاپی</b> بتوانی انجامش دهی، نه یک بار شانسی.',
+  hsFull:"هندستند آزاد، بدون دیوار (ثانیه)", hsReached:"رسیدی. حالا هدف بعدی، نگه‌داشتنش طولانی‌تر و تثبیت آن است.",
+  hsZero:"هنوز صفر — طبیعی است. مسیرش پایین‌تر نوشته شده، همیشه رو به دیوار.",
+  hsFreeL:"هندستند آزاد (ثانیه)", hsWallL:"سینه‌به‌دیوار (ثانیه)", hsBackwallL:"پشت‌به‌دیوار (ثانیه)", hsNoteL:"یادداشت شانه", hsNotePh:"مثلاً بدون درد",
+  hsNote:"بعد از هر جلسهٔ مهارتی (چهارشنبه و شنبه) این چهار عدد را به‌روز کن. با شانهٔ گیرکننده، ثبات پله‌های دیواری از عدد بزرگ بالا مهم‌تر است.",
+  hsLadderNote:'پله را وقتی تیک بزن که <b style="color:var(--ice)">دو جلسهٔ پیاپی</b> بدون درد یا گیرکردن انجامش دهی، نه یک بار شانسی.',
+  nutCal:"کالری در روز (هدف کات ملایم)",
+  nutMacros:"درشت‌مغذی‌های روزانه", nutProtein:"پروتئین (g)", nutFat:"چربی (g)", nutCarb:"کربوهیدرات (g)", nutCarbRest:"باقیِ کالری",
+  nutLegProtein:"پروتئین", nutLegFat:"چربی", nutLegCarb:"کربوهیدرات",
+  nutPrinciples:"اصول",
+  nutP1:'<span class="hi">کسری ملایم، عمداً ملایم:</span> حدود ۳۰۰ کالری زیر نگه‌دارنده. سرعت هدف ۰.۳ تا ۰.۵ کیلو در هفته. سریع‌تر از این یعنی داری عضله و انرژی درس‌خواندن را می‌سوزانی، نه فقط چربی.',
+  nutP2:'<b>کف مطلق ۱۸۰۰ کالری.</b> متابولیسم پایهٔ تو حدود ۱۵۵۰ است و روزی ۵ جلسه تمرین و ۱۲ هزار قدم داری. پایین‌تر از این کف نرو، حتی اگر وزن یک هفته ثابت ماند.',
+  nutP3:'<b>پروتئین مهم‌ترین عدد است:</b> در ۴ تا ۶ وعده پخش شود (تو همین الان ۳ وعده و ۳ میان‌وعده داری — ساختار خوبی است، فقط پروتئین هر کدام را بالا ببر).',
+  nutP4:'<b>گلوتن محدود:</b> منابع کربوهیدرات تو برنج، سیب‌زمینی، جو دوسر بدون گلوتن، ذرت، حبوبات، گندم سیاه و میوه‌اند. کربوهیدرات را حذف نکن — فقط منبعش را عوض کن.',
+  nutP5:'<b>کربوهیدرات را حول تمرین بگذار</b> تا قدرتت در حرکات سنگین حفظ شود.',
+  nutP6:'<b>آهن، کلسیم و ویتامین D</b> در دختر ۱۷ ساله‌ای که هفته‌ای ۸ جلسه فعالیت دارد و در کسری کالری است، بیشترین ریسک کمبود را دارند. اگر آزمایش نداده‌ای، یک بار بده.',
+  nutP7:'<b>مکمل‌های فعلی‌ات منطقی‌اند:</b> وی برای رساندن پروتئین، کراتین ۳ تا ۵ گرم روزانه (زمانش مهم نیست)، منیزیم و مولتی‌ویتامین به‌عنوان بیمه. چیزی به این لیست اضافه نکن.',
+  nutP8:'<b>۲۵ تا ۳۵ گرم فیبر · ۲.۵ تا ۳ لیتر آب · خواب ۸ ساعت.</b>',
+  nutTune:"تنظیم با واقعیت",
+  nutT1:"هر هفته یک بار، صبح ناشتا بعد از دستشویی، وزن بگیر و در تب «وزن» ثبت کن. یک بار در هفته، همیشه همان روز و همان ساعت.",
+  nutT2:'<b>اگر بعد از ۳ هفته</b> میانگین وزنت تغییری نکرد: حدود ۱۵۰ کالری کم کن یا یک جلسهٔ هوازی اضافه کن. هر دو را با هم نه.',
+  nutT3:"<b>اگر بیشتر از ۰.۷ کیلو در هفته کم کردی:</b> کالری را ۱۵۰ تا ۲۰۰ بالا ببر. کاهش سریع در سن تو، اول از همه عضله و تراکم استخوان را می‌برد.",
+  nutT4:"<b>نوسان روزانهٔ ۱ تا ۲ کیلو کاملاً طبیعی است</b> و به آب، نمک و دورهٔ ماهانه ربط دارد نه به چربی. فقط به روند سه‌هفته‌ای نگاه کن، نه به عدد امروز.",
+  nutDisc:'<b>توجه:</b> این اعداد تخمین‌اند و بر پایهٔ فرمول‌های استاندارد و تست ترکیب بدنی محاسبه شده‌اند — تجویز پزشکی نیستند. چون ۱۷ سالت است و هنوز در سن رشدی، قبل از شروع دورهٔ کات این عددها را با پزشک یا متخصص تغذیه چک کن. اگر پریودت نامنظم شد، کات را متوقف کن و به پزشک مراجعه کن.'
+ },
+ en:{
+  langBtn:"FA", brandKick:"هستی",
+  h1html:'Legs & Back + <b>Pull-Up</b> Path', sub:"5 training days · 3 cardio days · mild cut phase",
+  footer:"Tap each set's square as you finish it — the timer starts automatically and the screen stays awake.",
+  nutMaint:(n)=>`Estimated maintenance ~${faD(n)} · working range ${faD(n-100)}–${faD(n+100)}`,
+  restSub:"Rest", puTab:"Pull-Up", puSub:"Ladder · records", hsTab:"Handstand", hsSub:"Ladder · records",
+  wtTab:"Weight", wtSub:"Weekly log", nutTab:"Nutrition", nutSub:"Calories · protein", infoTab:"Guide", infoSub:"Principles · hip · shoulder",
+  setsdone:"sets done", warmL:"Warm-up:", cardioL:"Cardio:", skillL:"Skill:",
+  setsxreps:"sets × reps", tempoQ:"Tempo ?", restStat:"Rest", weightKg:"Weight (kg)",
+  learnOpen:"Exercise guide ▾", learnClose:"Close guide ▴", clearToday:"Clear today's sets",
+  setup:"Setup", exec:"Execution", keyCues:"Key cues", commonErr:"Common mistakes", breathing:"Breathing",
+  targetMuscle:"Target muscle:", ifNotAvail:"If unavailable:", setLabel:"set", removeLabel:"Remove",
+  nextMove:"Next move", restLab:"Rest", restDoneLab:"Rest over — next set", secUnit:"s",
+  plus15Aria:"15 more seconds", pauseAria:"Pause", closeAria:"Close",
+  tmTitle:"What is tempo?", tmLead:"The speed of the movement. Four numbers, in order, for the time (seconds) of each phase:",
+  tmNeg:"Lowering<br>(negative)", tmPauseLow:"Pause<br>at bottom", tmPos:"Lifting<br>(positive)", tmPauseHigh:"Pause<br>at top",
+  tmWhyB:"Why does it matter?",
+  tmWhy:"Slowing the negative phase increases the muscle's time under tension without needing a heavier weight — the same load gives more stimulus and less joint stress. During a cut, when weights can't keep climbing, tempo is your most important lever for progress.",
+  tmClose:"Got it",
+  restdayMoonH:(d)=>`${d.en?.title||d.title} — ${d.dayEn||d.day}`,
+  weekTitle:"This week's weight", weekHint:"Fasted in the morning, after the bathroom, before breakfast — always the same day of the week. Once a week is enough.",
+  kgPlaceholder:"Kilograms", logBtn:"Log",
+  lastWeight:"Latest weight", vsLast:"vs. last entry", sinceStart:"Since first log",
+  history:"History", emptyLog:"Nothing logged yet.<br>Enter your first weight now to set a starting point.",
+  howToRead:"How to read it",
+  wRead1:"Don't look at one week's number; look at the <b>three-week trend</b>. A 1 to 2 kg swing between two measurements is normal.",
+  wRead2:'Target pace: <span class="hi">0.3 to 0.5 kg per week.</span> Slower than that is fine; faster than that is a problem.',
+  wRead3:"The week before your period usually shows a higher weight and has nothing to do with fat. Don't count that week when judging the trend.",
+  wRead4:"If the weight has been flat for three weeks in a row and your calories have genuinely been consistent, adjust then — not sooner.",
+  puFull:"Full pull-ups, unassisted", puReached:"You got there. The next goal is three reps in a row.",
+  puZero:"Still zero — and that's completely normal. The path is written below.",
+  curRecords:"Current records",
+  puFullL:"Full pull-up", puHangL:"Dead hang (seconds)", puNegL:"Negative (seconds)", puBandL:"Current assistance", puBandPh:"Thick band",
+  puNote:"Update these four numbers after every pull-up session (Monday and Thursday). The first three numbers show months of progress before the big number above moves at all — and they're the truer measure of your capability.",
+  ladderTitle:"Ladder — tap each rung to check it off",
+  puLadderNote:'Only check off a rung once you can do it across <b style="color:var(--ice)">two sessions in a row</b>, not on one lucky attempt.',
+  hsFull:"Free handstand, no wall (seconds)", hsReached:"You got there. The next goal is holding it longer and making it solid.",
+  hsZero:"Still zero — that's normal. The path is written below, always facing the wall.",
+  hsFreeL:"Free handstand (seconds)", hsWallL:"Chest-to-wall (seconds)", hsBackwallL:"Back-to-wall (seconds)", hsNoteL:"Shoulder note", hsNotePh:"e.g. no pain",
+  hsNote:"Update these four fields after every skill session (Wednesday and Saturday). With an impinging shoulder, consistency on the wall rungs matters more than the big number above.",
+  hsLadderNote:'Only check off a rung once you can do it across <b style="color:var(--ice)">two sessions in a row</b> with no pain or catching, not on one lucky attempt.',
+  nutCal:"Calories per day (mild cut target)",
+  nutMacros:"Daily macros", nutProtein:"Protein (g)", nutFat:"Fat (g)", nutCarb:"Carbs (g)", nutCarbRest:"Rest of calories",
+  nutLegProtein:"Protein", nutLegFat:"Fat", nutLegCarb:"Carbs",
+  nutPrinciples:"Principles",
+  nutP1:"<span class=\"hi\">A mild deficit, deliberately mild:</span> about 300 calories below maintenance. Target pace 0.3 to 0.5 kg per week. Faster than that means you're burning muscle and study energy, not just fat.",
+  nutP2:'<b>Absolute floor: 1800 calories.</b> Your basal metabolic rate is roughly 1550, and you train 5 sessions a week plus 12,000 steps a day. Don&#39;t go below this floor, even if the weight stalls for a week.',
+  nutP3:'<b>Protein is the number that matters most:</b> spread across 4 to 6 meals (you already eat 3 meals and 3 snacks — that&#39;s a good structure, just raise the protein in each one).',
+  nutP4:'<b>Gluten-limited:</b> your carb sources are rice, potatoes, gluten-free oats, corn, legumes, buckwheat, and fruit. Don&#39;t cut carbs — just change the source.',
+  nutP5:'<b>Place carbs around training</b> so your strength on the heavy lifts holds up.',
+  nutP6:'<b>Iron, calcium, and vitamin D</b> carry the highest deficiency risk for a 17-year-old girl training 8 sessions a week in a calorie deficit. If you haven&#39;t been tested, get it done once.',
+  nutP7:'<b>Your current supplements make sense:</b> whey to hit your protein target, creatine 3 to 5 g daily (timing doesn&#39;t matter), magnesium and a multivitamin as insurance. Don&#39;t add anything else to this list.',
+  nutP8:'<b>25 to 35 g fiber · 2.5 to 3 liters of water · 8 hours of sleep.</b>',
+  nutTune:"Tuning with reality",
+  nutT1:"Once a week, fasted in the morning after the bathroom, weigh yourself and log it in the Weight tab. Once a week, always the same day and time.",
+  nutT2:'<b>If after 3 weeks</b> your average weight hasn&#39;t moved: cut about 150 calories or add one cardio session. Not both at once.',
+  nutT3:"<b>If you're losing more than 0.7 kg a week:</b> raise calories by 150 to 200. Fast loss at your age costs muscle and bone density first.",
+  nutT4:"<b>A daily swing of 1 to 2 kg is completely normal</b> and comes from water, salt, and your cycle, not fat. Only look at the three-week trend, not today's number.",
+  nutDisc:'<b>Note:</b> these numbers are estimates based on standard formulas and a body-composition test — not a medical prescription. Because you&#39;re 17 and still growing, check these numbers with a doctor or a registered dietitian before starting the cut. If your period becomes irregular, stop the cut and see a doctor.'
+ }
+};
+const t = k => UI[LANG][k];
 
 /* ---------- کتابخانهٔ حرکات ---------- */
 const EX = {
 
-rdl:{"ن":"ددلیفت رومانیایی با هالتر", eq:"هالتر", en:"Barbell Romanian Deadlift",
+rdl:{"ن":"ددلیفت رومانیایی با هالتر", eq:"هالتر",
  setup:"هالتر را با فاصلهٔ عرض شانه بگیر و صاف بایست. زانوها را فقط کمی خم نگه دار — این حرکت زانو ندارد، لولای لگن دارد.",
  steps:["شانه‌ها را عقب بکش و قفسهٔ سینه را باز کن. هالتر باید در تمام مسیر تقریباً به پا چسبیده باشد.",
  "لگن را به عقب بفرست، انگار می‌خواهی با باسن دیوار پشت سرت را لمس کنی. هالتر خودش پایین می‌رود؛ تو آن را پایین نمی‌بری.",
@@ -441,9 +591,22 @@ rdl:{"ن":"ددلیفت رومانیایی با هالتر", eq:"هالتر", en
  "گرد‌شدن کمر در پایین‌ترین نقطه. اگر این اتفاق افتاد، دامنه‌ات را کوتاه‌تر کن نه اینکه ادامه بدهی."],
  breath:"در بالا نفس بگیر و نگه دار، در پایین‌رفتن نگه دار، موقع بالا آمدن بازدم کن.",
  target:"همسترینگ، سرین، راست‌کنندهٔ ستون فقرات",
- swap:"ددلیفت رومانیایی با دمبل (سبک‌تر و راحت‌تر برای یادگیری) یا با اسمیت"},
+ swap:"ددلیفت رومانیایی با دمبل (سبک‌تر و راحت‌تر برای یادگیری) یا با اسمیت",
+ en:{name:"Barbell Romanian Deadlift", eq:"Barbell",
+ setup:"Grip the bar shoulder-width apart and stand tall. Keep the knees only slightly bent — this is not a knee-dominant move, it's a hip hinge.",
+ steps:["Pull the shoulders back and open the chest. The bar should stay nearly glued to your legs the whole way.",
+ "Send the hips back, as if you're trying to touch a wall behind you with your glutes. The bar drops on its own; you're not pulling it down.",
+ "Go down only as far as you feel the stretch behind your thigh while your back stays flat — usually just below the knee. One extra centimeter past a flat back is worth nothing.",
+ "Drive back up by squeezing your glutes and hamstrings, and squeeze the glutes at the top — but don't arch backward."],
+ cues:["Your guide is the stretch behind your thigh, not how low the bar went. If you don't feel the stretch, send the hips back further.",
+ "Because your iliopsoas is short, your pelvis tends to tilt forward and arch your low back. Brace your abs slightly and keep your ribs down before every set."],
+ err:["Turning it into a squat — bending the knees instead of sending the hips back.",
+ "Rounding the lower back at the bottom. If that happens, shorten your range instead of pushing further."],
+ breath:"Breathe in at the top and hold, hold through the descent, exhale on the way up.",
+ target:"Hamstrings, glutes, spinal erectors",
+ swap:"Dumbbell Romanian deadlift (lighter and easier to learn) or the Smith machine version"}},
 
-hipthrust:{"ن":"هیپ تراست با هالتر", eq:"هالتر + نیمکت", en:"Barbell Hip Thrust",
+hipthrust:{"ن":"هیپ تراست با هالتر", eq:"هالتر + نیمکت",
  setup:"پشتت را روی لبهٔ نیمکت بگذار، طوری که لبه درست زیر تیغهٔ شانه بیفتد. هالتر را روی چین لگن قرار بده (زیرش پد یا حوله بگذار). پاها به عرض لگن، پنجه کمی به بیرون.",
  steps:["چانه را کمی جمع کن و به جلو نگاه کن — سر نباید به عقب برود.",
  "با فشار پاشنه، لگن را بالا ببر تا ران و تنه یک خط صاف شود.",
@@ -456,9 +619,23 @@ hipthrust:{"ن":"هیپ تراست با هالتر", eq:"هالتر + نیمکت
  "گذاشتن نیمکت روی گردن یا وسط کمر به‌جای زیر تیغهٔ شانه."],
  breath:"پایین نفس بگیر، در بالا بردن بازدم کن.",
  target:"سرین بزرگ، همسترینگ",
- swap:"پل سرین روی زمین با هالتر یا دمبل روی لگن"},
+ swap:"پل سرین روی زمین با هالتر یا دمبل روی لگن",
+ en:{name:"Barbell Hip Thrust", eq:"Barbell + bench",
+ setup:"Rest your upper back on the edge of a bench so the edge sits right below your shoulder blades. Place the bar over your hip crease (pad it with a mat or towel). Feet hip-width apart, toes slightly out.",
+ steps:["Tuck your chin slightly and look forward — the head shouldn't tip back.",
+ "Drive through your heels and raise your hips until your thighs and torso form a straight line.",
+ "Fully squeeze your glutes at the top for one second. This pause is the most important part of the movement.",
+ "Lower under control, but don't let the weight rest on the floor."],
+ cues:["The movement should finish at the top with a glute squeeze, not a lower-back arch. If you feel your lower back at the top, don't go as high.",
+ "This is the best glute move for you, and unlike the squat it doesn't stretch the iliopsoas — if your hip is tight on a given day, keep this and go lighter on squats."],
+ err:["Hyperextending the lower back at the top instead of firing the glutes.",
+ "Rising up onto your toes — the drive should come through the heels.",
+ "Resting the bench on your neck or mid-back instead of just below your shoulder blades."],
+ breath:"Inhale at the bottom, exhale as you drive up.",
+ target:"Gluteus maximus, hamstrings",
+ swap:"Floor glute bridge with a barbell or a dumbbell over the hips"}},
 
-revlunge:{"ن":"لانج معکوس با دمبل", eq:"دمبل", en:"Dumbbell Reverse Lunge",
+revlunge:{"ن":"لانج معکوس با دمبل", eq:"دمبل",
  setup:"دمبل‌ها را کنار بدن بگیر و صاف بایست. شکم سفت، شانه عقب.",
  steps:["یک قدم بلند به عقب بردار و روی پنجهٔ پای عقب فرود بیا.",
  "زانوی عقب را تا نزدیک زمین پایین ببر. زانوی جلو باید تقریباً بالای مچ پا بماند.",
@@ -470,9 +647,22 @@ revlunge:{"ن":"لانج معکوس با دمبل", eq:"دمبل", en:"Dumbbell 
  "خم‌شدن تنه به جلو. تنه باید تقریباً عمود بماند."],
  breath:"پایین‌رفتن دم، بالا آمدن بازدم.",
  target:"سرین، چهارسر، ثبات لگن",
- swap:"اسپلیت اسکات ثابت (پای عقب همان‌جا می‌ماند) — ساده‌تر برای تعادل"},
+ swap:"اسپلیت اسکات ثابت (پای عقب همان‌جا می‌ماند) — ساده‌تر برای تعادل",
+ en:{name:"Dumbbell Reverse Lunge", eq:"Dumbbells",
+ setup:"Hold the dumbbells at your sides and stand tall. Brace your abs, shoulders back.",
+ steps:["Take one long step backward and land on the ball of the back foot.",
+ "Lower the back knee until it's near the floor. The front knee should stay roughly above the ankle.",
+ "Drive through the front heel to stand back up and bring the back foot in next to the front foot.",
+ "Finish all reps on one leg, then switch."],
+ cues:["The reverse lunge loads the knee less than a forward lunge and stretches the hip flexor of the trailing leg — exactly what you need.",
+ "If your balance is off, practice without dumbbells first, or steady yourself against a wall with one hand."],
+ err:["Taking too short a step, so the front knee travels well past the toes.",
+ "Leaning the torso forward. The torso should stay roughly upright."],
+ breath:"Inhale on the way down, exhale on the way up.",
+ target:"Glutes, quadriceps, hip stability",
+ swap:"Static split squat (back foot stays planted) — easier for balance"}},
 
-sglbridge:{"ن":"پل سرین تک‌پا", eq:"وزن بدن", en:"Single-Leg Glute Bridge",
+sglbridge:{"ن":"پل سرین تک‌پا", eq:"وزن بدن",
  setup:"به پشت بخواب، یک زانو خم و کف پا روی زمین. پای دیگر را صاف بالا نگه دار یا زانویش را به سینه بیاور.",
  steps:["شکم را سفت کن و دنده‌ها را به سمت لگن پایین بیاور.",
  "با فشار پاشنهٔ پای تکیه‌گاه، لگن را بالا ببر تا یک خط صاف از زانو تا شانه بسازی.",
@@ -484,9 +674,22 @@ sglbridge:{"ن":"پل سرین تک‌پا", eq:"وزن بدن", en:"Single-Leg 
  "کج‌شدن لگن به سمت پای آزاد."],
  breath:"بالا بردن بازدم، پایین آمدن دم.",
  target:"سرین بزرگ، ثبات لگن",
- swap:"پل سرین دوپا با مکث ۳ ثانیه‌ای در بالا"},
+ swap:"پل سرین دوپا با مکث ۳ ثانیه‌ای در بالا",
+ en:{name:"Single-Leg Glute Bridge", eq:"Bodyweight",
+ setup:"Lie on your back, one knee bent with the foot flat on the floor. Keep the other leg straight up in the air, or bring its knee to your chest.",
+ steps:["Brace your abs and pull your ribs down toward your hips.",
+ "Drive through the heel of the planted foot and raise your hips until you form a straight line from knee to shoulder.",
+ "Squeeze the glute hard at the top for one second.",
+ "Lower slowly, but don't let your hips fully rest on the floor."],
+ cues:["If your hamstring starts to cramp, bring the foot a little closer to your glutes.",
+ "The hips shouldn't rotate — both sides of the pelvis should stay level."],
+ err:["Arching the lower back instead of raising the hips with the glutes.",
+ "Letting the hips tilt toward the free leg."],
+ breath:"Exhale as you raise, inhale as you lower.",
+ target:"Gluteus maximus, hip stability",
+ swap:"Two-leg glute bridge with a 3-second hold at the top"}},
 
-calfstand:{"ن":"ساق پا ایستاده", eq:"دمبل یا اسمیت", en:"Standing Calf Raise",
+calfstand:{"ن":"ساق پا ایستاده", eq:"دمبل یا اسمیت",
  setup:"پنجه‌ها را روی یک پله یا صفحهٔ وزنه بگذار، پاشنه‌ها آزاد در هوا. دمبل کنار بدن یا میلهٔ اسمیت روی شانه.",
  steps:["پاشنه‌ها را تا پایین‌ترین حد ممکن رها کن و کشش را حس کن.",
  "تا بالاترین حد روی پنجه بلند شو.",
@@ -498,9 +701,22 @@ calfstand:{"ن":"ساق پا ایستاده", eq:"دمبل یا اسمیت", en:
  "خم‌کردن زانو در حین حرکت."],
  breath:"بالا رفتن بازدم، پایین آمدن دم.",
  target:"دوقلو و نعلی",
- swap:"ساق تک‌پا با وزن بدن (تعداد بیشتر)"},
+ swap:"ساق تک‌پا با وزن بدن (تعداد بیشتر)",
+ en:{name:"Standing Calf Raise", eq:"Dumbbell or Smith machine",
+ setup:"Place the balls of your feet on a step or a weight plate, heels free in the air. Hold a dumbbell at your side or rest a Smith machine bar on your shoulders.",
+ steps:["Let the heels drop as low as possible and feel the stretch.",
+ "Rise up onto your toes as high as you can.",
+ "Hold for one second at the top.",
+ "Lower very slowly — the lowering phase matters more than the raise."],
+ cues:["Full range of motion matters more than heavy weight. If you can't drop all the way down, reduce the load.",
+ "Don't bounce up and down. This move works through the tendon, not the muscle, and bouncing kills the benefit."],
+ err:["Short range with fast reps.",
+ "Bending the knees during the movement."],
+ breath:"Exhale as you rise, inhale as you lower.",
+ target:"Gastrocnemius and soleus",
+ swap:"Single-leg bodyweight calf raise (higher reps)"}},
 
-deadbug:{"ن":"ددباگ", eq:"وزن بدن", en:"Dead Bug",
+deadbug:{"ن":"ددباگ", eq:"وزن بدن",
  setup:"به پشت بخواب، زانوها روی لگن با زاویهٔ ۹۰ درجه، دست‌ها صاف به سمت سقف.",
  steps:["کمر را به زمین بچسبان — نباید بین کمرت و زمین فاصله باشد. این نقطهٔ شروع است و تا آخر ست باید حفظ شود.",
  "هم‌زمان دست راست را بالای سر و پای چپ را به سمت جلو صاف کن.",
@@ -512,9 +728,22 @@ deadbug:{"ن":"ددباگ", eq:"وزن بدن", en:"Dead Bug",
  "حبس‌کردن نفس. باید در تمام حرکت آرام نفس بکشی."],
  breath:"موقع صاف‌کردن دست و پا بازدم آرام، موقع برگشتن دم.",
  target:"عرضی شکم، ثبات مرکزی",
- swap:"پلانک شکمی با تمرکز بر جمع‌کردن لگن"},
+ swap:"پلانک شکمی با تمرکز بر جمع‌کردن لگن",
+ en:{name:"Dead Bug", eq:"Bodyweight",
+ setup:"Lie on your back, knees stacked over your hips at 90 degrees, arms straight up toward the ceiling.",
+ steps:["Press your lower back flat into the floor — there should be no gap between your back and the ground. This is your starting position and must be held for the whole set.",
+ "Simultaneously extend your right arm overhead and your left leg forward.",
+ "Go only as far as you can while still keeping your back flat. The moment your back lifts, you've gone further than you can control.",
+ "Return and do the opposite side."],
+ cues:["This is more than an ab exercise for you: it teaches your pelvis to stay neutral, which is exactly the antidote to a short iliopsoas.",
+ "Do it slowly. Speed destroys the whole benefit."],
+ err:["Letting the lower back lift off the floor.",
+ "Holding your breath. You should breathe calmly through the whole movement."],
+ breath:"Exhale gently as you extend the arm and leg, inhale as you return.",
+ target:"Transverse abdominis, core stability",
+ swap:"Abdominal plank with a focus on tucking the pelvis"}},
 
-hipflex:{"ن":"کشش هیپ فلکسور زانوزده", eq:"وزن بدن", en:"Kneeling Hip Flexor Stretch",
+hipflex:{"ن":"کشش هیپ فلکسور زانوزده", eq:"وزن بدن",
  setup:"روی یک زانو بنشین (حالت خواستگاری). زانوی عقب زیر لگن یا کمی عقب‌تر، پای جلو با زاویهٔ ۹۰ درجه. زیر زانوی عقب پد بگذار.",
  steps:["اول لگن را به عقب بچرخان — یعنی استخوان دنبالچه را به سمت پایین و جلو ببر و سرین همان طرف را سفت کن. اینجا هنوز حرکتی نکرده‌ای ولی کشش شروع شده.",
  "حالا کل بدن را چند سانت به جلو ببر، بدون اینکه کمر قوس بگیرد.",
@@ -526,9 +755,22 @@ hipflex:{"ن":"کشش هیپ فلکسور زانوزده", eq:"وزن بدن", e
  "فنری کشیدن به‌جای نگه‌داشتن ثابت."],
  breath:"آرام و عمیق. با هر بازدم چند میلی‌متر بیشتر در کشش فرو برو.",
  target:"ایلیوپسواس، راست‌رانی",
- swap:"کشش کاناپه‌ای (پای عقب روی نیمکت) — شدیدتر، وقتی این یکی راحت شد"},
+ swap:"کشش کاناپه‌ای (پای عقب روی نیمکت) — شدیدتر، وقتی این یکی راحت شد",
+ en:{name:"Kneeling Hip Flexor Stretch", eq:"Bodyweight",
+ setup:"Kneel on one knee (a half-kneeling, 'proposal' position). Back knee under your hip or slightly behind it, front leg bent at 90 degrees. Put a pad under the back knee.",
+ steps:["First tuck your pelvis under — tilt your tailbone down and forward and squeeze the glute on that same side. You haven't moved yet, but the stretch has already started.",
+ "Now shift your whole body forward a few centimeters without letting your lower back arch.",
+ "Raise the arm on the same side overhead and lean slightly to the opposite side to complete the stretch.",
+ "Hold for 45 seconds, breathing calmly, then switch sides."],
+ cues:["You should feel the stretch in the front of the thigh and hip of the back leg. If you feel it in your lower back, you haven't tucked the pelvis correctly — go back to step one.",
+ "Do this on non-training days too. A short muscle doesn't change with stretching twice a week; it changes with once a day."],
+ err:["Arching the lower back to feel more stretch — this only compresses the lumbar joints.",
+ "Bouncing into the stretch instead of holding it steady."],
+ breath:"Slow and deep. Sink a few extra millimeters into the stretch with each exhale.",
+ target:"Iliopsoas, rectus femoris",
+ swap:"Couch stretch (back foot up on a bench) — more intense, once this one feels easy"}},
 
-scappull:{"ن":"کشش کتف روی بارفیکس", eq:"میلهٔ بارفیکس", en:"Scapular Pull-Up",
+scappull:{"ن":"کشش کتف روی بارفیکس", eq:"میلهٔ بارفیکس",
  setup:"از میله آویزان شو، دست‌ها کمی بازتر از عرض شانه، آرنج‌ها صاف. کاملاً شل آویزان باش تا شانه‌ها نزدیک گوش بیایند.",
  steps:["بدون خم‌کردن آرنج، شانه‌ها را از گوش‌ها دور کن و به سمت پایین و عقب بکش.",
  "بدنت فقط چند سانت بالا می‌رود — همین درست است. اگر بیشتر بالا رفتی، آرنج خم شده.",
@@ -540,9 +782,22 @@ scappull:{"ن":"کشش کتف روی بارفیکس", eq:"میلهٔ بارفی�
  "تاب‌خوردن بدن."],
  breath:"بالا کشیدن بازدم، پایین آمدن دم.",
  target:"پایین‌آورندهٔ کتف، لتیسیموس، ذوزنقهٔ پایینی",
- swap:"همین حرکت با پا روی جعبه (وزن کمتر روی دست)"},
+ swap:"همین حرکت با پا روی جعبه (وزن کمتر روی دست)",
+ en:{name:"Scapular Pull-Up", eq:"Pull-up bar",
+ setup:"Hang from the bar, hands slightly wider than shoulder width, arms straight. Hang fully relaxed so your shoulders ride up near your ears.",
+ steps:["Without bending the elbows, pull your shoulders away from your ears and down and back.",
+ "Your body only rises a couple of centimeters — that's correct. If you go higher, your elbows have bent.",
+ "Hold for one second at the top and feel your lats engage.",
+ "Return under control to a full dead hang."],
+ cues:["This is the first rung of the pull-up ladder and most people skip right past it. A pull-up can't be built without scapular control.",
+ "Your left shoulder impinges; this move is literally training the thing that rescues a shoulder from impingement. Do it slowly and pain-free."],
+ err:["Bending the elbows and turning it into a half pull-up.",
+ "Swinging the body."],
+ breath:"Exhale as you pull up, inhale as you lower.",
+ target:"Scapular depressors, lats, lower trapezius",
+ swap:"Same move with feet on a box (less weight on the arms)"}},
 
-negpull:{"ن":"نگاتیو بارفیکس (پایین آمدن کنترل‌شده)", eq:"میلهٔ بارفیکس + جعبه", en:"Negative Pull-Up",
+negpull:{"ن":"نگاتیو بارفیکس (پایین آمدن کنترل‌شده)", eq:"میلهٔ بارفیکس + جعبه",
  setup:"یک جعبه یا نیمکت زیر بارفیکس بگذار طوری که با ایستادن روی آن، چانه‌ات بالای میله باشد. میله را کمی بازتر از عرض شانه بگیر.",
  steps:["از روی جعبه بپر یا بالا برو تا چانه بالای میله باشد و آرنج‌ها کاملاً خم.",
  "پاها را از جعبه بردار و وزنت را بگیر. یک لحظه در بالا نگه دار.",
@@ -554,9 +809,22 @@ negpull:{"ن":"نگاتیو بارفیکس (پایین آمدن کنترل‌ش�
  "زدن تکرارهای زیاد. سه تا پنج تکرار باکیفیت از ده تکرار بی‌کنترل بهتر است."],
  breath:"در بالا نفس بگیر، حین پایین آمدن آرام بازدم کن.",
  target:"لتیسیموس، جلوبازو، ساعد",
- swap:"نگاتیو با دامنهٔ کوتاه (فقط نیمهٔ بالا) اگر هنوز کنترل کامل نداری"},
+ swap:"نگاتیو با دامنهٔ کوتاه (فقط نیمهٔ بالا) اگر هنوز کنترل کامل نداری",
+ en:{name:"Negative Pull-Up", eq:"Pull-up bar + box",
+ setup:"Put a box or bench under the bar so that standing on it puts your chin above the bar. Grip the bar slightly wider than shoulder width.",
+ steps:["Jump or climb up so your chin is above the bar with your elbows fully bent.",
+ "Lift your feet off the box and take your full weight. Hold for a moment at the top.",
+ "Now lower yourself over 5 to 8 seconds. Slower than you think. Stay in control down to the last centimeter.",
+ "Step back onto the box, climb back up, and repeat."],
+ cues:["This is the single most effective move for reaching your first pull-up. The muscle handles the greatest load in the negative phase and adapts fastest from it.",
+ "Your progress metric is time, not reps: if you can lower for 5 seconds this week, next week's target is 7 seconds."],
+ err:["Letting go halfway down. If you can't control the whole range, start from the top half and shorten it.",
+ "Doing too many reps. Three to five quality reps beat ten uncontrolled ones."],
+ breath:"Breathe in at the top, exhale slowly through the descent.",
+ target:"Lats, biceps, forearms",
+ swap:"Short-range negative (top half only) if you don't yet have full control"}},
 
-bbrow:{"ن":"زیربغل هالتر خم", eq:"هالتر", en:"Bent-Over Barbell Row",
+bbrow:{"ن":"زیربغل هالتر خم", eq:"هالتر",
  setup:"هالتر را به عرض شانه بگیر، زانوها کمی خم، لگن را عقب بفرست تا تنه حدود ۴۵ درجه خم شود. کمر کاملاً صاف.",
  steps:["هالتر را آویزان نگه دار و شانه‌ها را عقب بکش.",
  "هالتر را به سمت ناف بکش، نه به سمت سینه. آرنج‌ها نزدیک بدن.",
@@ -568,9 +836,22 @@ bbrow:{"ن":"زیربغل هالتر خم", eq:"هالتر", en:"Bent-Over Barbe
  "بالا آوردن تنه در هر تکرار (تبدیل‌شدن به یک ددلیفت نصفه)."],
  breath:"کشیدن بازدم، پایین فرستادن دم.",
  target:"لتیسیموس، مرکز پشت، دلتوئید خلفی",
- swap:"زیربغل هالتر با گریپ برعکس (فشار کمتر روی کمر) یا زیربغل سیم‌کش اگر باشگاهت دارد"},
+ swap:"زیربغل هالتر با گریپ برعکس (فشار کمتر روی کمر) یا زیربغل سیم‌کش اگر باشگاهت دارد",
+ en:{name:"Bent-Over Barbell Row", eq:"Barbell",
+ setup:"Grip the bar at shoulder width, knees slightly bent, hips sent back so your torso is about 45 degrees to the floor. Lower back completely flat.",
+ steps:["Let the bar hang and pull your shoulders back.",
+ "Pull the bar toward your navel, not your chest. Elbows stay close to the body.",
+ "Squeeze the shoulder blades together for a moment at the top.",
+ "Lower under control until the arms are fully straight."],
+ cues:["Initiate with the shoulder blades first, then the elbows. If you pull with the arms alone, your back won't grow.",
+ "The torso must stay completely still. If your torso rises to move the weight, it's too heavy."],
+ err:["Rounding the lower back — the most dangerous mistake in this move.",
+ "Standing the torso up on every rep (turning it into a half deadlift)."],
+ breath:"Exhale as you pull, inhale as you lower.",
+ target:"Lats, mid-back, rear deltoids",
+ swap:"Reverse-grip barbell row (less lower-back load) or a cable row if your gym has one"}},
 
-invrow:{"ن":"بارفیکس معکوس (زیر میلهٔ اسمیت)", eq:"اسمیت", en:"Inverted Row (Smith Machine)",
+invrow:{"ن":"بارفیکس معکوس (زیر میلهٔ اسمیت)", eq:"اسمیت",
  setup:"میلهٔ اسمیت را حدود ارتفاع کمر قفل کن. زیر آن دراز بکش و میله را کمی بازتر از عرض شانه بگیر. پاها صاف، پاشنه روی زمین، بدن از پاشنه تا شانه یک خط صاف.",
  steps:["شکم و سرین را سفت کن تا بدن مثل یک تخته باشد.",
  "سینه را به سمت میله بکش. آرنج‌ها نزدیک بدن.",
@@ -582,9 +863,22 @@ invrow:{"ن":"بارفیکس معکوس (زیر میلهٔ اسمیت)", eq:"ا�
  "قوس‌دادن گردن به جلو برای رسیدن به میله."],
  breath:"بالا کشیدن بازدم، پایین آمدن دم.",
  target:"مرکز پشت، لتیسیموس، دلتوئید خلفی",
- swap:"همین حرکت زیر هالتر روی پایه یا روی میلهٔ اسمیت با پای خم (آسان‌تر)"},
+ swap:"همین حرکت زیر هالتر روی پایه یا روی میلهٔ اسمیت با پای خم (آسان‌تر)",
+ en:{name:"Inverted Row (Smith Machine)", eq:"Smith machine",
+ setup:"Lock the Smith machine bar at about waist height. Lie underneath it and grip it slightly wider than shoulder width. Legs straight, heels on the floor, body a straight line from heels to shoulders.",
+ steps:["Brace your abs and glutes so your body acts like one rigid plank.",
+ "Pull your chest toward the bar. Elbows stay close to the body.",
+ "Squeeze the shoulder blades together at the top and hold for one second.",
+ "Lower under control until the arms are fully straight."],
+ cues:["To make it harder, lower the bar or put your feet on a bench. To make it easier, raise the bar. This fine adjustment is your best tool for stepping toward a pull-up.",
+ "The hips must not sag. If your hips drop, the set is over."],
+ err:["Only coming up halfway — the chest should get close to the bar.",
+ "Craning the neck forward to reach the bar."],
+ breath:"Exhale as you pull, inhale as you lower.",
+ target:"Mid-back, lats, rear deltoids",
+ swap:"The same move under a barbell on a rack, or on the Smith bar with knees bent (easier)"}},
 
-dbrow:{"ن":"زیربغل دمبل تک‌دست", eq:"دمبل + نیمکت", en:"Single-Arm Dumbbell Row",
+dbrow:{"ن":"زیربغل دمبل تک‌دست", eq:"دمبل + نیمکت",
  setup:"یک زانو و یک دست را روی نیمکت بگذار، پای دیگر روی زمین. دمبل در دست آزاد، کمر صاف و موازی زمین.",
  steps:["دمبل را آویزان نگه دار و اجازه بده شانه کمی به جلو کشیده شود.",
  "اول کتف را به سمت ستون فقرات بکش، بعد آرنج را به سمت لگن بالا بیاور.",
@@ -596,9 +890,22 @@ dbrow:{"ن":"زیربغل دمبل تک‌دست", eq:"دمبل + نیمکت", e
  "دامنهٔ کوتاه در پایین."],
  breath:"بالا کشیدن بازدم، پایین بردن دم.",
  target:"لتیسیموس، مرکز پشت",
- swap:"زیربغل دمبل با تکیه سینه روی نیمکت شیب‌دار (کمر کاملاً بی‌فشار)"},
+ swap:"زیربغل دمبل با تکیه سینه روی نیمکت شیب‌دار (کمر کاملاً بی‌فشار)",
+ en:{name:"Single-Arm Dumbbell Row", eq:"Dumbbell + bench",
+ setup:"Place one knee and one hand on a bench, the other foot on the floor. Hold the dumbbell in the free hand, back flat and parallel to the floor.",
+ steps:["Let the dumbbell hang and allow the shoulder to stretch forward slightly.",
+ "Pull the shoulder blade toward the spine first, then drive the elbow up toward the hip.",
+ "Pause for one second at the top.",
+ "Lower under control through the full range."],
+ cues:["The dumbbell's path is toward the hip, not the shoulder — this angle engages the lats better.",
+ "The torso shouldn't rotate. If your shoulder twists to lift the weight, it's too heavy."],
+ err:["Rotating the torso to help lift the weight.",
+ "Cutting the range short at the bottom."],
+ breath:"Exhale as you pull, inhale as you lower.",
+ target:"Lats, mid-back",
+ swap:"Chest-supported dumbbell row on an incline bench (zero load on the lower back)"}},
 
-reardelt:{"ن":"نشر خم دمبل (دلتوئید خلفی)", eq:"دمبل", en:"Bent-Over Rear Delt Fly",
+reardelt:{"ن":"نشر خم دمبل (دلتوئید خلفی)", eq:"دمبل",
  setup:"دمبل‌های سبک بردار. لگن را عقب بفرست تا تنه تقریباً موازی زمین شود، یا روی نیمکت شیب‌دار سینه‌ات را تکیه بده.",
  steps:["دمبل‌ها را زیر سینه آویزان کن، آرنج‌ها با خم مختصر و ثابت.",
  "دست‌ها را مثل بال به طرفین باز کن تا هم‌سطح شانه برسند.",
@@ -610,9 +917,22 @@ reardelt:{"ن":"نشر خم دمبل (دلتوئید خلفی)", eq:"دمبل", 
  "بالا آوردن دست‌ها بالاتر از خط شانه."],
  breath:"باز کردن بازدم، جمع‌کردن دم.",
  target:"دلتوئید خلفی، ذوزنقهٔ میانی",
- swap:"فیس پول با کش کشسان اگر کش داری — حتی بهتر"},
+ swap:"فیس پول با کش کشسان اگر کش داری — حتی بهتر",
+ en:{name:"Bent-Over Rear Delt Fly", eq:"Dumbbells",
+ setup:"Pick up light dumbbells. Send the hips back until the torso is nearly parallel to the floor, or rest your chest on an incline bench.",
+ steps:["Let the dumbbells hang below the chest, elbows with a slight, fixed bend.",
+ "Open the arms out to the sides like wings until they reach shoulder height.",
+ "Hold for one second at the top without shrugging the shoulders toward the ears.",
+ "Lower very slowly."],
+ cues:["Light weight with full range always wins over heavy weight here.",
+ "This move is medicine for your left shoulder: a strong rear deltoid and mid-trapezius keep the head of the arm bone centered and open up the subacromial space."],
+ err:["Using heavy weight and swinging the torso for help.",
+ "Raising the arms above shoulder height."],
+ breath:"Exhale as you open, inhale as you close.",
+ target:"Rear deltoid, mid-trapezius",
+ swap:"Face pull with a resistance band if you have one — even better"}},
 
-hammer:{"ن":"جلوبازو چکشی با دمبل", eq:"دمبل", en:"Dumbbell Hammer Curl",
+hammer:{"ن":"جلوبازو چکشی با دمبل", eq:"دمبل",
  setup:"صاف بایست، دمبل‌ها کنار بدن، کف دست‌ها رو به هم (گریپ چکشی).",
  steps:["آرنج‌ها را کنار پهلو ثابت نگه دار.",
  "دمبل را بدون چرخاندن مچ بالا بیاور.",
@@ -624,9 +944,22 @@ hammer:{"ن":"جلوبازو چکشی با دمبل", eq:"دمبل", en:"Dumbbel
  "دامنهٔ نیمه‌کاره در پایین."],
  breath:"بالا آوردن بازدم، پایین بردن دم.",
  target:"بازویی، بازویی‌زندی، جلوبازو",
- swap:"جلوبازو با هالتر خم (گریپ خنثی حفظ نمی‌شود ولی قابل قبول است)"},
+ swap:"جلوبازو با هالتر خم (گریپ خنثی حفظ نمی‌شود ولی قابل قبول است)",
+ en:{name:"Dumbbell Hammer Curl", eq:"Dumbbells",
+ setup:"Stand tall, dumbbells at your sides, palms facing each other (hammer grip).",
+ steps:["Keep the elbows fixed at your sides.",
+ "Raise the dumbbell without rotating the wrist.",
+ "Squeeze for a moment at the top.",
+ "Lower slowly until the arm is fully straight."],
+ cues:["The hammer grip targets the brachialis and brachioradialis — the muscles that contribute most to pulling your body up on the bar.",
+ "The elbow shouldn't drift forward. If it does, reduce the weight."],
+ err:["Swinging the body.",
+ "Cutting the range short at the bottom."],
+ breath:"Exhale as you curl up, inhale as you lower.",
+ target:"Brachialis, brachioradialis, biceps",
+ swap:"Barbell curl (doesn't keep the neutral grip, but is an acceptable substitute)"}},
 
-squat:{"ن":"اسکات پشت با هالتر", eq:"هالتر یا اسمیت", en:"Barbell Back Squat",
+squat:{"ن":"اسکات پشت با هالتر", eq:"هالتر یا اسمیت",
  setup:"میله را روی ذوزنقه (نه روی گردن) بگذار. پاها کمی بازتر از عرض لگن، پنجه‌ها ۱۵ تا ۳۰ درجه به بیرون.",
  steps:["نفس عمیق بگیر، شکم را مثل زره سفت کن و دنده‌ها را پایین نگه دار.",
  "هم‌زمان لگن را عقب و زانوها را بیرون بفرست و پایین برو.",
@@ -639,9 +972,23 @@ squat:{"ن":"اسکات پشت با هالتر", eq:"هالتر یا اسمیت"
  "پایین‌رفتن بیش از حد فقط برای اینکه دیگران عمیق‌تر می‌روند."],
  breath:"در بالا نفس بگیر و نگه دار، در نیمهٔ راه بالا آمدن بازدم کن.",
  target:"چهارسر، سرین، ثبات مرکزی",
- swap:"اسکات با اسمیت (کنترل مسیر آسان‌تر) یا اسکات گابلت با دمبل سنگین"},
+ swap:"اسکات با اسمیت (کنترل مسیر آسان‌تر) یا اسکات گابلت با دمبل سنگین",
+ en:{name:"Barbell Back Squat", eq:"Barbell or Smith machine",
+ setup:"Rest the bar on your traps (not your neck). Feet slightly wider than hip width, toes turned out 15 to 30 degrees.",
+ steps:["Take a deep breath, brace your abs like armor, and keep the ribs down.",
+ "Send the hips back and the knees out at the same time as you descend.",
+ "Go down only as far as your back stays flat and you feel no pinch or pain in the front of the hip.",
+ "Drive up through the whole foot and squeeze the glutes at the top."],
+ cues:["Because your iliopsoas is short, going too deep may pinch the front of your hip or tuck your lower back under. The depth where you feel no pinch and no rounding is your correct depth — not the depth of whoever is training next to you.",
+ "If your heels lift, put small plates under them or wear weightlifting shoes."],
+ err:["Letting the knees cave inward.",
+ "Tucking the pelvis under at the bottom (the lower back rounds).",
+ "Going deeper than you should just because others go deeper."],
+ breath:"Breathe in at the top and hold, exhale halfway up.",
+ target:"Quadriceps, glutes, core stability",
+ swap:"Smith machine squat (easier to control the bar path) or a heavy dumbbell goblet squat"}},
 
-bulgarian:{"ن":"اسکات بلغاری", eq:"دمبل + نیمکت", en:"Bulgarian Split Squat",
+bulgarian:{"ن":"اسکات بلغاری", eq:"دمبل + نیمکت",
  setup:"پشت به نیمکت بایست، روی پای پشتی را روی نیمکت بگذار. پای جلو حدود یک قدم بلند جلوتر. دمبل‌ها کنار بدن.",
  steps:["تنه را کمی به جلو متمایل کن — این زاویه سرین را بیشتر درگیر می‌کند.",
  "مستقیم پایین برو تا زانوی عقب نزدیک زمین برسد.",
@@ -653,9 +1000,22 @@ bulgarian:{"ن":"اسکات بلغاری", eq:"دمبل + نیمکت", en:"Bulga
  "چرخیدن لگن به یک طرف."],
  breath:"پایین دم، بالا بازدم.",
  target:"چهارسر، سرین، تعادل تک‌پا",
- swap:"اسپلیت اسکات با پای عقب روی زمین"},
+ swap:"اسپلیت اسکات با پای عقب روی زمین",
+ en:{name:"Bulgarian Split Squat", eq:"Dumbbells + bench",
+ setup:"Stand with your back to a bench and rest the top of the rear foot on it. Front foot about one long step ahead. Dumbbells at your sides.",
+ steps:["Lean the torso slightly forward — this angle engages the glutes more.",
+ "Descend straight down until the back knee is near the floor.",
+ "Drive up through the heel of the front foot.",
+ "Finish all reps on one leg, then switch."],
+ cues:["This move builds the front leg and stretches the hip flexor of the back leg at the same time — a double benefit for you.",
+ "If your balance is off, hold a dumbbell in only one hand and steady yourself with the other."],
+ err:["Too short a step: the front knee travels too far forward and loads the knee.",
+ "Letting the hips rotate to one side."],
+ breath:"Inhale on the way down, exhale on the way up.",
+ target:"Quadriceps, glutes, single-leg balance",
+ swap:"Static split squat with the back foot on the floor"}},
 
-goblet:{"ن":"اسکات گابلت با پاشنهٔ بالا", eq:"دمبل + صفحهٔ وزنه", en:"Heel-Elevated Goblet Squat",
+goblet:{"ن":"اسکات گابلت با پاشنهٔ بالا", eq:"دمبل + صفحهٔ وزنه",
  setup:"یک دمبل را عمودی جلوی سینه بگیر. پاشنه‌ها را روی یک صفحهٔ وزنهٔ کم‌ارتفاع بگذار.",
  steps:["آرنج‌ها را داخل نگه دار و سینه را بالا.",
  "مستقیم پایین برو، انگار می‌خواهی روی یک صندلی پشت سرت بنشینی که خیلی نزدیک است.",
@@ -667,9 +1027,22 @@ goblet:{"ن":"اسکات گابلت با پاشنهٔ بالا", eq:"دمبل + 
  "دامنهٔ کوتاه."],
  breath:"پایین دم، بالا بازدم.",
  target:"چهارسر، سرین",
- swap:"اسکات جلو با هالتر یا لگ‌پرس اگر باشگاهت دارد"},
+ swap:"اسکات جلو با هالتر یا لگ‌پرس اگر باشگاهت دارد",
+ en:{name:"Heel-Elevated Goblet Squat", eq:"Dumbbell + weight plate",
+ setup:"Hold a dumbbell vertically in front of your chest. Put your heels on a low weight plate.",
+ steps:["Keep the elbows in and the chest up.",
+ "Descend straight down, as if sitting on a chair right behind you that's very close.",
+ "Go down until the thighs pass parallel to the floor, if that's possible without pain.",
+ "Drive up through the whole foot."],
+ cues:["Elevated heels push the knee forward and engage the quads more — exactly this day's goal.",
+ "The dumbbell in front of the chest acts as a counterweight and helps keep the torso upright."],
+ err:["Letting the chest fall forward.",
+ "Cutting the range short."],
+ breath:"Inhale on the way down, exhale on the way up.",
+ target:"Quadriceps, glutes",
+ swap:"Barbell front squat, or leg press if your gym has one"}},
 
-stepup:{"ن":"استپ‌آپ روی جعبه", eq:"دمبل + جعبه یا نیمکت", en:"Box Step-Up",
+stepup:{"ن":"استپ‌آپ روی جعبه", eq:"دمبل + جعبه یا نیمکت",
  setup:"جعبه‌ای انتخاب کن که وقتی پایت رویش است، ران تقریباً موازی زمین باشد. دمبل‌ها کنار بدن.",
  steps:["یک پا را کامل روی جعبه بگذار.",
  "با فشار پاشنهٔ همان پا بالا برو — پای پایینی نباید فنر بزند و کمک کند.",
@@ -681,9 +1054,22 @@ stepup:{"ن":"استپ‌آپ روی جعبه", eq:"دمبل + جعبه یا ن�
  "افتادن سریع در فاز پایین."],
  breath:"بالا رفتن بازدم، پایین آمدن دم.",
  target:"سرین، چهارسر، ثبات تک‌پا",
- swap:"لانج معکوس با دمبل"},
+ swap:"لانج معکوس با دمبل",
+ en:{name:"Box Step-Up", eq:"Dumbbells + box or bench",
+ setup:"Choose a box height that puts your thigh roughly parallel to the floor once your foot is on it. Dumbbells at your sides.",
+ steps:["Place one foot fully on the box.",
+ "Drive up through that foot's heel — the trailing foot shouldn't push off or help.",
+ "Stand fully tall at the top and pause for a moment.",
+ "Lower back down under control on the same leg. The slow descent is the main part of the work."],
+ cues:["If the trailing foot pushes off to start, you're cheating. Slow down for one rep and see how many you can really do.",
+ "For more glute engagement, choose a taller box."],
+ err:["Pushing off with the bottom foot.",
+ "Dropping quickly on the way down."],
+ breath:"Exhale as you rise, inhale as you lower.",
+ target:"Glutes, quadriceps, single-leg stability",
+ swap:"Dumbbell reverse lunge"}},
 
-clamshell:{"ن":"ابداکشن سرین (کلم‌شل)", eq:"وزن بدن یا کش", en:"Clamshell",
+clamshell:{"ن":"ابداکشن سرین (کلم‌شل)", eq:"وزن بدن یا کش",
  setup:"به پهلو دراز بکش، زانوها با زاویهٔ ۴۵ درجه خم و روی هم. اگر کش داری، بالای زانوها ببند.",
  steps:["لگن را کمی به جلو بچرخان و آن را در تمام حرکت ثابت نگه دار.",
  "پاشنه‌ها را به هم چسبیده نگه دار و زانوی بالایی را باز کن.",
@@ -695,9 +1081,22 @@ clamshell:{"ن":"ابداکشن سرین (کلم‌شل)", eq:"وزن بدن ی�
  "سرعت زیاد و بدون احساس عضله."],
  breath:"باز کردن بازدم، بستن دم.",
  target:"سرین میانی، چرخانندهٔ خارجی لگن",
- swap:"ابداکشن ایستاده با کش دور مچ پا"},
+ swap:"ابداکشن ایستاده با کش دور مچ پا",
+ en:{name:"Clamshell", eq:"Bodyweight or resistance band",
+ setup:"Lie on your side, knees bent 45 degrees and stacked. If you have a band, loop it above the knees.",
+ steps:["Tuck the pelvis slightly forward and keep it fixed through the whole movement.",
+ "Keep the heels touching and open the top knee.",
+ "Hold the glute squeeze for two seconds at the top.",
+ "Return slowly."],
+ cues:["If the pelvis rolls backward, reduce your range. The movement should come entirely from the glute, not torso rotation.",
+ "A strong mid-glute keeps the hip stable while running — you run three times a week, so this move isn't optional for you."],
+ err:["Rotating the whole body backward.",
+ "Moving fast without feeling the muscle."],
+ breath:"Exhale as you open, inhale as you close.",
+ target:"Gluteus medius, hip external rotators",
+ swap:"Standing band abduction around the ankles"}},
 
-calfseat:{"ن":"ساق پا نشسته", eq:"دمبل + نیمکت", en:"Seated Calf Raise",
+calfseat:{"ن":"ساق پا نشسته", eq:"دمبل + نیمکت",
  setup:"روی نیمکت بنشین، پنجه‌ها روی یک صفحهٔ وزنه، دمبل را روی ران نزدیک زانو نگه دار.",
  steps:["پاشنه‌ها را کاملاً پایین بفرست.",
  "روی پنجه تا بالاترین حد بالا بیا.",
@@ -709,9 +1108,22 @@ calfseat:{"ن":"ساق پا نشسته", eq:"دمبل + نیمکت", en:"Seated 
  "حرکت فنری."],
  breath:"بالا بازدم، پایین دم.",
  target:"نعلی",
- swap:"ساق ایستاده تک‌پا با تکرار بالا"},
+ swap:"ساق ایستاده تک‌پا با تکرار بالا",
+ en:{name:"Seated Calf Raise", eq:"Dumbbell + bench",
+ setup:"Sit on a bench, balls of the feet on a weight plate, hold a dumbbell on your thigh near the knee.",
+ steps:["Drop the heels all the way down.",
+ "Rise up onto the toes as high as possible.",
+ "Hold for two seconds at the top.",
+ "Lower very slowly."],
+ cues:["The seated version targets the soleus, which activates with a bent knee — it complements the standing calf raise, it doesn't duplicate it.",
+ "High reps with a hold work better here than heavy weight."],
+ err:["Short range of motion.",
+ "Bouncing."],
+ breath:"Exhale as you rise, inhale as you lower.",
+ target:"Soleus",
+ swap:"Single-leg standing calf raise with higher reps"}},
 
-inclinedb:{"ن":"پرس بالاسینه با دمبل", eq:"دمبل + نیمکت شیب‌دار", en:"Incline Dumbbell Press",
+inclinedb:{"ن":"پرس بالاسینه با دمبل", eq:"دمبل + نیمکت شیب‌دار",
  setup:"نیمکت را روی شیب ۳۰ درجه بگذار (نه بیشتر — شیب زیاد فشار را می‌برد روی شانه). دمبل‌ها را روی ران بگذار و با پا به بالا پرت کن.",
  steps:["کتف‌ها را عقب و پایین بچسبان به نیمکت و در تمام ست همان‌جا نگه دار.",
  "آرنج‌ها را حدود ۴۵ درجه نسبت به تنه نگه دار — نه کاملاً باز، نه چسبیده به بدن.",
@@ -723,9 +1135,22 @@ inclinedb:{"ن":"پرس بالاسینه با دمبل", eq:"دمبل + نیمک
  "بلندشدن کتف از نیمکت هنگام فشار."],
  breath:"پایین آوردن دم، فشار دادن بازدم.",
  target:"بالاسینه، سه‌سر، دلتوئید قدامی",
- swap:"پرس سینه با دمبل روی نیمکت صاف یا شنای شیب‌دار"},
+ swap:"پرس سینه با دمبل روی نیمکت صاف یا شنای شیب‌دار",
+ en:{name:"Incline Dumbbell Press", eq:"Dumbbells + incline bench",
+ setup:"Set the bench to a 30-degree incline (no more — a steeper angle shifts the load onto the shoulder). Rest the dumbbells on your thighs and kick them up into position.",
+ steps:["Pin the shoulder blades back and down against the bench and keep them there for the whole set.",
+ "Keep the elbows at about 45 degrees to the torso — not fully flared, not tucked against the body.",
+ "Lower the dumbbells until the elbow is just below shoulder height and you feel a comfortable stretch.",
+ "Press up without letting the dumbbells clack together."],
+ cues:["The 45-degree elbow angle is the single most important safety cue for your shoulder. A fully flared elbow narrows the subacromial space and makes exactly the impingement worse.",
+ "If you feel sharp pain or a pinch in the left shoulder, end the set right there — not one more rep."],
+ err:["Lowering the dumbbells too far, pulling the shoulder back.",
+ "Letting the shoulder blades lift off the bench while pressing."],
+ breath:"Inhale on the way down, exhale as you press.",
+ target:"Upper chest, triceps, anterior deltoid",
+ swap:"Flat-bench dumbbell press or incline push-ups"}},
 
-neutralpress:{"ن":"پرس سرشانه دمبل با گریپ خنثی", eq:"دمبل + نیمکت", en:"Neutral-Grip Dumbbell Shoulder Press",
+neutralpress:{"ن":"پرس سرشانه دمبل با گریپ خنثی", eq:"دمبل + نیمکت",
  setup:"روی نیمکتی با پشتی نسبتاً عمود بنشین. دمبل‌ها را کنار شانه بگیر، کف دست‌ها رو به هم (گریپ خنثی).",
  steps:["شکم را سفت کن تا کمر قوس نگیرد.",
  "دمبل‌ها را مستقیم بالا ببر، در همان مسیر رو‌به‌هم.",
@@ -737,9 +1162,22 @@ neutralpress:{"ن":"پرس سرشانه دمبل با گریپ خنثی", eq:"د
  "پرس از پشت گردن — این حرکت را اصلاً نزن."],
  breath:"بالا بردن بازدم، پایین آوردن دم.",
  target:"دلتوئید میانی و قدامی، سه‌سر",
- swap:"پرس لندماین (یک سر هالتر در گوشه) — امن‌ترین گزینه برای شانهٔ دردناک"},
+ swap:"پرس لندماین (یک سر هالتر در گوشه) — امن‌ترین گزینه برای شانهٔ دردناک",
+ en:{name:"Neutral-Grip Dumbbell Shoulder Press", eq:"Dumbbells + bench",
+ setup:"Sit on a bench with a fairly upright back pad. Hold the dumbbells at shoulder height, palms facing each other (neutral grip).",
+ steps:["Brace your abs so the lower back doesn't arch.",
+ "Press the dumbbells straight up, staying on the same palms-facing path.",
+ "Extend fully at the top without locking out, and don't shrug the shoulders to your ears.",
+ "Lower under control back to shoulder height."],
+ cues:["The neutral grip keeps the arm in external rotation and is much safer for your impinging shoulder than a standard grip.",
+ "This move is conditional: only continue while it's pain-free. If it hurts, substitute it."],
+ err:["Arching the lower back to press a heavy weight.",
+ "Pressing behind the neck — never do this movement."],
+ breath:"Exhale as you press up, inhale as you lower.",
+ target:"Middle and anterior deltoid, triceps",
+ swap:"Landmine press (one end of a barbell in a corner) — the safest option for a painful shoulder"}},
 
-pushup:{"ن":"شنا با دامنهٔ کنترل‌شده", eq:"وزن بدن", en:"Controlled-Range Push-Up",
+pushup:{"ن":"شنا با دامنهٔ کنترل‌شده", eq:"وزن بدن",
  setup:"دست‌ها کمی بازتر از عرض شانه، بدن از پاشنه تا سر یک خط صاف. سرین و شکم سفت.",
  steps:["کتف‌ها را کمی از هم باز نگه دار (نه چسبیده به هم).",
  "آرنج‌ها را با زاویهٔ حدود ۴۵ درجه نسبت به تنه پایین بیاور — نه ۹۰ درجهٔ کامل.",
@@ -751,9 +1189,22 @@ pushup:{"ن":"شنا با دامنهٔ کنترل‌شده", eq:"وزن بدن",
  "باز کردن آرنج تا ۹۰ درجه (فشار مستقیم روی شانه)."],
  breath:"پایین دم، بالا بازدم.",
  target:"سینه، سه‌سر، سراتوس",
- swap:"شنا با دست روی نیمکت (آسان‌تر) یا با پا روی نیمکت (سخت‌تر)"},
+ swap:"شنا با دست روی نیمکت (آسان‌تر) یا با پا روی نیمکت (سخت‌تر)",
+ en:{name:"Controlled-Range Push-Up", eq:"Bodyweight",
+ setup:"Hands slightly wider than shoulder width, body a straight line from heels to head. Glutes and abs braced.",
+ steps:["Keep the shoulder blades slightly apart (not pinched together).",
+ "Lower with the elbows at about 45 degrees to the torso — not a full 90 degrees.",
+ "Go down until the chest nears the floor and the shoulder feels comfortable.",
+ "Press up and spread the shoulder blades slightly apart at the top."],
+ cues:["You're currently doing 3 sets of 8 push-ups every single day. Stop that starting this week and let push-ups live only here in the plan — muscle grows on the rest day, not from daily training.",
+ "For harder, put your feet on a bench. For easier, put your hands on a bench."],
+ err:["Letting the hips sag or piking the hips up.",
+ "Flaring the elbows out to a full 90 degrees (direct load on the shoulder)."],
+ breath:"Inhale on the way down, exhale as you press up.",
+ target:"Chest, triceps, serratus anterior",
+ swap:"Push-up with hands on a bench (easier) or feet on a bench (harder)"}},
 
-lateral:{"ن":"نشر جانب با دمبل", eq:"دمبل", en:"Dumbbell Lateral Raise",
+lateral:{"ن":"نشر جانب با دمبل", eq:"دمبل",
  setup:"دمبل‌های سبک کنار بدن، آرنج‌ها با خم مختصر و ثابت، کمی به جلو خم شو (حدود ۱۰ درجه).",
  steps:["شست را کمی بالاتر از انگشت کوچک نگه دار — انگار می‌خواهی یک لیوان آب را نگه داری، نه اینکه خالی‌اش کنی.",
  "دست‌ها را تا هم‌سطح شانه بالا بیاور، نه بالاتر.",
@@ -765,9 +1216,22 @@ lateral:{"ن":"نشر جانب با دمبل", eq:"دمبل", en:"Dumbbell Later
  "استفاده از تاب بدن."],
  breath:"بالا بازدم، پایین دم.",
  target:"دلتوئید میانی",
- swap:"نشر جانب نشسته (تاب‌دادن غیرممکن می‌شود)"},
+ swap:"نشر جانب نشسته (تاب‌دادن غیرممکن می‌شود)",
+ en:{name:"Dumbbell Lateral Raise", eq:"Dumbbells",
+ setup:"Light dumbbells at your sides, elbows with a slight, fixed bend, lean forward slightly (about 10 degrees).",
+ steps:["Keep the thumb slightly higher than the pinky — as if holding a glass of water upright, not pouring it out.",
+ "Raise the arms up to shoulder height, no higher.",
+ "Hold for a moment.",
+ "Lower very slowly."],
+ cues:["Turning the thumb down (the 'pouring the glass out' position) is exactly what causes shoulder impingement. It's off-limits for you.",
+ "Don't go above the shoulder line. That range is trapezius work, not deltoid."],
+ err:["Shrugging the shoulder toward the ear.",
+ "Using body swing."],
+ breath:"Exhale as you raise, inhale as you lower.",
+ target:"Middle deltoid",
+ swap:"Seated lateral raise (swinging becomes impossible)"}},
 
-extrot:{"ن":"چرخش خارجی شانه به پهلو", eq:"دمبل سبک", en:"Side-Lying External Rotation",
+extrot:{"ن":"چرخش خارجی شانه به پهلو", eq:"دمبل سبک",
  setup:"به پهلو دراز بکش، دمبل خیلی سبک (۱ تا ۳ کیلو) در دست بالایی. آرنج را ۹۰ درجه خم کن و آن را به پهلو بچسبان — یک حولهٔ تاشده زیر آرنج بگذار.",
  steps:["ساعد را روی شکم قرار بده. این نقطهٔ شروع است.",
  "بدون اینکه آرنج از پهلو جدا شود، ساعد را به سمت بالا بچرخان.",
@@ -779,9 +1243,22 @@ extrot:{"ن":"چرخش خارجی شانه به پهلو", eq:"دمبل سبک",
  "جدا شدن آرنج از پهلو."],
  breath:"طبیعی و آرام؛ نفس را حبس نکن.",
  target:"روتاتور کاف (تحت‌خاری و گرد کوچک)",
- swap:"چرخش خارجی ایستاده با کش کشسان"},
+ swap:"چرخش خارجی ایستاده با کش کشسان",
+ en:{name:"Side-Lying External Rotation", eq:"Light dumbbell",
+ setup:"Lie on your side, a very light dumbbell (1 to 3 kg) in the top hand. Bend the elbow 90 degrees and pin it to your side — put a folded towel under the elbow.",
+ steps:["Rest the forearm on your stomach. This is the starting position.",
+ "Without letting the elbow leave your side, rotate the forearm upward.",
+ "Rotate as far as is comfortable and hold for one second.",
+ "Return very slowly."],
+ cues:["The weight here should feel ridiculously light. The rotator cuff muscles are small and stop doing their job under heavy load.",
+ "This is directly for your left shoulder. If you only had time for one exercise on a given day, do this one."],
+ err:["Using a heavy dumbbell and rotating the whole torso.",
+ "Letting the elbow come off your side."],
+ breath:"Natural and calm; don't hold your breath.",
+ target:"Rotator cuff (infraspinatus and teres minor)",
+ swap:"Standing external rotation with a resistance band"}},
 
-serratus:{"ن":"وال اسلاید (لغزش روی دیوار)", eq:"دیوار", en:"Wall Slide",
+serratus:{"ن":"وال اسلاید (لغزش روی دیوار)", eq:"دیوار",
  setup:"پشت به دیوار بایست، پاها حدود ۱۵ سانت جلوتر از دیوار. کمر، پشت و سر به دیوار چسبیده. ساعدها را با زاویهٔ ۹۰ درجه روی دیوار بگذار.",
  steps:["کمر را به دیوار بچسبان — نباید فاصله‌ای باشد. این را تا آخر ست حفظ کن.",
  "ساعدها را روی دیوار به سمت بالا بلغزان تا جایی که تماس حفظ شود.",
@@ -793,9 +1270,22 @@ serratus:{"ن":"وال اسلاید (لغزش روی دیوار)", eq:"دیوا�
  "بالا آوردن شانه به سمت گوش."],
  breath:"بالا بردن بازدم، پایین آوردن دم.",
  target:"سراتوس قدامی، ذوزنقهٔ پایینی، تحرک سینه‌ای",
- swap:"شنای پلاس (در بالای شنا، کتف‌ها را از هم دور کن)"},
+ swap:"شنای پلاس (در بالای شنا، کتف‌ها را از هم دور کن)",
+ en:{name:"Wall Slide", eq:"Wall",
+ setup:"Stand with your back to a wall, feet about 15 cm in front of it. Lower back, upper back and head touching the wall. Rest your forearms on the wall at a 90-degree angle.",
+ steps:["Press your lower back flat against the wall — no gap. Hold that for the whole set.",
+ "Slide the forearms up the wall as far as you can while keeping contact.",
+ "At the top, press the shoulders forward slightly as if pushing the wall away.",
+ "Lower slowly."],
+ cues:["The moment your lower back leaves the wall or your forearms lose contact, your real range is over. Going higher doesn't help.",
+ "This move teaches the shoulder blade to rotate correctly when raising the arm — exactly what's faulty in shoulder impingement."],
+ err:["Letting the lower back come off the wall (compensating with a lumbar arch).",
+ "Shrugging the shoulders toward the ears."],
+ breath:"Exhale as you raise, inhale as you lower.",
+ target:"Serratus anterior, lower trapezius, thoracic mobility",
+ swap:"Push-up plus (at the top of a push-up, spread the shoulder blades apart)"}},
 
-triceps:{"ن":"پشت‌بازو دمبل بالای سر", eq:"دمبل", en:"Overhead Dumbbell Triceps Extension",
+triceps:{"ن":"پشت‌بازو دمبل بالای سر", eq:"دمبل",
  setup:"بنشین یا بایست. یک دمبل را با دو دست بالای سر بگیر (کف دست‌ها زیر صفحهٔ بالایی).",
  steps:["آرنج‌ها را نزدیک سر و رو به جلو نگه دار.",
  "دمبل را پشت سر پایین ببر تا کشش پشت بازو را حس کنی.",
@@ -807,9 +1297,22 @@ triceps:{"ن":"پشت‌بازو دمبل بالای سر", eq:"دمبل", en:"O
  "قوس‌دادن کمر."],
  breath:"پایین بردن دم، صاف کردن بازدم.",
  target:"سه‌سر بازویی (سر بلند)",
- swap:"پشت‌بازو کیک‌بک با دمبل"},
+ swap:"پشت‌بازو کیک‌بک با دمبل",
+ en:{name:"Overhead Dumbbell Triceps Extension", eq:"Dumbbell",
+ setup:"Sit or stand. Hold one dumbbell overhead with both hands (palms under the top plate).",
+ steps:["Keep the elbows close to your head and pointing forward.",
+ "Lower the dumbbell behind your head until you feel the stretch in the back of the arm.",
+ "Without moving the elbows, straighten back up.",
+ "Extend fully at the top without locking out."],
+ cues:["Only the forearm moves. If the elbows drift forward and back, the weight is too heavy.",
+ "If raising your arm overhead bothers your left shoulder, substitute triceps kickbacks or short-range bench dips instead."],
+ err:["Flaring the elbows out to the sides.",
+ "Arching the lower back."],
+ breath:"Inhale on the way down, exhale as you extend.",
+ target:"Triceps brachii (long head)",
+ swap:"Dumbbell triceps kickback"}},
 
-deadhang:{"ن":"آویزان فعال از بارفیکس", eq:"میلهٔ بارفیکس", en:"Active Dead Hang",
+deadhang:{"ن":"آویزان فعال از بارفیکس", eq:"میلهٔ بارفیکس",
  setup:"میله را با گریپ کامل (شست دور میله) کمی بازتر از عرض شانه بگیر و آویزان شو.",
  steps:["اجازه نده کاملاً شل شوی. شانه‌ها را کمی از گوش دور نگه دار.",
  "شکم را سفت کن و پاها را آرام نگه دار تا تاب نخوری.",
@@ -821,9 +1324,22 @@ deadhang:{"ن":"آویزان فعال از بارفیکس", eq:"میلهٔ با�
  "تاب خوردن."],
  breath:"آرام و پیوسته؛ نفس را نگه ندار.",
  target:"گریپ، ساعد، ثبات کمربند شانه",
- swap:"آویزان با پا روی جعبه برای کم‌کردن وزن"},
+ swap:"آویزان با پا روی جعبه برای کم‌کردن وزن",
+ en:{name:"Active Dead Hang", eq:"Pull-up bar",
+ setup:"Grip the bar with a full grip (thumb wrapped around the bar) slightly wider than shoulder width and hang.",
+ steps:["Don't let yourself go fully limp. Keep the shoulders slightly away from your ears.",
+ "Brace your abs and keep the legs still so you don't swing.",
+ "Hold for 20 to 30 seconds, breathing calmly.",
+ "Lower under control; don't just let go."],
+ cues:["Grip strength is the most common reason people let go of the bar before their back even gets tired. This move builds it.",
+ "Log your hang time in the Pull-Up tab — it's one of the most precise indicators of your progress."],
+ err:["Hanging fully limp with the shoulders scrunched up to the ears.",
+ "Swinging."],
+ breath:"Calm and steady; don't hold your breath.",
+ target:"Grip, forearms, shoulder-girdle stability",
+ swap:"Hang with feet on a box to reduce the load"}},
 
-bandpull:{"ن":"بارفیکس با کمک (کش یا پا روی جعبه)", eq:"بارفیکس + کش یا جعبه", en:"Assisted Pull-Up",
+bandpull:{"ن":"بارفیکس با کمک (کش یا پا روی جعبه)", eq:"بارفیکس + کش یا جعبه",
  setup:"کش را دور میله بینداز و زانو یا کف پا را داخلش بگذار. اگر کش نداری، یک جعبه زیر پا بگذار و فقط با نوک یک پا کمک بگیر.",
  steps:["از آویزان فعال شروع کن؛ اول کتف را پایین بکش.",
  "بدن را بالا بکش تا چانه از میله رد شود. آرنج‌ها به سمت پایین و کمی جلو.",
@@ -835,9 +1351,22 @@ bandpull:{"ن":"بارفیکس با کمک (کش یا پا روی جعبه)", eq
  "پرت‌کردن خود به بالا با تاب پا."],
  breath:"بالا کشیدن بازدم، پایین آمدن دم.",
  target:"لتیسیموس، مرکز پشت، جلوبازو",
- swap:"نگاتیو بارفیکس (اگر کش و جعبه نداری)"},
+ swap:"نگاتیو بارفیکس (اگر کش و جعبه نداری)",
+ en:{name:"Assisted Pull-Up", eq:"Pull-up bar + band or box",
+ setup:"Loop the band around the bar and put a knee or foot into it. If you don't have a band, put a box under your feet and assist with only the ball of one foot.",
+ steps:["Start from an active dead hang; pull the shoulder blades down first.",
+ "Pull your body up until your chin clears the bar. Elbows point down and slightly forward.",
+ "Pause for a moment at the top.",
+ "Lower over three to four seconds."],
+ cues:["Your progress metric is how much assistance you need, not rep count. Three reps with a thin band are far more valuable than eight reps with a thick one.",
+ "If you're assisting with a foot, push just enough to get past the sticking point — no more."],
+ err:["Staying on the same band for weeks. The body doesn't progress without added difficulty.",
+ "Kipping yourself up with a leg swing."],
+ breath:"Exhale as you pull up, inhale as you lower.",
+ target:"Lats, mid-back, biceps",
+ swap:"Negative pull-up (if you have neither a band nor a box)"}},
 
-feetinvrow:{"ن":"بارفیکس معکوس با پای بالا", eq:"اسمیت + نیمکت", en:"Feet-Elevated Inverted Row",
+feetinvrow:{"ن":"بارفیکس معکوس با پای بالا", eq:"اسمیت + نیمکت",
  setup:"مثل بارفیکس معکوس، ولی پاها را روی یک نیمکت بگذار تا بدنت افقی‌تر و حرکت سخت‌تر شود.",
  steps:["بدن را از پاشنه تا شانه یک خط صاف کن؛ سرین را سفت نگه دار.",
  "سینه را به میله بکش، آرنج‌ها نزدیک بدن.",
@@ -849,9 +1378,22 @@ feetinvrow:{"ن":"بارفیکس معکوس با پای بالا", eq:"اسمی�
  "دامنهٔ نیمه‌کاره."],
  breath:"بالا بازدم، پایین دم.",
  target:"مرکز پشت، لتیسیموس، دلتوئید خلفی",
- swap:"بارفیکس معکوس معمولی با پا روی زمین"},
+ swap:"بارفیکس معکوس معمولی با پا روی زمین",
+ en:{name:"Feet-Elevated Inverted Row", eq:"Smith machine + bench",
+ setup:"Same as the inverted row, but put your feet up on a bench so your body is more horizontal and the move gets harder.",
+ steps:["Make your body a straight line from heels to shoulders; keep the glutes braced.",
+ "Pull the chest to the bar, elbows close to the body.",
+ "Squeeze the shoulder blades together at the top and pause for one second.",
+ "Lower slowly until the arms are fully straight."],
+ cues:["This is the hardest version of the inverted row and the last rung before a full pull-up becomes possible.",
+ "If your hips sag, the set is over — quality is the standard."],
+ err:["Letting the hips sag.",
+ "Cutting the range short."],
+ breath:"Exhale as you pull, inhale as you lower.",
+ target:"Mid-back, lats, rear deltoid",
+ swap:"Regular inverted row with feet on the floor"}},
 
-pullover:{"ن":"پول‌اور دمبل خوابیده", eq:"دمبل + نیمکت", en:"Lying Dumbbell Pullover",
+pullover:{"ن":"پول‌اور دمبل خوابیده", eq:"دمبل + نیمکت",
  setup:"روی نیمکت به پشت دراز بکش. یک دمبل را با دو دست بالای سینه بگیر، آرنج‌ها کمی خم.",
  steps:["شکم را سفت کن و دنده‌ها را پایین نگه دار — این جلوی قوس‌گرفتن کمر را می‌گیرد.",
  "دمبل را در یک قوس به پشت سر ببر تا کشش زیر بغل را حس کنی.",
@@ -863,9 +1405,22 @@ pullover:{"ن":"پول‌اور دمبل خوابیده", eq:"دمبل + نیم�
  "قوس‌گرفتن کمر و بلندشدن از نیمکت."],
  breath:"عقب بردن دم، برگرداندن بازدم.",
  target:"لتیسیموس، سراتوس، سینه",
- swap:"پول‌اور با کش کشسان از بالا (اگر کش داری)"},
+ swap:"پول‌اور با کش کشسان از بالا (اگر کش داری)",
+ en:{name:"Lying Dumbbell Pullover", eq:"Dumbbell + bench",
+ setup:"Lie on your back on a bench. Hold one dumbbell with both hands above your chest, elbows slightly bent.",
+ steps:["Brace your abs and keep the ribs down — this stops the lower back from arching.",
+ "Sweep the dumbbell in an arc behind your head until you feel the stretch under your arms.",
+ "Go only as far as the shoulder feels comfortable. Extra depth doesn't help here and is a risk for your shoulder.",
+ "Drive through the lats to bring the dumbbell back along the same arc."],
+ cues:["Feel the movement come from under the arms, not the triceps.",
+ "Start light. This move puts the shoulder in its most extreme range, and you need to be cautious with your impinging left shoulder."],
+ err:["Taking the dumbbell far lower than the shoulder's comfortable range.",
+ "Arching the back and lifting off the bench."],
+ breath:"Inhale as you sweep back, exhale as you return.",
+ target:"Lats, serratus, chest",
+ swap:"Overhead pullover with a resistance band (if you have one)"}},
 
-sideplank:{"ن":"پلانک پهلو", eq:"وزن بدن", en:"Side Plank",
+sideplank:{"ن":"پلانک پهلو", eq:"وزن بدن",
  setup:"به پهلو دراز بکش، آرنج زیر شانه، پاها روی هم یا زانوی پایینی خم.",
  steps:["لگن را از زمین بلند کن تا از سر تا پا یک خط صاف بسازی.",
  "شکم را سفت کن و لگن را کمی به جلو بچرخان.",
@@ -877,9 +1432,22 @@ sideplank:{"ن":"پلانک پهلو", eq:"وزن بدن", en:"Side Plank",
  "چرخیدن سینه به سمت زمین."],
  breath:"آرام و پیوسته.",
  target:"مایل شکمی، عرضی شکم، سرین میانی",
- swap:"پلانک پهلو با زانوی خم"},
+ swap:"پلانک پهلو با زانوی خم",
+ en:{name:"Side Plank", eq:"Bodyweight",
+ setup:"Lie on your side, elbow under the shoulder, feet stacked or the bottom knee bent.",
+ steps:["Lift the hips off the floor so you form a straight line from head to feet.",
+ "Brace the abs and tuck the pelvis slightly forward.",
+ "Hold for 30 seconds, breathing calmly.",
+ "Lower and switch sides."],
+ cues:["The side plank builds the mid-glute and the abdominal obliques together without loading the iliopsoas — unlike sit-ups and leg raises, which aren't right for you.",
+ "If 30 seconds is hard, start with the bottom knee bent."],
+ err:["Letting the hips sag toward the floor.",
+ "Rotating the chest toward the floor."],
+ breath:"Calm and steady.",
+ target:"Abdominal obliques, transverse abdominis, mid-glute",
+ swap:"Side plank with the bottom knee bent"}},
 
-inclinecurl:{"ن":"جلوبازو روی نیمکت شیب‌دار", eq:"دمبل + نیمکت شیب‌دار", en:"Incline Dumbbell Curl",
+inclinecurl:{"ن":"جلوبازو روی نیمکت شیب‌دار", eq:"دمبل + نیمکت شیب‌دار",
  setup:"نیمکت را روی شیب ۴۵ تا ۶۰ درجه بگذار و به آن تکیه بده. دمبل‌ها کاملاً آویزان کنار بدن، کف دست رو به جلو.",
  steps:["آرنج‌ها را عقب و ثابت نگه دار — همین وضعیت است که این حرکت را مؤثر می‌کند.",
  "دمبل‌ها را بالا بیاور بدون اینکه آرنج جلو بیاید.",
@@ -891,9 +1459,22 @@ inclinecurl:{"ن":"جلوبازو روی نیمکت شیب‌دار", eq:"دمب
  "دامنهٔ نیمه‌کاره در پایین."],
  breath:"بالا بازدم، پایین دم.",
  target:"جلوبازو (سر بلند)",
- swap:"جلوبازو دمبل ایستاده"},
+ swap:"جلوبازو دمبل ایستاده",
+ en:{name:"Incline Dumbbell Curl", eq:"Dumbbells + incline bench",
+ setup:"Set the bench to a 45-to-60-degree incline and lean back into it. Dumbbells hang fully at your sides, palms facing forward.",
+ steps:["Keep the elbows back and fixed — this position is what makes the move effective.",
+ "Raise the dumbbells without letting the elbow drift forward.",
+ "Squeeze for a moment at the top.",
+ "Lower very slowly to a full straight arm."],
+ cues:["Because the arm is behind the body, the biceps starts from a stretched position and gets more stimulus.",
+ "Keep the shoulders pinned to the backrest; if they come forward, the weight is too heavy."],
+ err:["Letting the elbow drift forward at the top of the movement.",
+ "Cutting the range short at the bottom."],
+ breath:"Exhale as you curl up, inhale as you lower.",
+ target:"Biceps (long head)",
+ swap:"Standing dumbbell curl"}},
 
-bbcurl:{"ن":"جلوبازو هالتر ایستاده", eq:"هالتر", en:"Standing Barbell Curl",
+bbcurl:{"ن":"جلوبازو هالتر ایستاده", eq:"هالتر",
  setup:"صاف بایست، هالتر با گریپ کمی بازتر از عرض شانه، آرنج‌ها کنار بدن.",
  steps:["آرنج‌ها را کنار پهلو ثابت نگه دار و تنه را بی‌حرکت نگه دار.",
  "هالتر را در یک ثانیه بالا بیاور، بدون تاب دادن کمر.",
@@ -906,21 +1487,42 @@ bbcurl:{"ن":"جلوبازو هالتر ایستاده", eq:"هالتر", en:"St
  "باز کردن آرنج از بدن در بالای حرکت."],
  breath:"بالا بردن بازدم، پایین آوردن دم.",
  target:"جلوبازو (دوسر بازویی)، ساعد",
- swap:"جلوبازو هالتر EZ یا جلوبازو دمبل دونفره"}
+ swap:"جلوبازو هالتر EZ یا جلوبازو دمبل دونفره",
+ en:{name:"Standing Barbell Curl", eq:"Barbell",
+ setup:"Stand tall, grip the bar slightly wider than shoulder width, elbows at your sides.",
+ steps:["Keep the elbows fixed at your sides and the torso still.",
+ "Curl the bar up over one second, without swinging your lower back.",
+ "Squeeze for a moment at the top.",
+ "Lower under control over three seconds until the arm is fully straight."],
+ cues:["If you need to swing your back or bring the elbows forward to lift it, the weight is heavier than you should be using.",
+ "Take the lowering phase seriously — that's where most of the biceps growth happens."],
+ err:["Swinging the body (cheat curls).",
+ "Cutting the range short at the bottom.",
+ "Letting the elbows drift away from the body at the top."],
+ breath:"Exhale as you curl up, inhale as you lower.",
+ target:"Biceps brachii, forearms",
+ swap:"EZ-bar curl or alternating dumbbell curl"}}
 
 };
 
 /* ---------- برنامهٔ هفتگی ---------- */
 const days = [
-  { key:"sat", day:"شنبه", wd:6, type:"rest", title:"استراحت + مهارت",
+  { key:"sat", day:"شنبه", dayEn:"Saturday", wd:6, type:"rest", title:"استراحت + مهارت",
     rest:"روز بدون کلاس و بدون تمرین وزنه. تنها کاری که امروز واجب است، کشش هیپ فلکسور و ۱۵ دقیقه کار مهارتی هندستند است.",
     todo:["کشش هیپ فلکسور زانوزده — ۲ ست ۴۵ ثانیه‌ای هر طرف.",
           "۱۵ دقیقه هندستند: پلهٔ فعلی نردبان، رو به دیوار — بدون خستگی، فقط تکرار تمیز.",
           "حرکات اختصاصی فیزیوتراپت را انجام بده. آن‌ها بر هر چیزی در این برنامه اولویت دارند.",
           "پیاده‌روی سبک اگر دوست داشتی، ولی دویدن نه.",
-          "امروز روزی است که عضله واقعاً ساخته می‌شود. کم‌غذا خوردن در این روز، تمرین کل هفته را هدر می‌دهد."]},
+          "امروز روزی است که عضله واقعاً ساخته می‌شود. کم‌غذا خوردن در این روز، تمرین کل هفته را هدر می‌دهد."],
+    en:{title:"Rest + Skill",
+      rest:"No class and no weight training today. The only mandatory work today is the hip flexor stretch and 15 minutes of handstand skill work.",
+      todo:["Kneeling hip flexor stretch — 2 sets of 45 seconds each side.",
+            "15 minutes of handstand: your current ladder rung, facing the wall — no chasing fatigue, just clean reps.",
+            "Do the exercises your physical therapist gave you. They outrank everything in this plan.",
+            "A light walk if you feel like it, but no running.",
+            "Today is the day muscle is actually built. Under-eating today wastes the whole week's training."]}},
 
-  { key:"sun", day:"یک‌شنبه", wd:0, type:"train", title:"پا — زنجیرهٔ خلفی", focus:"همسترینگ · سرین · ساق",
+  { key:"sun", day:"یک‌شنبه", dayEn:"Sunday", wd:0, type:"train", title:"پا — زنجیرهٔ خلفی", focus:"همسترینگ · سرین · ساق",
     warm:"۵ دقیقه دوچرخه · Leg Swing ۱۰ هر طرف · پل سرین وزن بدن ۲×۱۵ · اسکات وزن بدن ۱۵ · کشش هیپ فلکسور ۳۰ ثانیه هر طرف",
     cardio:"امروز هوازی نداری. روز بدون کلاس است، پس وقت کافی داری — جلسه را کامل و بدون عجله بزن.",
     ex:[ ["rdl",4,"۶–۸",150,"3-1-1-0","کمر صاف؛ دامنه را کشش پشت ران تعیین می‌کند نه ارتفاع هالتر"],
@@ -929,9 +1531,15 @@ const days = [
          ["sglbridge",3,"۱۲ هر پا",60,"2-2-1-0",""],
          ["calfstand",4,"۱۲–۱۵",60,"2-1-2-2",""],
          ["deadbug",3,"۱۰ هر طرف",45,"آهسته","کمر باید تا آخر ست به زمین چسبیده بماند"],
-         ["hipflex",2,"۴۵ ثانیه هر طرف",30,"نگه‌داشتن","اجباری — نه اختیاری"] ]},
+         ["hipflex",2,"۴۵ ثانیه هر طرف",30,"نگه‌داشتن","اجباری — نه اختیاری"] ],
+    en:{title:"Legs — Posterior Chain", focus:"Hamstrings · Glutes · Calves",
+      warm:"5 min bike · leg swings 10 each side · bodyweight glute bridge 2×15 · bodyweight squat 15 · hip flexor stretch 30 sec each side",
+      cardio:"No cardio today. It's a no-class day, so you have plenty of time — take the session slow and complete.",
+      exNotes:["Flat back; range is set by the hamstring stretch, not by how low the bar goes",
+               "Squeeze the glutes at the top, no lower-back arch","","","",
+               "Back must stay flat on the floor through the whole set","Mandatory — not optional"]}},
 
-  { key:"mon", day:"دوشنبه", wd:1, type:"train", title:"پشت + پول‌آپ (۱)", focus:"لتیسیموس · قدرت کشش · دلتوئید خلفی",
+  { key:"mon", day:"دوشنبه", dayEn:"Monday", wd:1, type:"train", title:"پشت + پول‌آپ (۱)", focus:"لتیسیموس · قدرت کشش · دلتوئید خلفی",
     warm:"۳ دقیقه دوچرخه · چرخش شانه ۱۰ هر طرف · وال اسلاید ۱۰ · آویزان از بارفیکس ۲×۲۰ ثانیه",
     cardio:"بعد از تمرین: ۲۰ دقیقه دوچرخه یا تردمیل شیب‌دار با شدت آسان — باید بتوانی حین آن حرف بزنی.",
     ex:[ ["scappull",3,"۸–۱۰",60,"1-1-1-1","اول جلسه، وقتی گریپ تازه است"],
@@ -940,9 +1548,15 @@ const days = [
          ["invrow",4,"۸–۱۲",90,"2-1-1-1","برای سخت‌ترشدن، میله را پایین‌تر ببر"],
          ["dbrow",3,"۱۰–۱۲ هر دست",75,"2-1-1-1",""],
          ["reardelt",3,"۱۵–۲۰",45,"2-1-2-1","سبک؛ کلیدی برای شانهٔ چپ"],
-         ["hammer",3,"۱۰–۱۲",60,"2-0-1-1",""] ]},
+         ["hammer",3,"۱۰–۱۲",60,"2-0-1-1",""] ],
+    en:{title:"Back + Pull-Up (1)", focus:"Lats · Pulling strength · Rear deltoid",
+      warm:"3 min bike · shoulder circles 10 each side · wall slide 10 · bar dead hang 2×20 sec",
+      cardio:"After training: 20 min bike or an incline treadmill walk at an easy intensity — you should be able to talk through it.",
+      exNotes:["Early in the session, while your grip is fresh","The single most important move on your pull-up path",
+               "Flat back; torso stays still","To make it harder, lower the bar","",
+               "Light; key for the left shoulder",""]}},
 
-  { key:"tue", day:"سه‌شنبه", wd:2, type:"train", title:"چهارسر و سرین", focus:"چهارسر · سرین · ساق",
+  { key:"tue", day:"سه‌شنبه", dayEn:"Tuesday", wd:2, type:"train", title:"چهارسر و سرین", focus:"چهارسر · سرین · ساق",
     warm:"۵ دقیقه دوچرخه · کشش هیپ فلکسور ۳۰ ثانیه هر طرف · کلم‌شل ۲×۱۵ · اسکات وزن بدن ۲×۱۰",
     cardio:"امروز هوازی نداری — پاها فردا هم باید کار کنند.",
     ex:[ ["squat",4,"۶–۸",150,"3-1-1-0","عمق را راحتیِ لگن تعیین می‌کند، نه دیگران"],
@@ -950,9 +1564,13 @@ const days = [
          ["goblet",3,"۱۰–۱۲",75,"3-1-1-0","پاشنه روی صفحه"],
          ["stepup",3,"۱۰ هر پا",75,"2-1-1-0","پای پایینی فنر نزند"],
          ["clamshell",3,"۲۰ هر طرف",45,"2-2-1-0",""],
-         ["calfseat",4,"۱۵",45,"2-2-1-1",""] ]},
+         ["calfseat",4,"۱۵",45,"2-2-1-1",""] ],
+    en:{title:"Quads & Glutes", focus:"Quadriceps · Glutes · Calves",
+      warm:"5 min bike · hip flexor stretch 30 sec each side · clamshell 2×15 · bodyweight squat 2×10",
+      cardio:"No cardio today — legs need to work again tomorrow too.",
+      exNotes:["Depth is set by hip comfort, not by anyone else","","Heels on a plate","Trailing foot shouldn't spring","",""]}},
 
-  { key:"wed", day:"چهارشنبه", wd:3, type:"train", title:"بالاتنهٔ فشاری و سلامت شانه", focus:"بالاسینه · دلتوئید · روتاتور کاف",
+  { key:"wed", day:"چهارشنبه", dayEn:"Wednesday", wd:3, type:"train", title:"بالاتنهٔ فشاری و سلامت شانه", focus:"بالاسینه · دلتوئید · روتاتور کاف",
     warm:"چرخش شانه ۱۰ هر طرف · وال اسلاید ۲×۱۰ · چرخش خارجی با دمبل ۱ کیلو ۱۵ هر طرف · شنای سبک ۸ تکرار",
     skill:"۱۰ دقیقهٔ اول جلسه، قبل از هر چیز دیگر: آماده‌سازی مچ (چرخش + کشش کف دست، ۲ دقیقه) · وال اسلاید ۲×۱۰ · پلهٔ فعلی نردبان هندستند، رو به دیوار.",
     cardio:"بعد از تمرین: ۲۵ دقیقه پیاده‌روی شیب‌دار روی تردمیل (شیب ۸ تا ۱۲، سرعت آرام).",
@@ -962,9 +1580,15 @@ const days = [
          ["lateral",3,"۱۲–۱۵",60,"2-1-2-1","تا خط شانه، نه بالاتر"],
          ["extrot",3,"۱۲–۱۵ هر طرف",45,"2-2-1-1","دمبل ۱ تا ۳ کیلو"],
          ["triceps",3,"۱۰–۱۲",60,"3-0-1-1",""],
-         ["bbcurl",3,"۸–۱۲",60,"3-0-1-1",""] ]},
+         ["bbcurl",3,"۸–۱۲",60,"3-0-1-1",""] ],
+    en:{title:"Upper-Body Pressing & Shoulder Health", focus:"Upper chest · Deltoids · Rotator cuff",
+      warm:"Shoulder circles 10 each side · wall slide 2×10 · 1 kg dumbbell external rotation 15 each side · light push-ups 8 reps",
+      skill:"First 10 minutes of the session, before anything else: wrist prep (rotations + palm stretch, 2 min) · wall slide 2×10 · your current handstand ladder rung, facing the wall.",
+      cardio:"After training: 25 min incline treadmill walk (incline 8 to 12, easy pace).",
+      exNotes:["Elbow at 45 degrees — not wider","Only while the left shoulder stays pain-free","Replaces your daily push-ups",
+               "Up to shoulder height, no higher","1 to 3 kg dumbbell","",""]}},
 
-  { key:"thu", day:"پنج‌شنبه", wd:4, type:"train", title:"پشت (۲) + پول‌آپ + مرکز بدن", focus:"لتیسیموس · گریپ · ثبات مرکزی",
+  { key:"thu", day:"پنج‌شنبه", dayEn:"Thursday", wd:4, type:"train", title:"پشت (۲) + پول‌آپ + مرکز بدن", focus:"لتیسیموس · گریپ · ثبات مرکزی",
     warm:"۳ دقیقه دوچرخه · وال اسلاید ۱۰ · آویزان از بارفیکس ۲۰ ثانیه · نشر خم سبک ۱۵",
     cardio:"امروز هوازی نداری. آخرین جلسهٔ هفته است — تمرکزت را روی کیفیت بگذار نه سرعت.",
     ex:[ ["deadhang",3,"۲۰–۳۰ ثانیه",60,"نگه‌داشتن","رکورد زمانت را در تب پول‌آپ ثبت کن"],
@@ -973,43 +1597,71 @@ const days = [
          ["pullover",3,"۱۲–۱۵",60,"3-1-1-1","سبک شروع کن — شانهٔ چپ"],
          ["inclinecurl",3,"۱۰–۱۲",60,"3-0-1-1",""],
          ["sideplank",3,"۳۰ ثانیه هر طرف",45,"نگه‌داشتن","جایگزین دراز‌نشست و بالا آوردن پا"],
-         ["hipflex",2,"۴۵ ثانیه هر طرف",30,"نگه‌داشتن",""] ]},
+         ["hipflex",2,"۴۵ ثانیه هر طرف",30,"نگه‌داشتن",""] ],
+    en:{title:"Back (2) + Pull-Up + Core", focus:"Lats · Grip · Core stability",
+      warm:"3 min bike · wall slide 10 · bar dead hang 20 sec · light rear delt fly 15",
+      cardio:"No cardio today. It's the last session of the week — focus on quality, not speed.",
+      exNotes:["Log your hang time in the Pull-Up tab","A thinner band matters more than more reps","Feet on a bench",
+               "Start light — left shoulder","","Replaces sit-ups and hanging leg raises",""]}},
 
-  { key:"fri", day:"جمعه", wd:5, type:"rest", title:"استراحت + هوازی سبک",
+  { key:"fri", day:"جمعه", dayEn:"Friday", wd:5, type:"rest", title:"استراحت + هوازی سبک",
     rest:"روز کلاس داری ولی تمرین وزنه نداری. هوازی امروز اختیاری است — اگر خسته‌ای، حذفش کن.",
     todo:["۳۰ تا ۴۰ دقیقه دویدن آرام، دوچرخه یا پیاده‌روی شیب‌دار. شدت باید طوری باشد که بتوانی حرف بزنی.",
           "کشش هیپ فلکسور ۲×۴۵ ثانیه هر طرف.",
           "وزن صبحگاهی این هفته را در تب «وزن» ثبت کن.",
-          "اگر این هفته خواب کم بوده یا امتحان داشتی، هوازی را حذف کن و فقط کشش را بزن."]}
+          "اگر این هفته خواب کم بوده یا امتحان داشتی، هوازی را حذف کن و فقط کشش را بزن."],
+    en:{title:"Rest + Light Cardio",
+      rest:"You have class today but no weight training. Cardio today is optional — skip it if you're tired.",
+      todo:["30 to 40 minutes of easy running, cycling, or an incline treadmill walk. The intensity should let you hold a conversation.",
+            "Hip flexor stretch, 2 sets of 45 seconds each side.",
+            "Log this week's morning weight in the Weight tab.",
+            "If sleep was short this week or you had an exam, drop the cardio and just do the stretch."]}}
 ];
 
 /* ---------- نردبان پول‌آپ ---------- */
 const LADDER = [
-  ["آویزان فعال ۳۰ ثانیه","بدون تاب، شانه‌ها از گوش دور. پایهٔ گریپ و کنترل کتف."],
-  ["کشش کتف ۳×۱۰ تمیز","بدون خم‌شدن آرنج. یاد گرفتن اینکه کشش از کتف شروع می‌شود."],
-  ["بارفیکس معکوس ۳×۱۲ (پا روی زمین)","سینه تا میله، بدن مثل تخته."],
-  ["بارفیکس معکوس ۳×۱۰ (پا روی نیمکت)","سخت‌ترین نسخهٔ افقی."],
-  ["نگاتیو با کنترل ۸ ثانیه","وقتی بتوانی ۵ نگاتیوِ ۸ ثانیه‌ای بزنی، خیلی نزدیکی."],
-  ["بارفیکس با کش نازک ۳×۳","کمترین کمک ممکن، کنترل کامل."],
-  ["اولین بارفیکس کامل","یک تکرار تمیز از آویزان کامل تا چانه بالای میله."],
-  ["سه بارفیکس پشت‌سرهم","از اینجا به بعد، بارفیکس یک حرکت معمولی برنامه‌ات است."]
+  ["آویزان فعال ۳۰ ثانیه","بدون تاب، شانه‌ها از گوش دور. پایهٔ گریپ و کنترل کتف.",
+   "Active dead hang, 30 seconds","No swinging, shoulders away from the ears. The foundation of grip and scapular control."],
+  ["کشش کتف ۳×۱۰ تمیز","بدون خم‌شدن آرنج. یاد گرفتن اینکه کشش از کتف شروع می‌شود.",
+   "Scapular pull-up, 3×10 clean reps","No elbow bend. Learning that the pull starts from the shoulder blades."],
+  ["بارفیکس معکوس ۳×۱۲ (پا روی زمین)","سینه تا میله، بدن مثل تخته.",
+   "Inverted row, 3×12 (feet on the floor)","Chest to the bar, body rigid like a plank."],
+  ["بارفیکس معکوس ۳×۱۰ (پا روی نیمکت)","سخت‌ترین نسخهٔ افقی.",
+   "Inverted row, 3×10 (feet on a bench)","The hardest horizontal version."],
+  ["نگاتیو با کنترل ۸ ثانیه","وقتی بتوانی ۵ نگاتیوِ ۸ ثانیه‌ای بزنی، خیلی نزدیکی.",
+   "Controlled negative, 8 seconds","Once you can do 5 negatives at 8 seconds each, you're very close."],
+  ["بارفیکس با کش نازک ۳×۳","کمترین کمک ممکن، کنترل کامل.",
+   "Assisted pull-up with a thin band, 3×3","The least assistance possible, full control."],
+  ["اولین بارفیکس کامل","یک تکرار تمیز از آویزان کامل تا چانه بالای میله.",
+   "Your first full pull-up","One clean rep from a full hang to chin over the bar."],
+  ["سه بارفیکس پشت‌سرهم","از اینجا به بعد، بارفیکس یک حرکت معمولی برنامه‌ات است.",
+   "Three pull-ups in a row","From here on, the pull-up is just a regular move in your program."]
 ];
 
 /* ---------- نردبان هندستند ---------- */
 const HSLADDER = [
-  ["تست دروازهٔ شانه","دست‌ها صاف بالای سر در چارچوب در؛ اگر کمر قوس گرفت یا دست جلوتر از گوش ماند، تحرک شانه هنوز آماده نیست."],
-  ["پلانک شانه (سگ رو به پایین فعال) ۳×۳۰ ثانیه","وزن را روی کف دست بینداز، شانه‌ها فعال و از گوش دور."],
-  ["پایک شولدر پرس روی جعبه ۳×۸","پاها روی جعبه، باسن بالا؛ ساخت قدرت فشاری اورهد شبیه هندستند."],
-  ["نگه‌داشتن هندستند سینه‌به‌دیوار ۳×۲۰ ثانیه","دست‌ها نزدیک دیوار، سینه رو به دیوار؛ خط صاف از مچ تا پاشنه."],
-  ["نگه‌داشتن هندستند پشت‌به‌دیوار ۳×۲۰ ثانیه","پاشنه به دیوار؛ یاد گرفتن بالانس واقعی بدون تکیه به سینه."],
-  ["جابه‌جایی وزن پشت‌به‌دیوار (تک‌دست لحظه‌ای)","یک دست را برای یک لحظه از زمین جدا کن؛ تمرین اصلاح بالانس با انگشتان."],
-  ["هندستند آزاد نزدیک دیوار، چند ثانیه","دیوار فقط به‌عنوان ایمنی؛ تلاش برای نگه‌داشتن بدون تکیه."],
-  ["هندستند آزاد ۵ ثانیه","وسط اتاق، بدون دیوار، پنج ثانیهٔ کنترل‌شده."]
+  ["تست دروازهٔ شانه","دست‌ها صاف بالای سر در چارچوب در؛ اگر کمر قوس گرفت یا دست جلوتر از گوش ماند، تحرک شانه هنوز آماده نیست.",
+   "Shoulder doorway test","Arms straight overhead in a doorframe; if the back arches or the arms stay in front of the ears, shoulder mobility isn't ready yet."],
+  ["پلانک شانه (سگ رو به پایین فعال) ۳×۳۰ ثانیه","وزن را روی کف دست بینداز، شانه‌ها فعال و از گوش دور.",
+   "Active downward-dog shoulder plank, 3×30 sec","Load the weight onto your palms, shoulders active and away from the ears."],
+  ["پایک شولدر پرس روی جعبه ۳×۸","پاها روی جعبه، باسن بالا؛ ساخت قدرت فشاری اورهد شبیه هندستند.",
+   "Box pike shoulder press, 3×8","Feet on a box, hips high; builds overhead pressing strength similar to a handstand."],
+  ["نگه‌داشتن هندستند سینه‌به‌دیوار ۳×۲۰ ثانیه","دست‌ها نزدیک دیوار، سینه رو به دیوار؛ خط صاف از مچ تا پاشنه.",
+   "Chest-to-wall handstand hold, 3×20 sec","Hands close to the wall, chest facing the wall; a straight line from wrists to heels."],
+  ["نگه‌داشتن هندستند پشت‌به‌دیوار ۳×۲۰ ثانیه","پاشنه به دیوار؛ یاد گرفتن بالانس واقعی بدون تکیه به سینه.",
+   "Back-to-wall handstand hold, 3×20 sec","Heels to the wall; learning real balance without leaning on your chest."],
+  ["جابه‌جایی وزن پشت‌به‌دیوار (تک‌دست لحظه‌ای)","یک دست را برای یک لحظه از زمین جدا کن؛ تمرین اصلاح بالانس با انگشتان.",
+   "Back-to-wall weight shifts (momentary single-hand lift)","Lift one hand off the floor for a moment; practicing balance correction with the fingers."],
+  ["هندستند آزاد نزدیک دیوار، چند ثانیه","دیوار فقط به‌عنوان ایمنی؛ تلاش برای نگه‌داشتن بدون تکیه.",
+   "Free handstand near the wall, a few seconds","The wall is just a safety net; trying to hold without leaning on it."],
+  ["هندستند آزاد ۵ ثانیه","وسط اتاق، بدون دیوار، پنج ثانیهٔ کنترل‌شده.",
+   "Free handstand, 5 seconds","Middle of the room, no wall, five controlled seconds."]
 ];
 
 /* ---------- راهنما ---------- */
 const info = [
- {t:"چطور با این برنامه کار کنم؟", body:`
+ {t:"چطور با این برنامه کار کنم؟",
+  enT:"How do I use this plan?", body:`
   <ul>
    <li><strong>پیشرفت دوگانه:</strong> داخل بازهٔ تکرار کار کن. وقتی در <em>همهٔ</em> ست‌ها به سقف بازه رسیدی، کمترین وزنهٔ ممکن (۱ تا ۲.۵ کیلو) اضافه کن و از کف بازه شروع کن.</li>
    <li><span class="hi">وزنهٔ هر حرکت را در فیلد «وزنه» ثبت کن.</span> بدون ثبت، بعد از سه هفته نمی‌دانی پیشرفت کرده‌ای یا نه — و در دورهٔ کات، این تنها مدرک توست که عضله‌ات را حفظ کرده‌ای.</li>
@@ -1017,18 +1669,37 @@ const info = [
    <li><strong>ست آخر را نزدیک ناتوانی بزن</strong> — یعنی حس کنی یک تا دو تکرار دیگر در چنته داری. ست‌های قبلی را با یک تکرار فاصلهٔ بیشتر بزن.</li>
    <li><strong>ترتیب حرکات را عوض نکن.</strong> حرکات سنگین و مهارتی عمداً اول جلسه‌اند، وقتی سیستم عصبی تازه است.</li>
    <li><strong>هر ۶ هفته یک هفته دیلود:</strong> همان حرکات، ولی وزنه‌ها ۴۰٪ سبک‌تر و ست‌ها نصف. حذف نکن، فقط سبک کن.</li>
+  </ul>`,
+  enBody:`
+  <ul>
+   <li><strong>Double progression:</strong> train inside the rep range. Once you hit the top of the range on <em>every</em> set, add the smallest possible weight (1 to 2.5 kg) and start again at the bottom of the range.</li>
+   <li><span class="hi">Log the weight for every move in the "weight" field.</span> Without logging, you won't know after three weeks whether you've progressed — and during a cut, this is your only evidence you're keeping your muscle.</li>
+   <li><strong>On a cut, breaking records isn't the goal.</strong> If your weights stay the same while your body weight drops, you're progressing. A slight strength dip in the final weeks of a cut is normal.</li>
+   <li><strong>Take the last set close to failure</strong> — meaning you feel you have one or two reps left in the tank. Leave one extra rep of buffer on earlier sets.</li>
+   <li><strong>Don't change the exercise order.</strong> Heavy and skill moves are deliberately placed first in the session, while the nervous system is fresh.</li>
+   <li><strong>One deload week every 6 weeks:</strong> same exercises, but weights 40% lighter and sets cut in half. Don't skip it, just lighten it.</li>
   </ul>`},
 
- {t:"مسیر پول‌آپ — چرا این ترتیب؟", body:`
+ {t:"مسیر پول‌آپ — چرا این ترتیب؟",
+  enT:"The pull-up path — why this order?", body:`
   <p>پول‌آپ فقط یک حرکت نیست، ترکیب چهار چیز است: قدرت لتیسیموس، قدرت جلوبازو، قدرت گریپ، و کنترل کتف. اگر یکی از این چهارتا لنگ باشد، تعداد تکرار صفر می‌ماند حتی اگر بقیه قوی باشند.</p>
   <ul>
    <li><strong>نگاتیو، موتور اصلی است.</strong> عضله در فاز منفی حدود ۱.۳ برابر فاز مثبت نیرو تولید می‌کند. یعنی الان می‌توانی وزنی را کنترل‌شده پایین بیاوری که هنوز نمی‌توانی بالا ببری — و دقیقاً همین، مسیر ساختن قدرت مثبت است.</li>
    <li><strong>بارفیکس معکوس، حجم را می‌سازد.</strong> نگاتیو تعداد کمی دارد؛ حجم کافی برای رشد عضله از حرکات افقی می‌آید.</li>
    <li><span class="hi">کاهش وزن بدن، سومین اهرم است.</span> هر کیلو که کم می‌کنی، یک کیلو کمتر باید بالا ببری. دورهٔ کات و مسیر پول‌آپ، دو کار جدا نیستند — یک کارند.</li>
    <li><strong>انتظار واقع‌بینانه:</strong> با شرایط فعلی، اولین بارفیکس کامل معمولاً بین ۳ تا ۶ ماه می‌آید. هر کس عدد کوتاه‌تری به تو بدهد، یا تو را نمی‌شناسد یا دارد چیزی می‌فروشد.</li>
+  </ul>`,
+  enBody:`
+  <p>A pull-up isn't just one move — it's a combination of four things: lat strength, biceps strength, grip strength, and scapular control. If any one of the four is weak, your rep count stays at zero even if the other three are strong.</p>
+  <ul>
+   <li><strong>The negative is the main engine.</strong> Muscle produces roughly 1.3 times more force in the negative phase than the positive one. That means you can already lower, under control, a load you still can't lift — and that's exactly the path to building positive strength.</li>
+   <li><strong>The inverted row builds volume.</strong> Negatives are low in reps; enough volume for muscle growth comes from the horizontal pulling moves.</li>
+   <li><span class="hi">Losing body weight is the third lever.</span> Every kilo you lose is one less kilo you have to pull up. The cut and the pull-up path aren't two separate projects — they're one.</li>
+   <li><strong>A realistic expectation:</strong> given your current situation, a first full pull-up typically arrives somewhere between 3 and 6 months. Anyone who promises you a shorter number either doesn't know you or is selling something.</li>
   </ul>`},
 
- {t:"ایلیوپسواس کوتاه — چه بکن، چه نکن", danger:true, body:`
+ {t:"ایلیوپسواس کوتاه — چه بکن، چه نکن", danger:true,
+  enT:"Short iliopsoas — do's and don'ts", body:`
   <p><strong>اول از همه: حرکاتی که فیزیوتراپت داده، بر هر چیزی در این برنامه اولویت دارند.</strong> این بخش جایگزین آن‌ها نیست، کنارشان است. اگر تناقضی دیدی، حرف فیزیوتراپ درست است.</p>
   <ul>
    <li><span class="hi">هر روز کشش کن، نه هفته‌ای دو بار.</span> عضلهٔ کوتاه‌شده با تحریک روزانه تغییر می‌کند. در برنامه دو بار آمده، ولی روزهای دیگر هم خودت انجامش بده.</li>
@@ -1036,9 +1707,19 @@ const info = [
    <li><strong>کور را با ضدحرکت بساز، نه با خم‌شدن.</strong> ددباگ و پلانک پهلو در برنامه هستند و دراز‌نشست و بالا آوردن پای آویزان نیستند — چون دومی‌ها مستقیماً ایلیوپسواس را قوی‌تر و کوتاه‌تر می‌کنند.</li>
    <li><strong>در اسکات و ددلیفت،</strong> اگر جلوی لگنت گیر کرد یا کمرت زیر باسن جمع شد، دامنه‌ات را کوتاه کن. عمق بیشتر ارزش این ریسک را ندارد.</li>
    <li><strong>دویدن،</strong> هیپ فلکسور را زیاد درگیر می‌کند. تا وقتی لگنت علامت دارد، دوچرخه و پیاده‌روی شیب‌دار انتخاب بهتری‌اند.</li>
+  </ul>`,
+  enBody:`
+  <p><strong>First and foremost: the exercises your physical therapist gave you outrank everything in this plan.</strong> This section doesn't replace them, it sits alongside them. If you see a contradiction, the physical therapist is right.</p>
+  <ul>
+   <li><span class="hi">Stretch every day, not twice a week.</span> A shortened muscle changes with daily stimulus. The plan schedules it twice, but do it yourself on the other days too.</li>
+   <li><strong>Strong glutes are half the treatment.</strong> When the glutes are weak, the iliopsoas is forced to work harder and stays tighter. The hip thrust and glute bridge in this plan exist exactly for this reason.</li>
+   <li><strong>Build the core with anti-movement, not with flexion.</strong> The dead bug and side plank are in the plan, and sit-ups and hanging leg raises are not — because the latter directly make the iliopsoas stronger and shorter.</li>
+   <li><strong>In squats and deadlifts,</strong> if the front of your hip pinches or your lower back tucks under, shorten your range. Extra depth isn't worth that risk.</li>
+   <li><strong>Running</strong> loads the hip flexor heavily. As long as your hip is flagging symptoms, cycling and incline walking are better choices.</li>
   </ul>`},
 
- {t:"شانهٔ چپ — قوانین ثابت", danger:true, body:`
+ {t:"شانهٔ چپ — قوانین ثابت", danger:true,
+  enT:"Left shoulder — fixed rules", body:`
   <p>گیرکردن شانه معمولاً یعنی فضای بین سر بازو و زائدهٔ آخرومی تنگ شده. سه چیز آن را بدتر می‌کند: دست بالای سر با بازوی چرخیده به داخل، آرنج کاملاً باز، و ضعف عضلات پایدارکنندهٔ کتف.</p>
   <ul>
    <li><strong>هرگز نزن:</strong> پرس از پشت گردن، نشر جانب با شست رو به پایین، دیپ عمیق، لت پول‌داون از پشت گردن.</li>
@@ -1046,26 +1727,53 @@ const info = [
    <li><strong>گریپ خنثی</strong> (کف دست‌ها رو به هم) در همهٔ حرکات بالای سر، امن‌ترین انتخاب توست.</li>
    <li><strong>قانون درد:</strong> فشار و سوزش عضله طبیعی است. درد تیز، صدای تق، یا حسی که بازو در جایی «گیر» می‌کند، طبیعی نیست — همان‌جا ست را تمام کن.</li>
    <li><strong>اگر بعد از سه هفته بهتر نشد یا بدتر شد،</strong> برگرد پیش فیزیوتراپ. هیچ برنامه‌ای جای معاینه را نمی‌گیرد.</li>
+  </ul>`,
+  enBody:`
+  <p>Shoulder impingement usually means the space between the top of the arm bone and the acromion has narrowed. Three things make it worse: an overhead arm rotated inward, a fully flared elbow, and weak scapular stabilizer muscles.</p>
+  <ul>
+   <li><strong>Never do:</strong> behind-the-neck press, lateral raise with the thumb pointing down, deep dips, behind-the-neck lat pulldown.</li>
+   <li><span class="hi">Always do:</span> bent-over rear delt fly, external rotation, wall slide. These are in the plan, and they are not the first thing to cut when you're short on time — they're the last.</li>
+   <li><strong>A neutral grip</strong> (palms facing each other) is your safest choice on every overhead move.</li>
+   <li><strong>The pain rule:</strong> pressure and muscle burn are normal. Sharp pain, a clicking sound, or a feeling that the arm "catches" somewhere is not normal — end the set right there.</li>
+   <li><strong>If it hasn't improved or has gotten worse after three weeks,</strong> go back to your physical therapist. No program replaces an exam.</li>
   </ul>`},
 
- {t:"هوازی، دویدن و کات با هم", body:`
+ {t:"هوازی، دویدن و کات با هم",
+  enT:"Cardio, running, and the cut together", body:`
   <ul>
    <li><strong>هوازی بعد از وزنه، نه قبلش.</strong> اگر قبل بزنی، قدرتت در حرکات اصلی افت می‌کند و همان چیزی که می‌خواهی حفظ کنی (عضله) آسیب می‌بیند.</li>
    <li><strong>روزهای پا هوازی ندارند</strong> — نه یک‌شنبه، نه سه‌شنبه. پاها باید برای جلسهٔ بعد ریکاوری کنند.</li>
    <li><span class="hi">۱۲ هزار قدم روزانه‌ات، از هر جلسهٔ هوازی ارزشمندتر است.</span> آن را از دست نده. پیاده‌روی بین کلاس‌ها را ادامه بده.</li>
    <li><strong>شدت هوازی را پایین نگه دار.</strong> هوازی سنگین در دورهٔ کات، ریکاوری تمرین وزنه را می‌خورد. معیار ساده: باید بتوانی حین آن جمله‌های کامل بگویی.</li>
    <li><strong>اگر خسته‌ای، اول هوازی را حذف کن، نه وزنه را.</strong> وزنه چیزی است که عضله‌ات را در کات نگه می‌دارد.</li>
+  </ul>`,
+  enBody:`
+  <ul>
+   <li><strong>Cardio comes after weights, never before.</strong> Doing it first drops your strength on the main lifts and damages the exact thing you're trying to protect — muscle.</li>
+   <li><strong>Leg days carry no cardio</strong> — not Sunday, not Tuesday. The legs need to recover for the next session.</li>
+   <li><span class="hi">Your 12,000 daily steps are worth more than any single cardio session.</span> Don't lose them. Keep walking between classes.</li>
+   <li><strong>Keep cardio intensity low.</strong> Hard cardio during a cut eats into the recovery your weight training needs. A simple test: you should be able to speak full sentences through it.</li>
+   <li><strong>If you're tired, cut cardio first, not the weights.</strong> The weights are what keeps your muscle during the cut.</li>
   </ul>`},
 
- {t:"خواب، درس و ریکاوری", body:`
+ {t:"خواب، درس و ریکاوری",
+  enT:"Sleep, school, and recovery", body:`
   <ul>
    <li><span class="hi">خواب ۱۰:۳۰ تا ۷ خوب است — آن را نگه دار.</span> در دورهٔ کات، خواب کم مستقیماً باعث از دست دادن عضله و افزایش گرسنگی می‌شود. اگر مجبوری بین خواب و تمرین یکی را انتخاب کنی، خواب را انتخاب کن.</li>
    <li><strong>هفتهٔ امتحان یک هفتهٔ دیلود است.</strong> استرس ذهنی و استرس تمرینی از یک منبع ریکاوری خرج می‌کنند. آن هفته وزنه‌ها را ۴۰٪ سبک کن و ست‌ها را نصف کن — ولی به باشگاه برو.</li>
    <li><strong>نشستن هشت ساعته</strong> ایلیوپسواس را کوتاه‌تر می‌کند. پیاده‌روی ۱۰ دقیقه‌ای بین کلاس‌ها دقیقاً پادزهر آن است — ادامه‌اش بده و در آن ده دقیقه یک بار هم کشش هیپ فلکسور بزن.</li>
    <li><strong>اگر دو جلسهٔ پشت‌سرهم احساس کردی وزنه‌ها سنگین‌تر از همیشه‌اند،</strong> مشکل انگیزه نیست، ریکاوری است. یک روز اضافه استراحت کن.</li>
+  </ul>`,
+  enBody:`
+  <ul>
+   <li><span class="hi">Sleeping 10:30 to 7 is good — keep it.</span> During a cut, short sleep directly causes muscle loss and increased hunger. If you ever have to choose between sleep and training, choose sleep.</li>
+   <li><strong>Exam week is a deload week.</strong> Mental stress and training stress draw from the same recovery pool. That week, cut the weights by 40% and the sets in half — but still go to the gym.</li>
+   <li><strong>Eight hours of sitting</strong> shortens the iliopsoas. A 10-minute walk between classes is exactly the antidote — keep it up, and throw in one hip flexor stretch during those ten minutes.</li>
+   <li><strong>If two sessions in a row feel heavier than usual,</strong> the problem isn't motivation, it's recovery. Take one extra rest day.</li>
   </ul>`},
 
- {t:"علائم هشدار — کِی باید توقف کنی", danger:true, body:`
+ {t:"علائم هشدار — کِی باید توقف کنی", danger:true,
+  enT:"Warning signs — when to stop", body:`
   <p>این برنامه برای بدنی نوشته شده که سالم است و می‌خواهد قوی‌تر شود. اگر هر کدام از این‌ها را دیدی، برنامه را سبک کن و با پزشک صحبت کن:</p>
   <ul>
    <li><strong>بی‌نظمی یا قطع پریود.</strong> این شایع‌ترین و مهم‌ترین علامت است که مقدار انرژی دریافتی، کمتر از نیاز بدن است. کات را متوقف کن و به پزشک مراجعه کن — این چیزی نیست که با صبرکردن درست شود.</li>
@@ -1074,9 +1782,20 @@ const info = [
    <li><strong>درد مفصلی که بعد از دو روز استراحت هم می‌ماند</strong> — به‌خصوص در لگن یا شانهٔ چپ.</li>
    <li><strong>اگر غذا خوردن تبدیل به منبع استرس یا احساس گناه شد</strong>، یا دیدی داری وعده‌ای را حذف می‌کنی تا عدد ترازو پایین بیاید — این نشانهٔ خطر است. با پزشک یا یک متخصص تغذیه صحبت کن.</li>
    <li><span class="hi">تو ۱۷ سالت است.</span> بدنت هنوز در حال تکمیل رشد استخوان و تراکم استخوانی است. کات ملایم در این سن اشکالی ندارد، ولی کسری شدید کالری اشکال دارد — و اثرش تا سال‌ها بعد می‌ماند.</li>
+  </ul>`,
+  enBody:`
+  <p>This plan is written for a body that is healthy and wants to get stronger. If you notice any of the following, lighten the plan and talk to a doctor:</p>
+  <ul>
+   <li><strong>Irregular or missed periods.</strong> This is the most common and most important sign that your energy intake is below what your body needs. Stop the cut and see a doctor — this is not something that fixes itself with waiting.</li>
+   <li><strong>A steady, unexplained drop in strength</strong> across several sessions in a row, while sleep and nutrition have stayed consistent.</li>
+   <li><strong>Constant fatigue, frequent colds, or poor-quality sleep.</strong></li>
+   <li><strong>Joint pain that persists even after two days of rest</strong> — especially in the hip or the left shoulder.</li>
+   <li><strong>If eating turns into a source of stress or guilt,</strong> or you notice yourself skipping a meal to bring the number on the scale down — that's a warning sign. Talk to a doctor or a registered dietitian.</li>
+   <li><span class="hi">You are 17.</span> Your body is still completing bone growth and bone density. A mild cut is fine at this age, but a severe calorie deficit is not — and its effects can last for years.</li>
   </ul>`},
 
- {t:"هندستند با شانهٔ گیرکننده — قوانین", danger:true, body:`
+ {t:"هندستند با شانهٔ گیرکننده — قوانین", danger:true,
+  enT:"Handstands with an impinging shoulder — the rules", body:`
   <p>هندستند یعنی تمام وزن بدن روی یک شانهٔ اورهد قفل‌شده — دقیقاً وضعیتی که برای شانهٔ چپت پرریسک‌ترین حالت ممکن است. این کار را فقط طبق پلهٔ نردبان و با این قوانین ادامه بده.</p>
   <ul>
    <li><span class="hi">هرگز از پلهٔ فعلی جلو نزن.</span> پله را وقتی بالا ببر که دو جلسهٔ پیاپی بدون کوچک‌ترین درد یا گیرکردن انجامش داده باشی، نه یک بار شانسی.</li>
@@ -1084,59 +1803,72 @@ const info = [
    <li><strong>گریپ خنثی و رو به دیوار، تنها حالت مجازند</strong> تا وقتی فیزیوتراپت چیز دیگری نگفته. هندستند وسط اتاق بدون دیوار، فقط بعد از تسلط کامل روی پله‌های دیواری.</li>
    <li><strong>قانون درد همان قانون همیشگی است:</strong> فشار و لرزش بازو طبیعی است؛ درد تیز، صدای تق، یا حسی که شانه در جایی «گیر» می‌کند، طبیعی نیست — همان لحظه از دیوار پایین بیا.</li>
    <li><strong>اگر امروز شانه سفت‌تر یا دردناک‌تر از حد معمول است،</strong> هندستند را حذف کن و فقط وال اسلاید و کشش کتف بزن. یک روز عقب افتادن روی نردبان، هزینه‌ای ندارد.</li>
+  </ul>`,
+  enBody:`
+  <p>A handstand means your entire body weight is locked onto one overhead shoulder — exactly the highest-risk position possible for your left shoulder. Only progress this by the ladder and by these rules.</p>
+  <ul>
+   <li><span class="hi">Never skip ahead of your current rung.</span> Move up a rung only once you've done it across two sessions in a row with zero pain or catching — not one lucky attempt.</li>
+   <li><strong>The 10-minute warm-up (wrists + wall slide) is not optional.</strong> A cold shoulder going straight under body weight is exactly what you need to avoid.</li>
+   <li><strong>A neutral grip facing the wall is the only allowed form</strong> until your physical therapist says otherwise. A free handstand in the middle of the room, without a wall, comes only after full mastery of the wall rungs.</li>
+   <li><strong>The pain rule is the same as always:</strong> pressure and arm trembling are normal; sharp pain, a clicking sound, or a feeling that the shoulder "catches" somewhere is not — come down off the wall the instant you feel it.</li>
+   <li><strong>If your shoulder is stiffer or more painful than usual today,</strong> drop the handstand and just do wall slides and scapular pull-ups. Losing a day on the ladder costs nothing.</li>
   </ul>`}
 ];
 
 /* ---------- تغذیه ---------- */
 function renderNut(){
+  const cal=2200, pro=140, proLo=130, proHi=150, fat=70, fatLo=65, fatHi=80, carb=250;
   view.innerHTML=`<div class="nut">
     <div class="ncard ncal">
-      <div class="big">۲۲۰۰</div><div class="u">کالری در روز (هدف کات ملایم)</div>
-      <div class="rg">نگه‌دارندهٔ تخمینی ~۲۵۰۰ · بازهٔ کاری ۲۱۰۰–۲۳۰۰</div>
+      <div class="big">${faD(cal)}</div><div class="u">${t('nutCal')}</div>
+      <div class="rg">${UI[LANG].nutMaint(2500)}</div>
     </div>
     <div class="ncard">
-      <div class="ntitle">درشت‌مغذی‌های روزانه</div>
+      <div class="ntitle">${t('nutMacros')}</div>
       <div class="macros">
-        <div class="macro m-pro"><div class="g">۱۴۰</div><div class="n">پروتئین (g)</div><div class="p">۱۳۰–۱۵۰</div></div>
-        <div class="macro m-fat"><div class="g">۷۰</div><div class="n">چربی (g)</div><div class="p">۶۵–۸۰</div></div>
-        <div class="macro m-carb"><div class="g">۲۵۰</div><div class="n">کربوهیدرات (g)</div><div class="p">باقیِ کالری</div></div>
+        <div class="macro m-pro"><div class="g">${faD(pro)}</div><div class="n">${t('nutProtein')}</div><div class="p">${faD(proLo)}–${faD(proHi)}</div></div>
+        <div class="macro m-fat"><div class="g">${faD(fat)}</div><div class="n">${t('nutFat')}</div><div class="p">${faD(fatLo)}–${faD(fatHi)}</div></div>
+        <div class="macro m-carb"><div class="g">${faD(carb)}</div><div class="n">${t('nutCarb')}</div><div class="p">${t('nutCarbRest')}</div></div>
       </div>
       <div class="bar"><span style="width:25%;background:var(--ember)"></span><span style="width:29%;background:var(--gold)"></span><span style="width:46%;background:var(--carb)"></span></div>
-      <div class="barleg"><span>پروتئین<i style="background:var(--ember)"></i></span><span>چربی<i style="background:var(--gold)"></i></span><span>کربوهیدرات<i style="background:var(--carb)"></i></span></div>
+      <div class="barleg"><span>${t('nutLegProtein')}<i style="background:var(--ember)"></i></span><span>${t('nutLegFat')}<i style="background:var(--gold)"></i></span><span>${t('nutLegCarb')}<i style="background:var(--carb)"></i></span></div>
     </div>
     <div class="ncard">
-      <div class="ntitle">اصول</div>
+      <div class="ntitle">${t('nutPrinciples')}</div>
       <ul class="nlist">
-        <li><span class="hi">کسری ملایم، عمداً ملایم:</span> حدود ۳۰۰ کالری زیر نگه‌دارنده. سرعت هدف ۰.۳ تا ۰.۵ کیلو در هفته. سریع‌تر از این یعنی داری عضله و انرژی درس‌خواندن را می‌سوزانی، نه فقط چربی.</li>
-        <li><b>کف مطلق ۱۸۰۰ کالری.</b> متابولیسم پایهٔ تو حدود ۱۵۵۰ است و روزی ۵ جلسه تمرین و ۱۲ هزار قدم داری. پایین‌تر از این کف نرو، حتی اگر وزن یک هفته ثابت ماند.</li>
-        <li><b>پروتئین مهم‌ترین عدد است:</b> در ۴ تا ۶ وعده پخش شود (تو همین الان ۳ وعده و ۳ میان‌وعده داری — ساختار خوبی است، فقط پروتئین هر کدام را بالا ببر).</li>
-        <li><b>گلوتن محدود:</b> منابع کربوهیدرات تو برنج، سیب‌زمینی، جو دوسر بدون گلوتن، ذرت، حبوبات، گندم سیاه و میوه‌اند. کربوهیدرات را حذف نکن — فقط منبعش را عوض کن.</li>
-        <li><b>کربوهیدرات را حول تمرین بگذار</b> تا قدرتت در حرکات سنگین حفظ شود.</li>
-        <li><b>آهن، کلسیم و ویتامین D</b> در دختر ۱۷ ساله‌ای که هفته‌ای ۸ جلسه فعالیت دارد و در کسری کالری است، بیشترین ریسک کمبود را دارند. اگر آزمایش نداده‌ای، یک بار بده.</li>
-        <li><b>مکمل‌های فعلی‌ات منطقی‌اند:</b> وی برای رساندن پروتئین، کراتین ۳ تا ۵ گرم روزانه (زمانش مهم نیست)، منیزیم و مولتی‌ویتامین به‌عنوان بیمه. چیزی به این لیست اضافه نکن.</li>
-        <li><b>۲۵ تا ۳۵ گرم فیبر · ۲.۵ تا ۳ لیتر آب · خواب ۸ ساعت.</b></li>
+        <li>${t('nutP1')}</li>
+        <li>${t('nutP2')}</li>
+        <li>${t('nutP3')}</li>
+        <li>${t('nutP4')}</li>
+        <li>${t('nutP5')}</li>
+        <li>${t('nutP6')}</li>
+        <li>${t('nutP7')}</li>
+        <li>${t('nutP8')}</li>
       </ul>
     </div>
     <div class="ncard">
-      <div class="ntitle">تنظیم با واقعیت</div>
+      <div class="ntitle">${t('nutTune')}</div>
       <ul class="nlist">
-        <li>هر هفته یک بار، صبح ناشتا بعد از دستشویی، وزن بگیر و در تب «وزن» ثبت کن. یک بار در هفته، همیشه همان روز و همان ساعت.</li>
-        <li><b>اگر بعد از ۳ هفته</b> میانگین وزنت تغییری نکرد: حدود ۱۵۰ کالری کم کن یا یک جلسهٔ هوازی اضافه کن. هر دو را با هم نه.</li>
-        <li><b>اگر بیشتر از ۰.۷ کیلو در هفته کم کردی:</b> کالری را ۱۵۰ تا ۲۰۰ بالا ببر. کاهش سریع در سن تو، اول از همه عضله و تراکم استخوان را می‌برد.</li>
-        <li><b>نوسان روزانهٔ ۱ تا ۲ کیلو کاملاً طبیعی است</b> و به آب، نمک و دورهٔ ماهانه ربط دارد نه به چربی. فقط به روند سه‌هفته‌ای نگاه کن، نه به عدد امروز.</li>
+        <li>${t('nutT1')}</li>
+        <li>${t('nutT2')}</li>
+        <li>${t('nutT3')}</li>
+        <li>${t('nutT4')}</li>
       </ul>
-      <div class="disc"><b>توجه:</b> این اعداد تخمین‌اند و بر پایهٔ فرمول‌های استاندارد و تست ترکیب بدنی محاسبه شده‌اند — تجویز پزشکی نیستند. چون ۱۷ سالت است و هنوز در سن رشدی، قبل از شروع دورهٔ کات این عددها را با پزشک یا متخصص تغذیه چک کن. اگر پریودت نامنظم شد، کات را متوقف کن و به پزشک مراجعه کن.</div>
+      <div class="disc">${t('nutDisc')}</div>
     </div>
   </div>`;
 }
 
 /* ---------- راهنما ---------- */
 function renderInfo(){
+  const en = LANG==='en';
   let html = `<div class="acc">`;
   info.forEach((s,i)=>{
+    const title = en ? (s.enT||s.t) : s.t;
+    const body = en ? (s.enBody||s.body) : s.body;
     html += `<div class="pi ${s.danger?'danger':''}" id="p-${i}">
-      <button onclick="accToggle(${i})">${s.t}<span class="ic">+</span></button>
-      <div class="body"><div class="bin">${s.body}</div></div></div>`;
+      <button onclick="accToggle(${i})">${title}<span class="ic">+</span></button>
+      <div class="body"><div class="bin">${body}</div></div></div>`;
   });
   view.innerHTML = html + `</div>`;
 }
@@ -1145,7 +1877,11 @@ function renderInfo(){
 function getLog(){ try{ return JSON.parse(store.get(V+"wlog")||"[]"); }catch(e){ return []; } }
 function saveLog(a){ store.set(V+"wlog",JSON.stringify(a)); }
 function faDate(iso){
-  try{ return new Date(iso).toLocaleDateString("fa-IR",{year:"numeric",month:"long",day:"numeric"}); }
+  try{
+    return LANG==='fa'
+      ? new Date(iso).toLocaleDateString("fa-IR",{year:"numeric",month:"long",day:"numeric"})
+      : new Date(iso).toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});
+  }
   catch(e){ return iso; }
 }
 function addWeight(){
@@ -1188,34 +1924,34 @@ function renderWeight(){
       <span class="kg">${faD(a[i].w.toFixed(1))}</span>
       <span class="dl ${c}">${df==null?"—":(df>0?"+":"")+faD(df.toFixed(1))}</span>
       <span class="dt">${faDate(a[i].d)}</span>
-      <button class="x" onclick="delWeight(${i})" aria-label="حذف">✕</button></div>`;
+      <button class="x" onclick="delWeight(${i})" aria-label="${t('removeLabel')}">✕</button></div>`;
   }
   view.innerHTML=`<div class="wl">
     <div class="ncard">
-      <div class="ntitle">وزن این هفته</div>
-      <div style="font-size:12px;color:var(--muted);line-height:1.85">صبح ناشتا، بعد از دستشویی، قبل از صبحانه — همیشه همان روز هفته. هفته‌ای یک بار کافی است.</div>
+      <div class="ntitle">${t('weekTitle')}</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.85">${t('weekHint')}</div>
       <div class="winput">
-        <input id="wIn" type="text" inputmode="decimal" placeholder="کیلوگرم" aria-label="وزن به کیلوگرم">
-        <button onclick="addWeight()">ثبت</button>
+        <input id="wIn" type="text" inputmode="decimal" placeholder="${t('kgPlaceholder')}" aria-label="${t('kgPlaceholder')}">
+        <button onclick="addWeight()">${t('logBtn')}</button>
       </div>
       <div class="wstats">
-        <div class="wstat"><div class="g">${last!=null?faD(last.toFixed(1)):"—"}</div><div class="n">آخرین وزن</div></div>
-        <div class="wstat"><div class="g ${cls(d1)}">${d1==null?"—":(d1>0?"+":"")+faD(d1.toFixed(1))}</div><div class="n">نسبت به دفعهٔ قبل</div></div>
-        <div class="wstat"><div class="g ${cls(dt)}">${dt==null?"—":(dt>0?"+":"")+faD(dt.toFixed(1))}</div><div class="n">از شروع ثبت</div></div>
+        <div class="wstat"><div class="g">${last!=null?faD(last.toFixed(1)):"—"}</div><div class="n">${t('lastWeight')}</div></div>
+        <div class="wstat"><div class="g ${cls(d1)}">${d1==null?"—":(d1>0?"+":"")+faD(d1.toFixed(1))}</div><div class="n">${t('vsLast')}</div></div>
+        <div class="wstat"><div class="g ${cls(dt)}">${dt==null?"—":(dt>0?"+":"")+faD(dt.toFixed(1))}</div><div class="n">${t('sinceStart')}</div></div>
       </div>
       ${sparkline(a)}
     </div>
     <div class="ncard">
-      <div class="ntitle">تاریخچه</div>
-      ${n?`<div class="wrows">${rows}</div>`:`<div class="empty">هنوز چیزی ثبت نشده.<br>اولین وزنت را همین الان وارد کن تا نقطهٔ شروع مشخص شود.</div>`}
+      <div class="ntitle">${t('history')}</div>
+      ${n?`<div class="wrows">${rows}</div>`:`<div class="empty">${t('emptyLog')}</div>`}
     </div>
     <div class="ncard">
-      <div class="ntitle">چطور بخوانمش</div>
+      <div class="ntitle">${t('howToRead')}</div>
       <ul class="nlist">
-        <li>به عدد یک هفته نگاه نکن؛ به <b>روند سه هفته</b> نگاه کن. نوسان ۱ تا ۲ کیلو بین دو اندازه‌گیری طبیعی است.</li>
-        <li>سرعت هدف: <span class="hi">۰.۳ تا ۰.۵ کیلو در هفته.</span> کندتر از این هم اشکالی ندارد؛ سریع‌تر از این اشکال دارد.</li>
-        <li>هفتهٔ قبل از پریود معمولاً وزن بالا می‌رود و ربطی به چربی ندارد. آن هفته را در قضاوت روند حساب نکن.</li>
-        <li>اگر سه هفتهٔ پیاپی وزن ثابت بود و کالری‌ات هم واقعاً ثابت بوده، آن‌وقت تنظیم کن — نه زودتر.</li>
+        <li>${t('wRead1')}</li>
+        <li>${t('wRead2')}</li>
+        <li>${t('wRead3')}</li>
+        <li>${t('wRead4')}</li>
       </ul>
     </div>
   </div>`;
@@ -1233,43 +1969,42 @@ function puToggle(i){
 }
 function puLog(k,el){ puSet(k, el.value.trim()); el.blur(); }
 function renderPU(){
+  const en=LANG==='en';
   const done=puDone();
   let now=-1; for(let i=0;i<LADDER.length;i++){ if(!done.includes(i)){ now=i; break; } }
   const best=puGet("best","0");
   const steps=LADDER.map((s,i)=>`
     <div class="lstep ${done.includes(i)?'done':''} ${i===now?'now':''}" onclick="puToggle(${i})">
       <div class="mk">${done.includes(i)?"✓":faD(i+1)}</div>
-      <div><div class="lt">${s[0]}</div><div class="ld">${s[1]}</div></div>
+      <div><div class="lt">${en?s[2]:s[0]}</div><div class="ld">${en?s[3]:s[1]}</div></div>
     </div>`).join("");
   view.innerHTML=`<div class="pu">
     <div class="puhero">
       <div class="big">${faD(best||"0")}</div>
-      <div class="u">بارفیکس کامل، بدون کمک</div>
-      <div class="rg">${(+best>0)
-        ? "رسیدی. حالا هدف بعدی، سه تکرار پشت‌سرهم است."
-        : "هنوز صفر — و این کاملاً طبیعی است. مسیرش پایین‌تر نوشته شده."}</div>
+      <div class="u">${t('puFull')}</div>
+      <div class="rg">${(+best>0) ? t('puReached') : t('puZero')}</div>
     </div>
     <div class="ncard">
-      <div class="ntitle">رکوردهای فعلی</div>
+      <div class="ntitle">${t('curRecords')}</div>
       <div class="pulog">
-        <div class="pufield"><div class="l">بارفیکس کامل</div>
-          <input type="text" inputmode="numeric" value="${esc(puGet("best",""))}" placeholder="۰" onchange="puLog('best',this)"></div>
-        <div class="pufield"><div class="l">آویزان (ثانیه)</div>
+        <div class="pufield"><div class="l">${t('puFullL')}</div>
+          <input type="text" inputmode="numeric" value="${esc(puGet("best",""))}" placeholder="${faD(0)}" onchange="puLog('best',this)"></div>
+        <div class="pufield"><div class="l">${t('puHangL')}</div>
           <input type="text" inputmode="numeric" value="${esc(puGet("hang",""))}" placeholder="—" onchange="puLog('hang',this)"></div>
-        <div class="pufield"><div class="l">نگاتیو (ثانیه)</div>
+        <div class="pufield"><div class="l">${t('puNegL')}</div>
           <input type="text" inputmode="numeric" value="${esc(puGet("neg",""))}" placeholder="—" onchange="puLog('neg',this)"></div>
-        <div class="pufield"><div class="l">کمک فعلی</div>
-          <input type="text" value="${esc(puGet("band",""))}" placeholder="کش کلفت" onchange="puLog('band',this)"></div>
+        <div class="pufield"><div class="l">${t('puBandL')}</div>
+          <input type="text" value="${esc(puGet("band",""))}" placeholder="${t('puBandPh')}" onchange="puLog('band',this)"></div>
       </div>
       <div style="font-size:11.5px;color:var(--faint);margin-top:11px;line-height:1.85">
-        بعد از هر جلسهٔ پول‌آپ (دوشنبه و پنج‌شنبه) این چهار عدد را به‌روز کن. سه عدد اول قبل از اینکه عدد بزرگ بالا تکان بخورد، ماه‌ها پیشرفت نشان می‌دهند — و همان‌ها معیار واقعی تواند.
+        ${t('puNote')}
       </div>
     </div>
     <div class="ncard">
-      <div class="ntitle">نردبان — روی هر پله بزن تا تیک بخورد</div>
+      <div class="ntitle">${t('ladderTitle')}</div>
       <div class="ladder">${steps}</div>
       <div style="font-size:11.5px;color:var(--faint);margin-top:10px;line-height:1.85">
-        پله را وقتی تیک بزن که <b style="color:var(--ice)">دو جلسهٔ پیاپی</b> بتوانی انجامش دهی، نه یک بار شانسی.
+        ${t('puLadderNote')}
       </div>
     </div>
   </div>`;
@@ -1287,43 +2022,42 @@ function hsToggle(i){
 }
 function hsLog(k,el){ hsSet(k, el.value.trim()); el.blur(); }
 function renderHS(){
+  const en=LANG==='en';
   const done=hsDone();
   let now=-1; for(let i=0;i<HSLADDER.length;i++){ if(!done.includes(i)){ now=i; break; } }
   const best=hsGet("best","0");
   const steps=HSLADDER.map((s,i)=>`
     <div class="lstep ${done.includes(i)?'done':''} ${i===now?'now':''}" onclick="hsToggle(${i})">
       <div class="mk">${done.includes(i)?"✓":faD(i+1)}</div>
-      <div><div class="lt">${s[0]}</div><div class="ld">${s[1]}</div></div>
+      <div><div class="lt">${en?s[2]:s[0]}</div><div class="ld">${en?s[3]:s[1]}</div></div>
     </div>`).join("");
   view.innerHTML=`<div class="pu">
     <div class="puhero">
       <div class="big">${faD(best||"0")}</div>
-      <div class="u">هندستند آزاد، بدون دیوار (ثانیه)</div>
-      <div class="rg">${(+best>0)
-        ? "رسیدی. حالا هدف بعدی، نگه‌داشتنش طولانی‌تر و تثبیت آن است."
-        : "هنوز صفر — طبیعی است. مسیرش پایین‌تر نوشته شده، همیشه رو به دیوار."}</div>
+      <div class="u">${t('hsFull')}</div>
+      <div class="rg">${(+best>0) ? t('hsReached') : t('hsZero')}</div>
     </div>
     <div class="ncard">
-      <div class="ntitle">رکوردهای فعلی</div>
+      <div class="ntitle">${t('curRecords')}</div>
       <div class="pulog">
-        <div class="pufield"><div class="l">هندستند آزاد (ثانیه)</div>
-          <input type="text" inputmode="numeric" value="${esc(hsGet("best",""))}" placeholder="۰" onchange="hsLog('best',this)"></div>
-        <div class="pufield"><div class="l">سینه‌به‌دیوار (ثانیه)</div>
+        <div class="pufield"><div class="l">${t('hsFreeL')}</div>
+          <input type="text" inputmode="numeric" value="${esc(hsGet("best",""))}" placeholder="${faD(0)}" onchange="hsLog('best',this)"></div>
+        <div class="pufield"><div class="l">${t('hsWallL')}</div>
           <input type="text" inputmode="numeric" value="${esc(hsGet("wall",""))}" placeholder="—" onchange="hsLog('wall',this)"></div>
-        <div class="pufield"><div class="l">پشت‌به‌دیوار (ثانیه)</div>
+        <div class="pufield"><div class="l">${t('hsBackwallL')}</div>
           <input type="text" inputmode="numeric" value="${esc(hsGet("backwall",""))}" placeholder="—" onchange="hsLog('backwall',this)"></div>
-        <div class="pufield"><div class="l">یادداشت شانه</div>
-          <input type="text" value="${esc(hsGet("note",""))}" placeholder="مثلاً بدون درد" onchange="hsLog('note',this)"></div>
+        <div class="pufield"><div class="l">${t('hsNoteL')}</div>
+          <input type="text" value="${esc(hsGet("note",""))}" placeholder="${t('hsNotePh')}" onchange="hsLog('note',this)"></div>
       </div>
       <div style="font-size:11.5px;color:var(--faint);margin-top:11px;line-height:1.85">
-        بعد از هر جلسهٔ مهارتی (چهارشنبه و شنبه) این چهار عدد را به‌روز کن. با شانهٔ گیرکننده، ثبات پله‌های دیواری از عدد بزرگ بالا مهم‌تر است.
+        ${t('hsNote')}
       </div>
     </div>
     <div class="ncard">
-      <div class="ntitle">نردبان — روی هر پله بزن تا تیک بخورد</div>
+      <div class="ntitle">${t('ladderTitle')}</div>
       <div class="ladder">${steps}</div>
       <div style="font-size:11.5px;color:var(--faint);margin-top:10px;line-height:1.85">
-        پله را وقتی تیک بزن که <b style="color:var(--ice)">دو جلسهٔ پیاپی</b> بدون درد یا گیرکردن انجامش دهی، نه یک بار شانسی.
+        ${t('hsLadderNote')}
       </div>
     </div>
   </div>`;
@@ -1357,15 +2091,17 @@ function buildTabs(){
     tabsEl.appendChild(b); TABS.push({key,el:b}); return b;
   };
   days.forEach((d,i)=>{
-    const b=add(i,d.day,d.type==="rest"?"استراحت":d.title,false);
+    const dayLabel = LANG==='fa' ? d.day : d.dayEn;
+    const dayTitle = LANG==='fa' ? d.title : (d.en&&d.en.title)||d.title;
+    const b=add(i,dayLabel,d.type==="rest"?t('restSub'):dayTitle,false);
     if(d.type==="rest") b.classList.add("rest");
     if(d.wd===todayWd) b.classList.add("today");
   });
-  add("pu","پول‌آپ","نردبان · رکورد",true);
-  add("hs","هندستند","نردبان · رکورد",true);
-  add("wt","وزن","ثبت هفتگی",true);
-  add("nut","تغذیه","کالری · پروتئین",true);
-  add("info","راهنما","اصول · لگن · شانه",true);
+  add("pu",t('puTab'),t('puSub'),true);
+  add("hs",t('hsTab'),t('hsSub'),true);
+  add("wt",t('wtTab'),t('wtSub'),true);
+  add("nut",t('nutTab'),t('nutSub'),true);
+  add("info",t('infoTab'),t('infoSub'),true);
   syncTabs();
 }
 function syncTabs(){
@@ -1389,7 +2125,7 @@ function scoreboard(done,total){
   let segs=""; for(let i=0;i<total;i++) segs+=`<div class="seg${i<done?' on':''}"></div>`;
   return `<div class="score${full?' full':''}">
       <span class="n">${faD(done)}</span><span class="sl">/${faD(total)}</span>
-      <span class="lab">ست انجام‌شده</span></div>
+      <span class="lab">${t('setsdone')}</span></div>
     <div class="segs">${segs}</div>`;
 }
 
@@ -1400,57 +2136,72 @@ function renderView(){
   if(active==="pu")   return renderPU();
   if(active==="hs")   return renderHS();
   const d=days[active];
+  const en = LANG==='en';
   if(d.type==="rest"){
+    const title = en ? (d.en&&d.en.title)||d.title : d.title;
+    const dayLabel = en ? d.dayEn : d.day;
+    const restTxt = en ? (d.en&&d.en.rest)||d.rest : d.rest;
+    const todoArr = en ? (d.en&&d.en.todo)||d.todo : d.todo;
     view.innerHTML=`<div class="restday"><div class="big">🌙</div>
-      <h3>${d.title} — ${d.day}</h3><p>${d.rest}</p>
-      ${d.todo?`<ul>${d.todo.map(t=>`<li>${t}</li>`).join("")}</ul>`:""}</div>`;
+      <h3>${title} — ${dayLabel}</h3><p>${restTxt}</p>
+      ${todoArr?`<ul>${todoArr.map(x=>`<li>${x}</li>`).join("")}</ul>`:""}</div>`;
     return;
   }
   const [done,total]=dayProgress(d);
-  let html=`<div class="dhead"><h2>${d.title}</h2><div class="focus">${d.focus}</div>
+  const title = en ? (d.en&&d.en.title)||d.title : d.title;
+  const focus = en ? (d.en&&d.en.focus)||d.focus : d.focus;
+  const warm = en ? (d.en&&d.en.warm)||d.warm : d.warm;
+  const cardio = en ? (d.en&&d.en.cardio)||d.cardio : d.cardio;
+  const skill = en ? (d.en&&d.en.skill)||d.skill : d.skill;
+  let html=`<div class="dhead"><h2>${title}</h2><div class="focus">${focus}</div>
     ${scoreboard(done,total)}</div>
-    <div class="warm"><b>گرم‌کردن:</b> ${d.warm}</div>
-    ${d.cardio?`<div class="cardio"><b>هوازی:</b> ${d.cardio}</div>`:""}
-    ${d.skill?`<div class="skill"><b>مهارت:</b> ${d.skill}</div>`:""}
+    <div class="warm"><b>${t('warmL')}</b> ${warm}</div>
+    ${cardio?`<div class="cardio"><b>${t('cardioL')}</b> ${cardio}</div>`:""}
+    ${skill?`<div class="skill"><b>${t('skillL')}</b> ${skill}</div>`:""}
     <div class="list">`;
 
   d.ex.forEach((e,i)=>{
     const [id,sets,reps,rest,tempo,note]=e;
-    const X=EX[id]||{}, name=X["ن"]||id;
+    const X=EX[id]||{};
+    const name = en ? (X.en&&X.en.name)||id : (X["ن"]||id);
+    const eq = en ? (X.en&&X.en.eq)||X.eq : X.eq;
+    const enSub = (!en && X.en) ? X.en.name : null;
+    const exNote = en ? ((d.en&&d.en.exNotes&&d.en.exNotes[i])||"") : note;
     const cs=Math.min(getSets(d.key,i),sets);
     const wt=store.get(V+"wt:"+d.key+":"+i)||"";
-    const li=(a,c="")=>(a||[]).map(t=>`<li class="${c}">${t}</li>`).join("");
+    const li=(a,c="")=>(a||[]).map(x=>`<li class="${c}">${x}</li>`).join("");
     let dots="";
     for(let s=1;s<=sets;s++)
-      dots+=`<button class="dot${s<=cs?' on':''}" onclick="tapSet('${d.key}',${i},${s})" aria-label="ست ${faD(s)}">${faD(s)}</button>`;
+      dots+=`<button class="dot${s<=cs?' on':''}" onclick="tapSet('${d.key}',${i},${s})" aria-label="${t('setLabel')} ${faD(s)}">${faD(s)}</button>`;
 
+    const XX = en ? (X.en||{}) : X;
     html+=`<div class="card${cs>=sets?' done':''}" id="c-${d.key}-${i}">
       <div class="ctop"><div class="num">${faD(i+1)}</div>
         <div class="cname"><div class="t">${name}</div>
-          ${X.en?`<div class="en">${esc(X.en)}</div>`:""}
-          <span class="eq">${X.eq||"—"}</span>
-          ${note?`<span class="note">⚠ ${note}</span>`:""}</div></div>
+          ${enSub?`<div class="en">${esc(enSub)}</div>`:""}
+          <span class="eq">${eq||"—"}</span>
+          ${exNote?`<span class="note">⚠ ${exNote}</span>`:""}</div></div>
       <div class="stats">
-        <span class="st"><span class="l">ست × تکرار</span><span class="v">${faD(sets)} × ${reps}</span></span>
-        <span class="st tap tempo" onclick="openTempo('${tempo}')"><span class="l">تمپو ؟</span><span class="v">${tempo}</span></span>
-        <span class="st tap rest" onclick="restFor('${d.key}',${i})"><span class="l">استراحت</span><span class="v">${faD(rest)}ث</span></span>
-        <span class="st wt"><span class="l">وزنه (kg)</span>
+        <span class="st"><span class="l">${t('setsxreps')}</span><span class="v">${faD(sets)} × ${dispNum(reps)}</span></span>
+        <span class="st tap tempo" onclick="openTempo('${tempo}')"><span class="l">${t('tempoQ')}</span><span class="v">${dispTempo(tempo)}</span></span>
+        <span class="st tap rest" onclick="restFor('${d.key}',${i})"><span class="l">${t('restStat')}</span><span class="v">${faD(rest)}${t('secUnit')}</span></span>
+        <span class="st wt"><span class="l">${t('weightKg')}</span>
           <input type="text" inputmode="decimal" value="${esc(wt)}" placeholder="—" onchange="logWt('${d.key}',${i},this)"></span>
       </div>
-      <div class="setsrow"><span class="setslab">ست‌ها</span><div class="dots">${dots}</div></div>
+      <div class="setsrow"><span class="setslab">${en?'Sets':'ست‌ها'}</span><div class="dots">${dots}</div></div>
       <div class="learn" id="l-${d.key}-${i}">
-        <button onclick="toggleLearn('${d.key}',${i})">آموزش حرکت ▾</button>
+        <button onclick="toggleLearn('${d.key}',${i})">${t('learnOpen')}</button>
         <div class="panel"><div class="inner">
-          ${X.setup?`<div class="es"><div class="eh">آماده‌سازی</div><p class="ep">${X.setup}</p></div>`:""}
-          <div class="es"><div class="eh">اجرا</div><ol class="steps">${li(X.steps)}</ol></div>
-          ${(X.cues||[]).length?`<div class="es"><div class="eh ok">نکات کلیدی</div><ul class="bl ok">${li(X.cues)}</ul></div>`:""}
-          ${(X.err||[]).length?`<div class="es"><div class="eh bad">اشتباهات رایج</div><ul class="bl bad">${li(X.err)}</ul></div>`:""}
-          ${X.breath?`<div class="es"><div class="eh br">تنفس</div><p class="ep">${X.breath}</p></div>`:""}
-          <div class="tgt">عضلهٔ هدف: <b>${X.target||"—"}</b></div>
-          ${X.swap?`<div class="tgt sw">اگر نبود: <b>${X.swap}</b></div>`:""}
+          ${XX.setup?`<div class="es"><div class="eh">${t('setup')}</div><p class="ep">${XX.setup}</p></div>`:""}
+          <div class="es"><div class="eh">${t('exec')}</div><ol class="steps">${li(XX.steps)}</ol></div>
+          ${(XX.cues||[]).length?`<div class="es"><div class="eh ok">${t('keyCues')}</div><ul class="bl ok">${li(XX.cues)}</ul></div>`:""}
+          ${(XX.err||[]).length?`<div class="es"><div class="eh bad">${t('commonErr')}</div><ul class="bl bad">${li(XX.err)}</ul></div>`:""}
+          ${XX.breath?`<div class="es"><div class="eh br">${t('breathing')}</div><p class="ep">${XX.breath}</p></div>`:""}
+          <div class="tgt">${t('targetMuscle')} <b>${XX.target||"—"}</b></div>
+          ${XX.swap?`<div class="tgt sw">${t('ifNotAvail')} <b>${XX.swap}</b></div>`:""}
         </div></div></div></div>`;
   });
-  html+=`</div><div class="dfoot"><button class="reset" onclick="resetDay('${d.key}')">پاک‌کردن ست‌های امروز</button></div>`;
+  html+=`</div><div class="dfoot"><button class="reset" onclick="resetDay('${d.key}')">${t('clearToday')}</button></div>`;
   view.innerHTML=html;
   d.ex.forEach((e,i)=>{
     const c=document.getElementById("c-"+d.key+"-"+i);
@@ -1488,13 +2239,17 @@ function tapSet(k,i,s){
   syncTabs();
   if(next>cur){
     if(navigator.vibrate) navigator.vibrate(18);
-    if(next<sets) startTimer(rest,(EX[d.ex[i][0]]||{})["ن"]||"");
+    if(next<sets) startTimer(rest,exName(d.ex[i][0]));
   }
+}
+function exName(id){
+  const X=EX[id]||{};
+  return LANG==='en' ? ((X.en&&X.en.name)||id) : (X["ن"]||"");
 }
 function restFor(k,i){
   const d=days.find(x=>x.key===k); if(!d) return;
   const e=d.ex[i];
-  startTimer(e[3],(EX[e[0]]||{})["ن"]||"");
+  startTimer(e[3],exName(e[0]));
 }
 function logWt(k,i,el){
   const v=el.value.trim();
@@ -1510,7 +2265,7 @@ function toggleLearn(k,i){
   const box=document.getElementById("l-"+k+"-"+i), p=box.querySelector(".panel");
   const open=box.classList.toggle("open");
   p.style.maxHeight=open?p.scrollHeight+"px":"0";
-  box.querySelector("button").textContent=open?"بستن آموزش ▴":"آموزش حرکت ▾";
+  box.querySelector("button").textContent=open?t('learnClose'):t('learnOpen');
 }
 function accToggle(i){
   const p=document.getElementById("p-"+i),b=p.querySelector(".body");
@@ -1553,17 +2308,17 @@ function runTicking(){ stopTicking(); paintTimer(); tHandle=setInterval(paintTim
 function startTimer(sec,label){
   T.total=sec; T.left=sec; T.paused=false; T.running=true;
   T.endAt=Date.now()+sec*1000;
-  tex.textContent=label||"حرکت بعدی";
-  tlab.textContent="استراحت";
+  tex.textContent=label||t('nextMove');
+  tlab.textContent=t('restLab');
   tpause.textContent="⏸";
   tEl.classList.add("show"); tEl.classList.remove("done");
   primeAudio(); requestWake(); runTicking();
 }
 function finishTimer(){
   stopTicking(); T.running=false;
-  tlab.textContent="استراحت تمام — ست بعدی";
+  tlab.textContent=t('restDoneLab');
   tEl.classList.add("done");
-  tnum.textContent="۰";
+  tnum.textContent=faD(0);
   tfg.setAttribute("stroke-dashoffset",TC);
   beep();
   if(navigator.vibrate) navigator.vibrate([120,80,120]);
@@ -1613,7 +2368,7 @@ tpause.onclick=()=>{
 document.getElementById("tplus").onclick=()=>{
   T.total+=15; T.left+=15; T.endAt+=15000;
   if(tEl.classList.contains("done")){
-    tEl.classList.remove("done"); T.running=true; tlab.textContent="استراحت";
+    tEl.classList.remove("done"); T.running=true; tlab.textContent=t('restLab');
     T.endAt=Date.now()+T.left*1000; requestWake(); runTicking();
   } else paintTimer();
 };
@@ -1640,7 +2395,38 @@ days.forEach(d=>{
   }
 });
 
+/* ---------- language toggle ---------- */
+function applyStaticText(){
+  document.getElementById("langBtn").textContent=t('langBtn');
+  document.getElementById("h1title").innerHTML=t('h1html');
+  document.getElementById("subtext").textContent=t('sub');
+  document.getElementById("footerText").textContent=t('footer');
+  document.getElementById("tplus").setAttribute("aria-label",t('plus15Aria'));
+  document.getElementById("tpause").setAttribute("aria-label",t('pauseAria'));
+  document.getElementById("tskip").setAttribute("aria-label",t('closeAria'));
+  document.getElementById("tlab").textContent=t('restLab');
+  document.getElementById("tmTitle").textContent=t('tmTitle');
+  document.getElementById("tmLead").textContent=t('tmLead');
+  document.getElementById("tgl0").innerHTML=t('tmNeg');
+  document.getElementById("tgl1").innerHTML=t('tmPauseLow');
+  document.getElementById("tgl2").innerHTML=t('tmPos');
+  document.getElementById("tgl3").innerHTML=t('tmPauseHigh');
+  document.getElementById("tmExrB").textContent=t('tmWhyB');
+  document.getElementById("tmExrTxt").textContent=t('tmWhy');
+  document.getElementById("tmClose").textContent=t('tmClose');
+}
+function toggleLang(){
+  LANG = LANG==='fa' ? 'en' : 'fa';
+  store.set(V+"lang",LANG);
+  document.documentElement.lang = LANG;
+  document.documentElement.dir = LANG==='fa' ? 'rtl' : 'ltr';
+  applyStaticText();
+  buildTabs();
+  renderView();
+}
+
 /* ---------- boot ---------- */
+applyStaticText();
 buildTabs();
 renderView();
 requestAnimationFrame(()=>{
