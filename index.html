@@ -369,9 +369,18 @@
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
   :focus-visible{outline:2px solid var(--ice);outline-offset:2px}
   @media (max-width:360px){:root{--hpad:11px}.dot{width:35px;height:35px}h1{font-size:22px}.score .n{font-size:29px}}
+
+  /* ── status-bar shield ──
+     Scrolled content passes behind the sticky day-strip up into the
+     safe-area strip itself (y:0..--safe-t), which nothing else covers —
+     so it shows through raw underneath the phone's status bar. Blur it. */
+  .sbar-shield{position:fixed;top:0;left:0;right:0;height:var(--safe-t);z-index:41;
+    background:rgba(8,9,11,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    pointer-events:none}
 </style>
 </head>
 <body>
+<div class="sbar-shield"></div>
 <div class="wrap">
   <header>
     <div class="brand">
