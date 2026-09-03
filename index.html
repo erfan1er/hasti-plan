@@ -290,6 +290,7 @@
   .wrow .kg{font-family:var(--mono);font-size:15px;font-weight:800;color:var(--text)}
   .wrow .dl{font-family:var(--mono);font-size:11.5px;font-weight:700;min-width:52px;text-align:start}
   .wrow .dl.up{color:var(--ember)} .wrow .dl.dn{color:var(--volt)} .wrow .dl.eq{color:var(--faint)}
+  .wrow .dl.gain{color:var(--volt)} .wrow .dl.loss{color:var(--ember)}
   .wrow .x{background:none;border:none;color:var(--faint);font-size:16px;cursor:pointer;padding:4px 8px}
   .empty{text-align:center;color:var(--faint);font-size:12.5px;padding:22px 10px;line-height:1.9}
 
@@ -2395,7 +2396,8 @@ function openWtHist(k,i){
     const idx=h.length-1-ri;
     const p=idx>0?h[idx-1].w:null;
     const df=p!=null?Math.round((r.w-p)*10)/10:null;
-    const c=df==null?"eq":(df>0.05?"up":(df<-0.05?"dn":"eq"));
+    /* opposite sense from the body-weight tracker: for a lifted weight, heavier is progress */
+    const c=df==null?"eq":(df>0.05?"gain":(df<-0.05?"loss":"eq"));
     return `<div class="wrow">
       <span class="kg">${faD(r.w.toFixed(1))}</span>
       <span class="dl ${c}">${df==null?"—":(df>0?"+":"")+faD(df.toFixed(1))}</span>
