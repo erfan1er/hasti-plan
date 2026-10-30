@@ -1,7 +1,7 @@
 /* Hasti Plan — service worker.
    Bump CACHE whenever you change index.html or anything in assets/, otherwise
    phones that already installed the app keep serving the old copy. */
-const CACHE = "hastiplan-v1";
+const CACHE = "hastiplan-v2-20261030";
 
 /* Relative URLs resolve against the SW's own location, so this keeps working
    when the app is served from a GitHub Pages subpath (/user.github.io/gym-plan/). */
@@ -25,7 +25,7 @@ self.addEventListener("install", e => {
 self.addEventListener("activate", e => {
   e.waitUntil(
     caches.keys()
-      .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
+      .then(keys => Promise.all(keys.filter(k => k.startsWith("hastiplan-") && k !== CACHE).map(k => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });
@@ -40,6 +40,7 @@ self.addEventListener("fetch", e => {
     e.respondWith(
       fetch(req)
         .then(res => {
+          if (!res.ok) throw new Error("Navigation unavailable");
           const copy = res.clone();
           caches.open(CACHE).then(c => c.put("./index.html", copy));
           return res;
