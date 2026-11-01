@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#090d12">
+<meta name="theme-color" content="#060b10">
 <meta name="description" content="Hasti Plan — برنامهٔ تمرین شخصی: ست‌شمار، تایمر استراحت، آموزش حرکات و تغذیه.">
 
 <!-- PWA / add-to-home-screen -->
@@ -394,6 +394,19 @@ details.coach-details{background:var(--surf);border:1px solid var(--line);border
 @media(max-width:440px){:root{--hpad:14px}.brand{margin-bottom:20px}.bname{font-size:14px}.section-nav button{padding:8px 12px;flex-grow:0}.tab{flex:0 0 77px}.card{padding:16px}.cname .t{font-size:15px}.st{padding:8px 6px}.st .l{font-size:9px}.st .v{font-size:13px}.st.wt{padding:8px 6px}.st.tempo .v{font-size:11px}.skill-hero,.stage-card{padding:18px}.skill-hero h2{font-size:25px}.skill-hero p{max-width:265px}.dose-grid b{font-size:13px}.dose-grid span{font-size:9px}.exercise-links{grid-template-columns:1fr}.action-row{flex-direction:column}.tbtn{width:38px;height:42px}.timer .row{gap:8px}.tbtns{gap:4px}.tring{transform:scale(.9);margin-inline:-3px}.header-meta span{font-size:10px;padding:4px 8px}.ntitle{font-size:14px}.recovery-grid{gap:5px}.recovery-grid strong{font-size:14px}}
 .dhead{clip-path:none;border-radius:16px;padding:22px 20px 4px}.dhead::before{display:none}.timer:not(.show){visibility:hidden;pointer-events:none}.timer.show{visibility:visible}.stage-card{scroll-margin-top:88px}.source-link{font-family:inherit}.section-nav button{scroll-margin-inline:20px}.winput input{min-width:0}.winput button{padding-inline:16px}.wstats{grid-template-columns:repeat(3,minmax(0,1fr))}.wrow{gap:7px}.wrow .dt{min-width:0;overflow-wrap:anywhere}.wrow .dl{min-width:40px}.source-link>span:first-child{min-width:0;overflow-wrap:anywhere}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*{animation:none!important;transition:none!important}}
+
+</style>
+<style>
+/* The compact, single-column layout of Gym Plan, with Hasti's own identity. */
+:root{--bg:#060b10;--surf:#10171f;--raise:#19232e;--line:#26323f;--line2:#354555;--volt:#97edcf;--ice:#7ddcff;--muted:#adbac8;--faint:#93a3b5;--hpad:14px}
+html{scroll-padding-top:90px}.wrap{max-width:540px}body{font-size:14.5px}body::before{height:300px;background:radial-gradient(650px 240px at 80% -50px,#97edcf16,transparent 65%)}
+header{padding:calc(18px + var(--safe-t)) 0 6px}.brand{margin-bottom:12px}header>.eyebrow{display:none}h1{font-size:24px;line-height:1.5;letter-spacing:0;margin:8px 0 4px}.sub{font-size:12px}.header-meta{margin:12px 0 4px;align-items:center;justify-content:space-between}.header-meta>span{font-size:10px;padding:5px 7px}.jump-label{font-size:11px;color:var(--muted);display:flex;gap:6px;align-items:center}.jump-label select{font:inherit;color:var(--text);background:var(--raise);border:1px solid var(--line2);border-radius:8px;min-height:44px;max-width:150px;padding:6px}
+#sectionNav{display:none}.strip{top:var(--safe-t);margin-top:10px;border-block:1px solid var(--line);padding-block:9px;background:#060b10ed}.strip .inner{gap:7px}.tab{flex:0 0 auto;min-height:48px;padding:8px 13px;font-size:12px;border-radius:11px}.tab .d{font-size:9px;max-width:100px}.tab.on{background:var(--volt);color:#0a241b;border-color:var(--volt)}.tab.on .d{color:#234e3d}.tab.alt.on{background:var(--ice);color:#07202a}.tab.alt{display:flex;align-items:center}.tab.rest{opacity:.7}
+.dhead{padding:16px;margin-top:14px;background:linear-gradient(145deg,var(--raise),var(--surf));border-color:var(--line2);border-radius:14px}.dhead h2{font-size:19px;margin:0}.simple-day-top{display:flex;align-items:center;justify-content:space-between;gap:10px}.simple-day-top>div{min-width:0}.focus{font-size:11px!important}.score{display:flex;align-items:baseline;flex-wrap:wrap;justify-content:center;gap:4px;margin:0;padding:8px;min-width:80px;max-width:96px;background:var(--bg);border:1px solid var(--line);border-radius:10px}.score .n{font-size:23px}.score .sl{font-size:12px}.score .lab{font-size:9px;flex-basis:100%;margin:0;text-align:center;letter-spacing:0}.segs{margin:12px 0 0;gap:2px}.seg{height:5px}.cardio,.skill{font-size:12px;padding:10px 12px;margin-top:9px}.set-hint{font-size:11px;color:var(--muted);margin:18px 0 8px}
+.list{display:flex;flex-direction:column;gap:14px}.card{padding:15px;border-radius:14px;background:var(--surf)!important;box-shadow:0 6px 20px #0002}.card.done{border-color:var(--volt);background:#12261f!important}.ctop{gap:10px}.cname .t{font-size:15px}.cname .en{font-size:10px}.num{width:30px;height:30px;border-radius:9px}.note{font-size:11px}.stats{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}.st{padding:8px 5px;min-height:61px}.st .l{font-size:9px}.st .v{font-size:13px;overflow-wrap:anywhere}.st.tempo .v{font-size:11px}.st.wt input{width:100%;min-width:0;font-size:14px}.setsrow{margin-top:12px}.dots{gap:8px}.dot{width:44px;height:44px;min-width:44px;border-radius:10px}.learn>button{min-height:46px;font-size:12px;text-align:start}.learn.open .panel{max-height:none!important}.learn .inner{padding:12px 0}.source-link{font-size:12px;padding:12px;border-radius:10px}.source-link small{font-size:10px}.es .eh{font-size:12px}.steps,.ep,.bl{font-size:12px;line-height:1.95}
+.mob-routine{margin:14px 0 0;padding:13px;border:1px solid #ffc23340;border-radius:14px;background:#ffc23304}.section-title{margin:0 0 8px;gap:8px;flex-wrap:wrap}.section-title h2{font-size:14px}.section-title small{font-size:10px}.quiet{font-size:12px}.mob-routine>.quiet{font-size:11px;margin:4px 0 12px}.simple-mob{border:1px solid var(--line);border-radius:10px;background:var(--surf);margin:8px 0;overflow:hidden}.mob-check{width:100%;border:0;background:none;color:var(--text);display:flex;align-items:center;gap:10px;padding:11px;text-align:start;font:inherit;font-size:12px;cursor:pointer;min-height:52px}.mob-check small{display:block;font-size:10px;color:var(--gold);margin-top:3px}.check-icon{display:grid;place-items:center;flex:0 0 25px;height:25px;border:1px solid var(--line2);border-radius:7px;color:var(--bg)}.mob-check[aria-pressed=true] .check-icon{background:var(--volt);border-color:var(--volt)}.mob-help>summary{padding:8px 12px;font-size:11px;color:var(--ice);cursor:pointer;min-height:40px;border-top:1px solid var(--line)}.mob-help .detail-body{padding:12px}.coach-section{max-width:100%}.skill-hero{padding:16px;background:var(--surf);border-radius:14px}.skill-hero h2{font-size:20px}.skill-hero p{max-width:none;font-size:12px;margin-bottom:0}.skill-hero .eyebrow{letter-spacing:0;font-family:inherit}.stage-card{padding:16px;border-radius:14px}.stage-card h3{font-size:18px}.stage-card .action-row{flex-direction:row;flex-wrap:wrap}.stage-card .action-row button{flex:1;min-width:125px}.stage-card .dose-grid{margin-block:12px}.stage-card .steps{margin-top:0}.stage-track{gap:7px;flex-wrap:wrap}.stage-track button{min-width:44px;min-height:44px}.coach-details>summary{font-size:12px;min-height:46px}.coach-details{border-radius:11px}.simple-fold{margin:12px 0}.section-intro h2{font-size:22px}.section-intro .eyebrow{display:none}.section-intro{padding-top:18px}.exercise-links{grid-template-columns:1fr}.nut-hero h2{font-size:22px}.timer .row{max-width:540px}.timer{border-radius:16px 16px 0 0}button:focus-visible,select:focus-visible,[role=button]:focus-visible{outline:2px solid var(--ice);outline-offset:3px}
+.skill-hero{min-height:0}.stage-card>.action,.stage-card>.inline-action{display:block;width:100%;margin-top:10px}.simple-fold .stage-track{margin-block:8px}.simple-fold .section-title{margin-bottom:12px}
+@media(max-width:360px){.jump-label{width:100%;justify-content:space-between}.jump-label select{max-width:190px}.card{padding:12px}.dot{width:42px;min-width:42px}.dots{gap:6px}.dose-grid b{font-size:12px}}
 
 </style>
 </head>
@@ -2531,6 +2544,67 @@ applyStaticText=function(){document.documentElement.lang=LANG;document.documentE
 
 const oldRenderView=renderView;
 renderView=function(){if(active==='mob')return renderMobility();oldRenderView();if(typeof active==='number'){const d=days[active];const marker=view.querySelector(d.type==='train'?'.list':'.restday');if(marker)marker.insertAdjacentHTML(d.type==='train'?'beforebegin':'afterend',dailyMobility(d.key));if(d.type==='train'){view.querySelector('.focus').insertAdjacentHTML('afterend',`<div class="session-meta"><span class="pill mint">${choose(bilingual('۲–۳ تکرار ذخیره','2–3 reps in reserve'))}</span><span class="pill">${faD(d.ex.length)} ${choose(bilingual('حرکت','exercises'))}</span><span class="pill lilac">${choose(bilingual('فرم، بعد وزنه','Form, then load'))}</span></div>`);d.ex.forEach((e,i)=>{const inner=document.querySelector('#l-'+d.key+'-'+i+' .inner');inner?.insertAdjacentHTML('beforeend',exerciseSourceHTML(e[0]));});}if(d.key==='sat'||d.key==='wed'){view.insertAdjacentHTML('afterbegin',`<button class="source-link" style="width:100%;text-align:start;cursor:pointer" onclick="selectTab('hs')"><span>${choose(bilingual('جلسهٔ مهارت امروز · مرحلهٔ فعلی هندستند','Today’s skill · your current handstand stage'))}<small>${choose(HS_STAGES[hsStage()].short)}</small></span><span aria-hidden="true">↗</span></button>`);}}};
+
+/* Presentation only: retain Hasti's training data and existing storage keys. */
+Object.assign(UI.fa,{h1html:'برنامهٔ تمرین <b>هستی</b>',sub:'روزت را انتخاب کن؛ تمرین کن و ست‌ها را تیک بزن.',learnOpen:'راهنمای حرکت و آموزش تصویری ▾',setsxreps:'ست × تکرار',tempoQ:'تمپو ؟',footer:'با لمس شمارهٔ هر ست، انجام آن ثبت و تایمر استراحت شروع می‌شود.'});
+Object.assign(UI.en,{h1html:'<b>Hasti’s</b> training plan',sub:'Choose a day, train and check off your sets.',learnOpen:'Technique & visual guide ▾',footer:'Tap a set number to record it and start the rest timer.'});
+const simpleSections=[['hs','هندستند','Handstand'],['mob','موبیلیتی','Mobility'],['pu','پول‌آپ','Pull-up'],['wt','ثبت وزن','Weight'],['nut','تغذیه','Nutrition'],['info','راهنما و پشتیبان','Help & backup']];
+renderSectionNav=function(){document.getElementById('sectionNav').hidden=true;document.querySelector('.strip').hidden=false;};
+const simpleBuildTabs=buildTabs;
+buildTabs=function(){
+ simpleBuildTabs();
+ simpleSections.forEach(([key,fa,en])=>{const b=document.createElement('button');b.className='tab alt';b.textContent=LANG==='fa'?fa:en;b.onclick=()=>selectTab(key,b);tabsEl.append(b);TABS.push({key,el:b});});
+ syncTabs();
+ const jump=document.getElementById('sectionJump');
+ if(jump){jump.innerHTML=`<option value="today">${choose(bilingual('برنامهٔ امروز','Today’s plan'))}</option>`+simpleSections.map(([key,fa,en])=>`<option value="${key}">${LANG==='fa'?fa:en}</option>`).join('');jump.value=typeof active==='number'?'today':active;}
+};
+const simpleSelectTab=selectTab;
+selectTab=function(key,el){if(key==='hs')hsPreview=null;const button=el||TABS.find(x=>x.key===key)?.el;simpleSelectTab(key);button?.scrollIntoView({inline:'center',block:'nearest',behavior:'instant'});const jump=document.getElementById('sectionJump');if(jump)jump.value=typeof key==='number'?'today':key;};
+const simpleStatic=applyStaticText;
+applyStaticText=function(){simpleStatic();document.getElementById('headerMeta').innerHTML=`<span>${choose(bilingual('۵ روز قدرت · ۲ جلسهٔ مهارت','5 strength days · 2 skill sessions'))}</span><label class="jump-label">${choose(bilingual('برو به','Go to'))}<select id="sectionJump" onchange="selectTab(this.value==='today'?(todayIdx>=0?todayIdx:0):this.value)"></select></label>`;};
+
+mobilityCard=function(m){
+ const s=m.source?SOURCES[m.source]:{url:m.url,title:m.name,by:'StrengthLog'};
+ return `<section class="simple-mob"><div class="simple-mob-top"><button class="mob-check" data-mob="${m.id}" aria-label="${esc(choose(m.name))}" aria-pressed="${mobDone(m.id)}" onclick="toggleMobility('${m.id}',this)"><span class="check-icon" aria-hidden="true">${mobDone(m.id)?'✓':''}</span><span>${choose(m.name)}<small>${choose(m.dose)}</small></span></button></div><details class="mob-help"><summary>${choose(bilingual('راهنمای اجرا و فیلم','Instructions & visual guide'))}</summary><div class="detail-body">${sourceLink(s)}<ol class="steps">${choose(m.steps).map(x=>`<li>${x}</li>`).join('')}</ol><p class="cue-box">${choose(m.cue)}</p><button class="action secondary" onclick="startTimer(${m.sec},choose(MOBILITY.find(x=>x.id==='${m.id}').name))">${choose(bilingual('تایمر','Timer'))} · ${faD(m.sec)}${t('secUnit')}</button></div></details></section>`;
+};
+toggleMobility=function(id){if(mobDone(id))store.del(V+'mob2:'+id);else store.set(V+'mob2:'+id,localDate());document.querySelectorAll('[data-mob="'+id+'"]').forEach(b=>{b.setAttribute('aria-pressed',String(mobDone(id)));b.querySelector('.check-icon').textContent=mobDone(id)?'✓':'';});};
+dailyMobility=function(key){return `<section class="mob-routine"><div class="section-title"><h2>${choose(bilingual('موبیلیتی و آماده‌سازی','Mobility & warm-up'))}</h2><small>${choose(bilingual('بعد از انجام تیک بزن','Check off when done'))}</small></div><p class="quiet">${choose(bilingual('اول ۳ تا ۵ دقیقه حرکت آسان؛ سپس تمرین‌های زیر، آرام و بدون خستگی.','Start with 3–5 minutes of easy movement, then do these drills gently.'))}</p>${(DAILY_MOB[key]||[]).map(id=>mobilityCard(MOBILITY.find(m=>m.id===id))).join('')}</section>`;};
+function foldSimple(nodes,fa,en){
+ const list=nodes.filter(Boolean);if(!list.length)return;
+ const box=document.createElement('details');box.className='coach-details simple-fold';const summary=document.createElement('summary');summary.textContent=choose(bilingual(fa,en));box.append(summary);list[0].before(box);const body=document.createElement('div');body.className='detail-body';box.append(body);list.forEach(n=>body.append(n));return box;
+}
+const simpleRenderHS=renderHS;
+renderHS=function(){
+ simpleRenderHS();const section=view.querySelector('.coach-section'),hero=section.querySelector('.skill-hero'),card=document.getElementById('hsStageCard');
+ hero.innerHTML=`<span class="eyebrow">${choose(bilingual('هندستند · مرحلهٔ فعلی','Handstand · current stage'))} ${faD(hsStage()+1)} / ${faD(HS_STAGES.length)}</span><h2>${choose(bilingual('تمرین هندستند امروز','Today’s handstand practice'))}</h2><p>${choose(bilingual('شنبه ۱۵–۲۰ دقیقه · چهارشنبه ۸–۱۰ دقیقه؛ به‌اضافهٔ ۵ دقیقه آماده‌سازی.','Sat 15–20 min · Wed 8–10 min, plus 5 minutes of preparation.'))}</p>`;
+ const track=section.querySelector('.stage-track');foldSimple([track.previousElementSibling,track],'دیدن و مرور مراحل دیگر','Browse the other stages');
+ const trackBox=section.querySelector('.simple-fold');card.after(trackBox);
+ const instructions=card.querySelector('ol.steps');
+ const cue=instructions.nextElementSibling,mistake=cue.nextElementSibling,video=mistake.nextElementSibling;
+ instructions.before(video);
+ foldSimple([instructions,cue,mistake],'روش اجرا و نکات مربی','Technique & coaching cues');
+ const tutorials=[];let next=trackBox.nextElementSibling;
+ while(next&&next.tagName!=='DETAILS'){tutorials.push(next);next=next.nextElementSibling;}
+ foldSimple(tutorials,'آموزش‌های کامل هندستند','Complete handstand tutorials');
+ section.querySelector('.roadmap')?.closest('details').remove();
+};
+const simpleRenderView=renderView;
+renderView=function(){
+ simpleRenderView();
+ if(typeof active==='number'&&days[active].type==='train'){
+  const d=days[active];
+  const head=view.querySelector('.dhead'),score=head.querySelector('.score');
+  const top=document.createElement('div');top.className='simple-day-top';const title=document.createElement('div');title.append(head.querySelector('h2'),head.querySelector('.focus'));top.append(title,score);head.prepend(top);
+  head.querySelector('.session-meta')?.remove();
+  view.querySelectorAll('.learn .inner').forEach(inner=>{const source=inner.lastElementChild;if(source?.querySelector('.source-link'))inner.prepend(source);});
+  const list=view.querySelector('.list');list.insertAdjacentHTML('beforebegin',`<p class="set-hint">${choose(bilingual('تمرین اصلی · پس از هر ست، شمارهٔ آن را لمس کن.','Main workout · tap each set number when done.'))}</p>`);
+  d.ex.forEach((e,i)=>{const card=document.getElementById('c-'+d.key+'-'+i);card.querySelectorAll('.st.tap').forEach(el=>{el.tabIndex=0;el.setAttribute('role','button');el.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();el.click();}};});const input=card.querySelector('.wt input');input.setAttribute('aria-label',choose(bilingual('وزنه برای ','Weight for '))+exName(e[0]));});
+ }
+ document.querySelectorAll('.learn>button').forEach(b=>{b.setAttribute('aria-expanded',String(b.parentElement.classList.contains('open')));});
+};
+const simpleToggleLearn=toggleLearn;
+toggleLearn=function(k,i){simpleToggleLearn(k,i);const l=document.getElementById('l-'+k+'-'+i);l.querySelector('button').setAttribute('aria-expanded',String(l.classList.contains('open')));};
+fillCard=function(card,pct){card.style.backgroundImage='none';card.style.removeProperty('background-size');};
 
 /* Resume correctly if an installed app remained open across midnight. */
 let renderedDay=localDate();
