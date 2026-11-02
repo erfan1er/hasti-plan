@@ -1,7 +1,7 @@
 /* Hasti Plan — service worker.
    Bump CACHE whenever you change index.html or anything in assets/, otherwise
    phones that already installed the app keep serving the old copy. */
-const CACHE = "hastiplan-report-20261101";
+const CACHE = "hastiplan-week-20261102";
 
 /* Relative URLs resolve against the SW's own location, so this keeps working
    when the app is served from a GitHub Pages subpath (/user.github.io/gym-plan/). */

@@ -552,7 +552,7 @@ const UI = {
   puZero:"هنوز صفر — و این کاملاً طبیعی است. مسیرش پایین‌تر نوشته شده.",
   curRecords:"رکوردهای فعلی",
   puFullL:"بارفیکس کامل", puHangL:"آویزان (ثانیه)", puNegL:"نگاتیو (ثانیه)", puBandL:"کمک فعلی", puBandPh:"کش کلفت",
-  puNote:"بعد از هر جلسهٔ پول‌آپ (دوشنبه و پنج‌شنبه) این چهار عدد را به‌روز کن. سه عدد اول قبل از اینکه عدد بزرگ بالا تکان بخورد، ماه‌ها پیشرفت نشان می‌دهند — و همان‌ها معیار واقعی تواند.",
+  puNote:"بعد از هر جلسهٔ پول‌آپ (شنبه و دوشنبه) این چهار عدد را به‌روز کن. سه عدد اول قبل از اینکه عدد بزرگ بالا تکان بخورد، ماه‌ها پیشرفت نشان می‌دهند — و همان‌ها معیار واقعی تواند.",
   ladderTitle:"نردبان — روی هر پله بزن تا تیک بخورد",
   puLadderNote:'پله را وقتی تیک بزن که <b style="color:var(--ice)">دو جلسهٔ پیاپی</b> بتوانی انجامش دهی، نه یک بار شانسی.',
   hsFull:"هندستند آزاد، بدون دیوار (ثانیه)", hsReached:"رسیدی. حالا هدف بعدی، نگه‌داشتنش طولانی‌تر و تثبیت آن است.",
@@ -618,7 +618,7 @@ const UI = {
   puZero:"Still zero — and that's completely normal. The path is written below.",
   curRecords:"Current records",
   puFullL:"Full pull-up", puHangL:"Dead hang (seconds)", puNegL:"Negative (seconds)", puBandL:"Current assistance", puBandPh:"Thick band",
-  puNote:"Update these four numbers after every pull-up session (Monday and Thursday). The first three numbers show months of progress before the big number above moves at all — and they're the truer measure of your capability.",
+  puNote:"Update these four numbers after every pull-up session (Saturday and Monday). The first three numbers show months of progress before the big number above moves at all — and they're the truer measure of your capability.",
   ladderTitle:"Ladder — tap each rung to check it off",
   puLadderNote:'Only check off a rung once you can do it across <b style="color:var(--ice)">two sessions in a row</b>, not on one lucky attempt.',
   hsFull:"Free handstand, no wall (seconds)", hsReached:"You got there. The next goal is holding it longer and making it solid.",
@@ -1585,20 +1585,23 @@ bbcurl:{"ن":"جلوبازو هالتر ایستاده", eq:"هالتر",
 
 /* ---------- برنامهٔ هفتگی ---------- */
 const days = [
-  { key:"sat", day:"شنبه", dayEn:"Saturday", wd:6, type:"rest", title:"استراحت + مهارت",
-    rest:"روز بدون کلاس و بدون تمرین وزنه. تنها کاری که امروز واجب است، کشش هیپ فلکسور و ۱۵ دقیقه کار مهارتی هندستند است.",
-    todo:["کشش هیپ فلکسور زانوزده — ۲ ست ۴۵ ثانیه‌ای هر طرف.",
-          "۱۵ دقیقه هندستند: پلهٔ فعلی نردبان، رو به دیوار — بدون خستگی، فقط تکرار تمیز.",
-          "حرکات اختصاصی فیزیوتراپت را انجام بده. آن‌ها بر هر چیزی در این برنامه اولویت دارند.",
-          "پیاده‌روی سبک اگر دوست داشتی، ولی دویدن نه.",
-          "امروز روزی است که عضله واقعاً ساخته می‌شود. کم‌غذا خوردن در این روز، تمرین کل هفته را هدر می‌دهد."],
-    en:{title:"Rest + Skill",
-      rest:"No class and no weight training today. The only mandatory work today is the hip flexor stretch and 15 minutes of handstand skill work.",
-      todo:["Kneeling hip flexor stretch — 2 sets of 45 seconds each side.",
-            "15 minutes of handstand: your current ladder rung, facing the wall — no chasing fatigue, just clean reps.",
-            "Do the exercises your physical therapist gave you. They outrank everything in this plan.",
-            "A light walk if you feel like it, but no running.",
-            "Today is the day muscle is actually built. Under-eating today wastes the whole week's training."]}},
+  { key:"sat", day:"شنبه", dayEn:"Saturday", wd:6, type:"train", title:"پشت (۲) + پول‌آپ + مرکز بدن", focus:"لتیسیموس · گریپ · ثبات مرکزی",
+    warm:"۳ دقیقه دوچرخه · وال اسلاید ۱۰ · آویزان از بارفیکس ۲۰ ثانیه · نشر خم سبک ۱۵",
+    skill:"بعد از ۵ دقیقه آماده‌سازی مچ و شانه، در صورت آمادگی ۱۵ تا ۲۰ دقیقه مرحلهٔ فعلی هندستند را پیش از تمرین پشت انجام بده.",
+    cardio:"امروز هوازی نداری. تمرکزت را روی کیفیت بگذار نه سرعت.",
+    ex:[ ["deadhang",3,"۲۰–۳۰ ثانیه",60,"نگه‌داشتن","رکورد زمانت را در تب پول‌آپ ثبت کن"],
+         ["bandpull",4,"۳–۵",150,"2-1-1-1","کش نازک‌تر مهم‌تر از تکرار بیشتر است"],
+         ["feetinvrow",4,"۸–۱۲",90,"2-1-1-1","پاها روی نیمکت"],
+         ["pullover",3,"۱۲–۱۵",60,"3-1-1-1","سبک شروع کن — شانهٔ چپ"],
+         ["inclinecurl",3,"۱۰–۱۲",60,"3-0-1-1",""],
+         ["sideplank",3,"۳۰ ثانیه هر طرف",45,"نگه‌داشتن","جایگزین دراز‌نشست و بالا آوردن پا"],
+         ["hipflex",2,"۴۵ ثانیه هر طرف",30,"نگه‌داشتن",""] ],
+    en:{title:"Back (2) + Pull-Up + Core", focus:"Lats · Grip · Core stability",
+      warm:"3 min bike · wall slide 10 · bar dead hang 20 sec · light rear delt fly 15",
+      skill:"After 5 minutes of wrist and shoulder preparation, practise the current handstand stage for 15–20 minutes if ready, before the back workout.",
+      cardio:"No cardio today. Focus on quality, not speed.",
+      exNotes:["Log your hang time in the Pull-Up tab","A thinner band matters more than more reps","Feet on a bench",
+               "Start light — left shoulder","","Replaces sit-ups and hanging leg raises",""]}},
 
   { key:"sun", day:"یک‌شنبه", dayEn:"Sunday", wd:0, type:"train", title:"پا — زنجیرهٔ خلفی", focus:"همسترینگ · سرین · ساق",
     warm:"۵ دقیقه دوچرخه · Leg Swing ۱۰ هر طرف · پل سرین وزن بدن ۲×۱۵ · اسکات وزن بدن ۱۵ · کشش هیپ فلکسور ۳۰ ثانیه هر طرف",
@@ -1634,19 +1637,9 @@ const days = [
                "Flat back; torso stays still","To make it harder, lower the bar","",
                "Light; key for the left shoulder",""]}},
 
-  { key:"tue", day:"سه‌شنبه", dayEn:"Tuesday", wd:2, type:"train", title:"چهارسر و سرین", focus:"چهارسر · سرین · ساق",
-    warm:"۵ دقیقه دوچرخه · کشش هیپ فلکسور ۳۰ ثانیه هر طرف · کلم‌شل ۲×۱۵ · اسکات وزن بدن ۲×۱۰",
-    cardio:"امروز هوازی نداری — پاها فردا هم باید کار کنند.",
-    ex:[ ["squat",4,"۶–۸",150,"3-1-1-0","عمق را راحتیِ لگن تعیین می‌کند، نه دیگران"],
-         ["bulgarian",3,"۸–۱۰ هر پا",90,"2-1-1-0",""],
-         ["goblet",3,"۱۰–۱۲",75,"3-1-1-0","پاشنه روی صفحه"],
-         ["stepup",3,"۱۰ هر پا",75,"2-1-1-0","پای پایینی فنر نزند"],
-         ["clamshell",3,"۲۰ هر طرف",45,"2-2-1-0",""],
-         ["calfseat",4,"۱۵",45,"2-2-1-1",""] ],
-    en:{title:"Quads & Glutes", focus:"Quadriceps · Glutes · Calves",
-      warm:"5 min bike · hip flexor stretch 30 sec each side · clamshell 2×15 · bodyweight squat 2×10",
-      cardio:"No cardio today — legs need to work again tomorrow too.",
-      exNotes:["Depth is set by hip comfort, not by anyone else","","Heels on a plate","Trailing foot shouldn't spring","",""]}},
+  { key:"tue", day:"سه‌شنبه", dayEn:"Tuesday", wd:2, type:"rest", title:"استراحت",
+    rest:"امروز روز استراحت توست.",
+    en:{title:"Rest", rest:"Today is your rest day."}},
 
   { key:"wed", day:"چهارشنبه", dayEn:"Wednesday", wd:3, type:"train", title:"بالاتنهٔ فشاری و سلامت شانه", focus:"بالاسینه · دلتوئید · روتاتور کاف",
     warm:"چرخش شانه ۱۰ هر طرف · وال اسلاید ۲×۱۰ · چرخش خارجی با دمبل ۱ کیلو ۱۵ هر طرف · شنای سبک ۸ تکرار",
@@ -1666,34 +1659,23 @@ const days = [
       exNotes:["Elbow at 45 degrees — not wider","Only while the left shoulder stays pain-free","Replaces your daily push-ups",
                "Up to shoulder height, no higher","1 to 3 kg dumbbell","",""]}},
 
-  { key:"thu", day:"پنج‌شنبه", dayEn:"Thursday", wd:4, type:"train", title:"پشت (۲) + پول‌آپ + مرکز بدن", focus:"لتیسیموس · گریپ · ثبات مرکزی",
-    warm:"۳ دقیقه دوچرخه · وال اسلاید ۱۰ · آویزان از بارفیکس ۲۰ ثانیه · نشر خم سبک ۱۵",
-    cardio:"امروز هوازی نداری. آخرین جلسهٔ هفته است — تمرکزت را روی کیفیت بگذار نه سرعت.",
-    ex:[ ["deadhang",3,"۲۰–۳۰ ثانیه",60,"نگه‌داشتن","رکورد زمانت را در تب پول‌آپ ثبت کن"],
-         ["bandpull",4,"۳–۵",150,"2-1-1-1","کش نازک‌تر مهم‌تر از تکرار بیشتر است"],
-         ["feetinvrow",4,"۸–۱۲",90,"2-1-1-1","پاها روی نیمکت"],
-         ["pullover",3,"۱۲–۱۵",60,"3-1-1-1","سبک شروع کن — شانهٔ چپ"],
-         ["inclinecurl",3,"۱۰–۱۲",60,"3-0-1-1",""],
-         ["sideplank",3,"۳۰ ثانیه هر طرف",45,"نگه‌داشتن","جایگزین دراز‌نشست و بالا آوردن پا"],
-         ["hipflex",2,"۴۵ ثانیه هر طرف",30,"نگه‌داشتن",""] ],
-    en:{title:"Back (2) + Pull-Up + Core", focus:"Lats · Grip · Core stability",
-      warm:"3 min bike · wall slide 10 · bar dead hang 20 sec · light rear delt fly 15",
-      cardio:"No cardio today. It's the last session of the week — focus on quality, not speed.",
-      exNotes:["Log your hang time in the Pull-Up tab","A thinner band matters more than more reps","Feet on a bench",
-               "Start light — left shoulder","","Replaces sit-ups and hanging leg raises",""]}},
+  { key:"thu", day:"پنج‌شنبه", dayEn:"Thursday", wd:4, type:"rest", title:"استراحت",
+    rest:"امروز روز استراحت توست.",
+    en:{title:"Rest", rest:"Today is your rest day."}},
 
-  { key:"fri", day:"جمعه", dayEn:"Friday", wd:5, type:"rest", title:"استراحت + هوازی سبک",
-    rest:"روز کلاس داری ولی تمرین وزنه نداری. هوازی امروز اختیاری است — اگر خسته‌ای، حذفش کن.",
-    todo:["۳۰ تا ۴۰ دقیقه دویدن آرام، دوچرخه یا پیاده‌روی شیب‌دار. شدت باید طوری باشد که بتوانی حرف بزنی.",
-          "کشش هیپ فلکسور ۲×۴۵ ثانیه هر طرف.",
-          "وزن صبحگاهی این هفته را در تب «وزن» ثبت کن.",
-          "اگر این هفته خواب کم بوده یا امتحان داشتی، هوازی را حذف کن و فقط کشش را بزن."],
-    en:{title:"Rest + Light Cardio",
-      rest:"You have class today but no weight training. Cardio today is optional — skip it if you're tired.",
-      todo:["30 to 40 minutes of easy running, cycling, or an incline treadmill walk. The intensity should let you hold a conversation.",
-            "Hip flexor stretch, 2 sets of 45 seconds each side.",
-            "Log this week's morning weight in the Weight tab.",
-            "If sleep was short this week or you had an exam, drop the cardio and just do the stretch."]}}
+  { key:"fri", day:"جمعه", dayEn:"Friday", wd:5, type:"train", title:"چهارسر و سرین", focus:"چهارسر · سرین · ساق",
+    warm:"۵ دقیقه دوچرخه · کشش هیپ فلکسور ۳۰ ثانیه هر طرف · کلم‌شل ۲×۱۵ · اسکات وزن بدن ۲×۱۰",
+    cardio:"امروز هوازی نداری — پاها فردا هم باید کار کنند.",
+    ex:[ ["squat",4,"۶–۸",150,"3-1-1-0","عمق را راحتیِ لگن تعیین می‌کند، نه دیگران"],
+         ["bulgarian",3,"۸–۱۰ هر پا",90,"2-1-1-0",""],
+         ["goblet",3,"۱۰–۱۲",75,"3-1-1-0","پاشنه روی صفحه"],
+         ["stepup",3,"۱۰ هر پا",75,"2-1-1-0","پای پایینی فنر نزند"],
+         ["clamshell",3,"۲۰ هر طرف",45,"2-2-1-0",""],
+         ["calfseat",4,"۱۵",45,"2-2-1-1",""] ],
+    en:{title:"Quads & Glutes", focus:"Quadriceps · Glutes · Calves",
+      warm:"5 min bike · hip flexor stretch 30 sec each side · clamshell 2×15 · bodyweight squat 2×10",
+      cardio:"No cardio today — legs need to work again tomorrow too.",
+      exNotes:["Depth is set by hip comfort, not by anyone else","","Heels on a plate","Trailing foot shouldn't spring","",""]}}
 ];
 
 /* ---------- نردبان پول‌آپ ---------- */
@@ -2368,22 +2350,16 @@ days[2].ex[3][1]=3;
 days[4].ex[1][1]=2;
 days[4].ex[1][5]='بعد از مهارت فقط ۲ ست سبک با ۳ تکرار ذخیره؛ اگر شانه خسته است حذفش کن';
 days[4].en.exNotes[1]='After skill: only 2 light sets, 3 reps in reserve; skip if shoulders are fatigued';
-days[3].ex[2][5]='صفحهٔ کم‌ارتفاع زیر پاشنه اختیاری؛ دامنه بدون گیرکردن لگن';
-days[3].en.exNotes[2]='A small heel wedge is optional; use a hip-comfortable range';
+days[6].ex[2][5]='صفحهٔ کم‌ارتفاع زیر پاشنه اختیاری؛ دامنه بدون گیرکردن لگن';
+days[6].en.exNotes[2]='A small heel wedge is optional; use a hip-comfortable range';
 days[1].ex[6][5]='کشش ملایم؛ اگر جلوی لگن گیر کرد، دامنه را کم کن یا حذفش کن';
 days[1].en.exNotes[6]='Gentle stretch; reduce or omit if the front of the hip pinches';
-days[5].ex[3][5]='فقط در دامنهٔ بدون درد؛ اگر شانه خسته است امروز حذف شود';
-days[5].en.exNotes[3]='Only in a pain-free range; omit today if shoulders are fatigued';
-days[0].rest='روز بدون وزنه. در صورت آمادگی، ۱۵ تا ۲۰ دقیقه مهارت از مرحلهٔ فعلی؛ تمام مراحل را در یک جلسه انجام نده.';
-days[0].en.rest='No weights. If ready, spend 15–20 minutes on your current skill stage; do not train every stage in one session.';
-days[0].todo=['۵ دقیقه آماده‌سازی مچ، وال‌اسلاید و ددباگ.','مرحلهٔ فعلی هندستند با استراحت کامل؛ قبل از افت فرم تمام کن.','کشش ملایم لگن یا پیاده‌روی کوتاه؛ برنامهٔ فیزیوتراپ اگر داری در اولویت است.'];
-days[0].en.todo=['5 minutes of wrist prep, wall slides and dead bugs.','Current handstand stage with full rests; finish before form deteriorates.','Gentle hip mobility or a short walk; follow any individual physiotherapy plan.'];
+days[0].ex[3][5]='فقط در دامنهٔ بدون درد؛ اگر شانه خسته است امروز حذف شود';
+days[0].en.exNotes[3]='Only in a pain-free range; omit today if shoulders are fatigued';
 days[4].skill='پس از ۵ دقیقه آماده‌سازی، ۸ تا ۱۰ دقیقه پلهٔ فعلی هندستند؛ قبل از پرس‌ها. امروز ۲ تا ۳ ست مهارت کافی است.';
 days[4].en.skill='After 5 minutes of preparation, 8–10 minutes on your current handstand stage, before presses. Use only 2–3 skill sets today.';
-days[3].cardio='هوازی اضافه لازم نیست. انرژی را برای کیفیت تمرین پا و ریکاوری نگه دار.';
-days[3].en.cardio='No additional cardio is needed. Save energy for leg training quality and recovery.';
-days[6].todo=['۲۰ تا ۳۰ دقیقه پیاده‌روی یا دوچرخهٔ آسان، فقط اگر سرحال هستی.','روتین کوتاه لگن؛ کشش را به زور انجام نده.','خواب، وعده‌های منظم و آماده‌شدن برای هفتهٔ بعد.'];
-days[6].en.todo=['20–30 minutes of easy walking or cycling, only if recovered.','Short hip routine without forcing the stretch.','Prioritize sleep, regular meals and the coming week.'];
+days[6].cardio='هوازی اضافه لازم نیست. انرژی را برای کیفیت تمرین پا و ریکاوری نگه دار.';
+days[6].en.cardio='No additional cardio is needed. Save energy for leg training quality and recovery.';
 
 EX.hipflex.cues=['کششی ملایم جلوی رانِ پای عقب حس کن؛ درد یا گیرکردن مفصل، علامت عمیق‌تر رفتن نیست.','دامنه کوتاه و لگن کنترل‌شده بهتر از جلو رفتن با قوس کمر است.'];
 EX.hipflex.en.cues=['Aim for a gentle stretch in the front of the back thigh, not joint pain or pinching.','Use a small range with pelvic control rather than leaning into a low-back arch.'];
@@ -2443,7 +2419,7 @@ const MOBILITY=[
  {id:'bridge',group:'lower',name:bilingual('پل سرینِ آماده‌سازی','Glute bridge preparation'),dose:bilingual('۱ × ۱۰؛ مکث ۲ ثانیه','1 × 10; pause 2 sec'),sec:50,exercise:'sglbridge',url:'https://www.strengthlog.com/glute-bridge/',steps:bilingual(['به پشت، هر دو پا روی زمین و زانوها خم.','با فشار پا لگن را بالا بیاور تا تنه و ران یک خط شوند.','دو ثانیه مکث کن و آرام پایین بیا؛ کمر را قوس نده.'],['Lie on your back with both feet grounded and knees bent.','Press through the feet until trunk and thighs align.','Pause two seconds and lower without arching the back.']),cue:bilingual('این حرکت دوپا و سبک است؛ جای ست‌های قدرتی را نمی‌گیرد.','This is a light, two-leg preparation, not an extra strength set.')},
  {id:'deadbug',group:'skill',name:bilingual('ددباگ کوتاه‌دامنه','Short-range dead bug'),dose:bilingual('۱ × ۶ هر طرف','1 × 6 each side'),sec:60,url:'https://www.strengthlog.com/dead-bugs/',steps:bilingual(['به پشت با زانوهای خم؛ دنده‌ها آرام پایین و کمر کنترل‌شده.','یک پاشنه را به زمین نزدیک کن؛ سمت دیگر ثابت بماند.','با بازدم برگرد و سمت را عوض کن؛ دامنه‌ای انتخاب کن که کمر حرکت نکند.'],['Lie on your back with bent knees, ribs relaxed and trunk controlled.','Lower one heel towards the floor while the other side stays still.','Exhale as you return; use a range that keeps your trunk steady.']),cue:bilingual('نسخهٔ ساده‌ترِ آموزش مرجع؛ پا را برای سخت‌تر شدن صاف نکن.','A simpler version of the reference; do not straighten the leg just to make it harder.')}
 ];
-const DAILY_MOB={sat:['wrists','slides','deadbug'],sun:['ankle','bridge','hip'],mon:['openbook','slides'],tue:['ankle','bridge','hip'],wed:['wrists','slides','deadbug'],thu:['openbook','slides'],fri:['hip','openbook']};
+const DAILY_MOB={sat:['wrists','slides','deadbug','openbook'],sun:['ankle','bridge','hip'],mon:['openbook','slides'],wed:['wrists','slides','deadbug'],fri:['ankle','bridge','hip']};
 const HS_STAGES=[
  {title:bilingual('تحمل وزن، با پا روی زمین','Supported loading, feet grounded'),short:bilingual('پایهٔ مچ و شانه','Wrist & shoulder foundation'),sets:'3',dose:bilingual('۱۵–۲۰ ثانیه','15–20 sec'),rest:60,video:135,
  steps:bilingual(['دست‌ها روی نیمکتِ محکم و مهارشده؛ پاها عقب تا بدن یک خط شود.','آرنج صاف، بدون فشار به انتهای مفصل؛ سطح را از خودت دور کن.','سر بین بازوها فرو نرود؛ نفس عادی و فشار کف دست یکنواخت.','برای خروج، یک پا را جلو بیاور و بایست. اگر سنگین است از دیوار شروع کن.'],['Place hands on a sturdy secured bench and step back into an inclined plank.','Keep elbows straight without forcing end range; press the support away.','Do not sink between the arms; breathe normally and spread palm pressure.','Step one foot forward to stand. Start at a wall if the bench is too demanding.']),
@@ -2479,8 +2455,8 @@ function exerciseSource(id){
 function exerciseSourceHTML(id){const s=exerciseSource(id);return s?`<div class="es"><div class="eh">${choose(bilingual('ببین و اجرا کن','Watch & practise'))}</div>${sourceLink(s)}${SOURCE_VARIANTS[id]?`<p class="source-note">${choose(SOURCE_VARIANTS[id])}</p>`:''}${id==='bandpull'?`<p class="source-note">${choose(bilingual('این لینک راهنمای عمومی پیش‌نیازهای پول‌آپ است؛ آموزش اختصاصیِ نصب کش نیست. مهار کش را با مربی بررسی کن.','This is a pull-up foundations guide, not a band-attachment tutorial. Check the band setup with a coach.'))}</p>`:''}</div>`:'';}
 function notifyUser(fa,en){document.querySelector('.toast')?.remove();const el=document.createElement('div');el.className='toast';el.setAttribute('role','status');el.textContent=LANG==='fa'?fa:en;document.body.append(el);setTimeout(()=>el.remove(),4500);}
 
-Object.assign(UI.fa,{h1html:'قوی‌تر، با <b>کنترل بیشتر.</b>',sub:'برنامهٔ هستی · قدرت، مهارت و حرکتِ باکیفیت',footer:'پیشرفت یعنی تکرارِ باکیفیت، استراحت کافی و تمرینِ قابل تداوم.',hsSub:'آموزش · تمرین · پیشرفت',nutSub:'سوخت · ریکاوری',infoSub:'آموزش · منابع',tmWhy:'تمپو سرعت حرکت را مشخص می‌کند؛ برای یادگیری کنترل مفید است، اما جایگزین انتخاب وزنهٔ مناسب نیست. با افت فرم یا درد، ست را تمام کن.',wRead1:'ثبت وزن اختیاری است؛ پیشرفت را با کیفیت حرکت، انرژی، خواب و قدرت هم بسنج.',wRead2:'بالا یا پایین رفتن وزن به‌تنهایی موفقیت یا شکست نیست؛ نمودار جهت تغییر را نشان می‌دهد، نه ارزش آن را.',wRead3:'آب بدن و چرخهٔ ماهانه می‌توانند عدد ترازو را تغییر دهند؛ از یک عدد نتیجه‌گیری نکن.',wRead4:'با سن ۱۷ سالِ ثبت‌شده در پرونده، هدف وزن و نیاز انرژی باید با متخصصِ آشنا با ورزش نوجوانان تعیین شود.',weekHint:'در صورت نیاز و توافق با متخصص، در شرایط مشابه ثبت کن. ثبت وزن اجباری نیست.',puZero:'از کیفیت آویزان، کنترل کتف و کمکِ متناسب شروع کن.',puNote:'بعد از دوشنبه و پنج‌شنبه، فقط رکوردِ با فرم درست را ثبت کن؛ دردی که با بارفیکس ایجاد می‌شود را نادیده نگیر.',puLadderNote:'این‌ها معیارهای راهنما هستند، نه آزمون پزشکی یا زمان‌بندی قطعی. کیفیت و پاسخ بدن بر تیک زدن مقدم‌اند.'});
-Object.assign(UI.en,{h1html:'Stronger, with <b>more control.</b>',sub:'Hasti’s plan · strength, skill & quality movement',footer:'Progress is quality practice, enough recovery and a routine you can sustain.',hsSub:'Learn · practise · progress',nutSub:'Fuel · recovery',infoSub:'Learn · sources',tmWhy:'Tempo describes movement speed and can help you learn control. It does not replace choosing a suitable load. End the set if form deteriorates or pain appears.',wRead1:'Weight logging is optional. Track movement quality, energy, sleep and strength as well.',wRead2:'Weight moving up or down is not automatically success or failure; the chart shows direction, not value.',wRead3:'Hydration and the menstrual cycle can affect the scale; do not draw conclusions from one reading.',wRead4:'With age 17 recorded in the file, weight goals and energy needs should be set with a clinician or dietitian familiar with youth sport.',weekHint:'If appropriate and agreed with your clinician, log under similar conditions. Weight tracking is optional.',puZero:'Start with a controlled hang, scapular movement and suitable assistance.',puNote:'After Monday and Thursday, log only records achieved with good form. Do not ignore pain provoked by pulling.',puLadderNote:'These are practice guides, not medical tests or fixed deadlines. Quality and your response matter more than checks.'});
+Object.assign(UI.fa,{h1html:'قوی‌تر، با <b>کنترل بیشتر.</b>',sub:'برنامهٔ هستی · قدرت، مهارت و حرکتِ باکیفیت',footer:'پیشرفت یعنی تکرارِ باکیفیت، استراحت کافی و تمرینِ قابل تداوم.',hsSub:'آموزش · تمرین · پیشرفت',nutSub:'سوخت · ریکاوری',infoSub:'آموزش · منابع',tmWhy:'تمپو سرعت حرکت را مشخص می‌کند؛ برای یادگیری کنترل مفید است، اما جایگزین انتخاب وزنهٔ مناسب نیست. با افت فرم یا درد، ست را تمام کن.',wRead1:'ثبت وزن اختیاری است؛ پیشرفت را با کیفیت حرکت، انرژی، خواب و قدرت هم بسنج.',wRead2:'بالا یا پایین رفتن وزن به‌تنهایی موفقیت یا شکست نیست؛ نمودار جهت تغییر را نشان می‌دهد، نه ارزش آن را.',wRead3:'آب بدن و چرخهٔ ماهانه می‌توانند عدد ترازو را تغییر دهند؛ از یک عدد نتیجه‌گیری نکن.',wRead4:'با سن ۱۷ سالِ ثبت‌شده در پرونده، هدف وزن و نیاز انرژی باید با متخصصِ آشنا با ورزش نوجوانان تعیین شود.',weekHint:'در صورت نیاز و توافق با متخصص، در شرایط مشابه ثبت کن. ثبت وزن اجباری نیست.',puZero:'از کیفیت آویزان، کنترل کتف و کمکِ متناسب شروع کن.',puNote:'بعد از شنبه و دوشنبه، فقط رکوردِ با فرم درست را ثبت کن؛ دردی که با بارفیکس ایجاد می‌شود را نادیده نگیر.',puLadderNote:'این‌ها معیارهای راهنما هستند، نه آزمون پزشکی یا زمان‌بندی قطعی. کیفیت و پاسخ بدن بر تیک زدن مقدم‌اند.'});
+Object.assign(UI.en,{h1html:'Stronger, with <b>more control.</b>',sub:'Hasti’s plan · strength, skill & quality movement',footer:'Progress is quality practice, enough recovery and a routine you can sustain.',hsSub:'Learn · practise · progress',nutSub:'Fuel · recovery',infoSub:'Learn · sources',tmWhy:'Tempo describes movement speed and can help you learn control. It does not replace choosing a suitable load. End the set if form deteriorates or pain appears.',wRead1:'Weight logging is optional. Track movement quality, energy, sleep and strength as well.',wRead2:'Weight moving up or down is not automatically success or failure; the chart shows direction, not value.',wRead3:'Hydration and the menstrual cycle can affect the scale; do not draw conclusions from one reading.',wRead4:'With age 17 recorded in the file, weight goals and energy needs should be set with a clinician or dietitian familiar with youth sport.',weekHint:'If appropriate and agreed with your clinician, log under similar conditions. Weight tracking is optional.',puZero:'Start with a controlled hang, scapular movement and suitable assistance.',puNote:'After Saturday and Monday, log only records achieved with good form. Do not ignore pain provoked by pulling.',puLadderNote:'These are practice guides, not medical tests or fixed deadlines. Quality and your response matter more than checks.'});
 
 const GUIDES=[
  {title:bilingual('چطور با این نسخه تمرین کنم؟','How to use this plan'),body:bilingual('تقسیم پنج‌روزهٔ قبلی حفظ شده. بیشتر ست‌ها را با ۲ تا ۳ تکرار ذخیره تمام کن: یعنی هنوز می‌توانستی ۲ تا ۳ تکرار تمیز دیگر بزنی. برای افزایش وزنه، ابتدا همهٔ ست‌ها به بالای بازه با همین کیفیت برسند. روزهای پا یا روز خستگی، هوازی اجباری نیست.','The previous five-day split is retained. Finish most sets with 2–3 clean reps in reserve. Reach the top of the rep range in every set at that quality before adding the smallest load. Cardio is optional when recovery is limited.' )},
@@ -2493,11 +2469,17 @@ const GUIDES=[
 ];
 info.splice(0,info.length,...GUIDES.map(g=>({t:g.title.fa,enT:g.title.en,body:`<p>${g.body.fa}</p>`,enBody:`<p>${g.body.en}</p>`})));
 
-function slotSuffix(k,i){const slot=revisedSlots[k+':'+i];return slot?k+':ex:'+slot.id:k+':'+i;}
+// Existing logs identify the workout by its original weekday.
+function workoutStorageKey(dayKey) {
+  if (dayKey === 'sat') return 'thu';
+  if (dayKey === 'fri') return 'tue';
+  return dayKey;
+}
+function slotSuffix(k,i){k=workoutStorageKey(k);const slot=revisedSlots[k+':'+i];return slot?k+':ex:'+slot.id:k+':'+i;}
 function weightHistoryKey(k,i){return V+'wh:'+slotSuffix(k,i);}
 getWtHist=function(k,i){try{const h=JSON.parse(store.get(weightHistoryKey(k,i))||'[]');return Array.isArray(h)?h.filter(x=>x&&typeof x.d==='string'&&Number.isFinite(x.w)):[];}catch{return [];}};
 setWtHist=function(k,i,a){store.set(weightHistoryKey(k,i),JSON.stringify(a));};
-curWt=function(k,i){const hist=getWtHist(k,i);if(hist.length)return hist[hist.length-1].w;if(revisedSlots[k+':'+i])return '';const old=Number(store.get(V+'wt:'+k+':'+i));if(old>0&&Number.isFinite(old)){setWtHist(k,i,[{d:localDate(),w:old}]);store.del(V+'wt:'+k+':'+i);return old;}return '';};
+curWt=function(k,i){const hist=getWtHist(k,i);if(hist.length)return hist[hist.length-1].w;if(revisedSlots[k+':'+i])return '';const old=Number(store.get(V+'wt:'+workoutStorageKey(k)+':'+i));if(old>0&&Number.isFinite(old)){setWtHist(k,i,[{d:localDate(),w:old}]);store.del(V+'wt:'+workoutStorageKey(k)+':'+i);return old;}return '';};
 
 let mobFilter='all',hsPreview=null;
 function mobDone(id){return store.get(V+'mob2:'+id)===localDate();}
@@ -2545,7 +2527,7 @@ const oldStaticText=applyStaticText;
 applyStaticText=function(){document.documentElement.lang=LANG;document.documentElement.dir=LANG==='fa'?'rtl':'ltr';oldStaticText();document.getElementById('headerMeta').innerHTML=`<span><b>${faD(5)}</b>${choose(bilingual('جلسهٔ قدرت','strength days'))}</span><span><b>${faD(2)}</b>${choose(bilingual('جلسهٔ مهارت','skill sessions'))}</span><span>${choose(bilingual('موبیلیتیِ هر جلسه','daily preparation'))}</span>`;};
 
 const oldRenderView=renderView;
-renderView=function(){if(active==='mob')return renderMobility();oldRenderView();if(typeof active==='number'){const d=days[active];const marker=view.querySelector(d.type==='train'?'.list':'.restday');if(marker)marker.insertAdjacentHTML(d.type==='train'?'beforebegin':'afterend',dailyMobility(d.key));if(d.type==='train'){view.querySelector('.focus').insertAdjacentHTML('afterend',`<div class="session-meta"><span class="pill mint">${choose(bilingual('۲–۳ تکرار ذخیره','2–3 reps in reserve'))}</span><span class="pill">${faD(d.ex.length)} ${choose(bilingual('حرکت','exercises'))}</span><span class="pill lilac">${choose(bilingual('فرم، بعد وزنه','Form, then load'))}</span></div>`);d.ex.forEach((e,i)=>{const inner=document.querySelector('#l-'+d.key+'-'+i+' .inner');inner?.insertAdjacentHTML('beforeend',exerciseSourceHTML(e[0]));});}if(d.key==='sat'||d.key==='wed'){view.insertAdjacentHTML('afterbegin',`<button class="source-link" style="width:100%;text-align:start;cursor:pointer" onclick="selectTab('hs')"><span>${choose(bilingual('جلسهٔ مهارت امروز · مرحلهٔ فعلی هندستند','Today’s skill · your current handstand stage'))}<small>${choose(HS_STAGES[hsStage()].short)}</small></span><span aria-hidden="true">↗</span></button>`);}}};
+renderView=function(){if(active==='mob')return renderMobility();oldRenderView();if(typeof active==='number'){const d=days[active];const marker=view.querySelector('.list');if(d.type==='train'&&marker)marker.insertAdjacentHTML('beforebegin',dailyMobility(d.key));if(d.type==='train'){view.querySelector('.focus').insertAdjacentHTML('afterend',`<div class="session-meta"><span class="pill mint">${choose(bilingual('۲–۳ تکرار ذخیره','2–3 reps in reserve'))}</span><span class="pill">${faD(d.ex.length)} ${choose(bilingual('حرکت','exercises'))}</span><span class="pill lilac">${choose(bilingual('فرم، بعد وزنه','Form, then load'))}</span></div>`);d.ex.forEach((e,i)=>{const inner=document.querySelector('#l-'+d.key+'-'+i+' .inner');inner?.insertAdjacentHTML('beforeend',exerciseSourceHTML(e[0]));});}if(d.key==='sat'||d.key==='wed'){view.insertAdjacentHTML('afterbegin',`<button class="source-link" style="width:100%;text-align:start;cursor:pointer" onclick="selectTab('hs')"><span>${choose(bilingual('جلسهٔ مهارت امروز · مرحلهٔ فعلی هندستند','Today’s skill · your current handstand stage'))}<small>${choose(HS_STAGES[hsStage()].short)}</small></span><span aria-hidden="true">↗</span></button>`);}}};
 
 /* Presentation only: retain Hasti's training data and existing storage keys. */
 Object.assign(UI.fa,{h1html:'برنامهٔ تمرین <b>هستی</b>',sub:'روزت را انتخاب کن؛ تمرین کن و ست‌ها را تیک بزن.',learnOpen:'راهنمای حرکت و آموزش تصویری ▾',setsxreps:'ست × تکرار',tempoQ:'تمپو ؟',footer:'با لمس شمارهٔ هر ست، انجام آن ثبت و تایمر استراحت شروع می‌شود.'});
@@ -2618,7 +2600,7 @@ function reportValidDate(s){if(typeof s!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(
 function reportRows(rows,from,today){const dates=new Map();if(Array.isArray(rows))rows.forEach(r=>{if(r&&reportValidDate(r.d)&&r.d>=from&&r.d<=today&&Number.isFinite(r.w)&&r.w>0)dates.set(r.d,{d:r.d,w:r.w});});return [...dates.values()].sort((a,b)=>a.d.localeCompare(b.d));}
 function collectReport(range='90',includeBody=false,now=new Date()){
  const today=localDate(now),start=new Date(now);start.setDate(start.getDate()-(Number(range)||1)+1);const from=range==='all'?'0000-00-00':localDate(start),week=weekStart(now);
- const weekRows=days.filter(d=>d.type==='train').map(d=>{const planned=d.ex.reduce((n,e)=>n+e[1],0);const done=store.get(V+'wk:'+d.key)===week?d.ex.reduce((n,e,i)=>n+Math.min(getSets(d.key,i),e[1]),0):0;return {day:d.day,done,planned};});
+ const weekRows=days.filter(d=>d.type==='train').map(d=>{const planned=d.ex.reduce((n,e)=>n+e[1],0);const done=store.get(V+'wk:'+workoutStorageKey(d.key))===week?d.ex.reduce((n,e,i)=>n+Math.min(getSets(d.key,i),e[1]),0):0;return {day:d.day,done,planned};});
  const lifts=[];days.filter(d=>d.type==='train').forEach(d=>d.ex.forEach((e,i)=>{const rows=reportRows(getWtHist(d.key,i),from,today);if(rows.length)lifts.push({name:EX[e[0]]['ن'],day:d.day,rows,first:rows[0].w,last:rows.at(-1).w,delta:Math.round((rows.at(-1).w-rows[0].w)*10)/10});}));
  const entries=new Map();hsSessions().forEach(s=>{if(reportValidDate(s.date)&&s.date>=from&&s.date<=today)entries.set(s.stage+':'+s.date,s);});const sessions=[...entries.values()].sort((a,b)=>a.date.localeCompare(b.date));
  const pull=puDone(),checked=Array.isArray(pull)?new Set(pull.filter(i=>Number.isInteger(i)&&i>=0&&i<LADDER.length)).size:0;
@@ -2712,7 +2694,7 @@ function weekStart(d){
 const CURWEEK=weekStart(new Date());
 days.forEach(d=>{
   if(d.type!=="train") return;
-  const wkKey=V+"wk:"+d.key;
+  const wkKey=V+"wk:"+workoutStorageKey(d.key);
   if(store.get(wkKey)!==CURWEEK){
     d.ex.forEach((_,i)=>setSets(d.key,i,0));
     store.set(wkKey,CURWEEK);
